@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
 import "../data/models/item";
+import "../data/models/user";
+import config from "../etc/config.json";
 
 const Item = mongoose.model("Item");
 const User = mongoose.model("User");
 
 export const setUpConnection = () => {
-  mongoose.connect("mongodb://localhost/OMVapeShop");
+  mongoose.connect(
+    `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`
+  );
 };
 
 export const listItems = () => {
@@ -26,7 +30,7 @@ export function createItem(data) {
 }
 
 export const deleteItem = id => {
-  return Item.findById(id).remove();
+  return Item.findByIdAndDelete(id);
 };
 
 export const listUsers = () => {
