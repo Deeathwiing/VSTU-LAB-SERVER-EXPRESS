@@ -92,5 +92,5 @@ export function createUser(data) {
 }
 
 export const deleteUser = id => {
-  return User.findById(id).remove();
+  return User.findByIdAndDelete(id);
 };
