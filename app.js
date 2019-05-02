@@ -19,6 +19,10 @@ app.post("/items", (req, res) => {
   db.createItem(req.body).then(data => res.send(data));
 });
 
+app.post("/rating", (req, res) => {
+  db.addRating(req.body).then(data => res.send(data));
+});
+
 app.delete("/items/:id", (req, res) => {
   db.deleteItem(req.params.id).then(data => res.send(data));
 });
