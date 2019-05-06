@@ -39,6 +39,14 @@ app.delete("/users/:id", (req, res) => {
   db.deleteUser(req.params.id).then(data => res.send(data));
 });
 
+app.post("/authUser", (req, res) => {
+  db.authorization(req.body).then(data => res.send(data));
+});
+
+app.get("/authUser", (req, res) => {
+  db.getAuthUser().then(data => res.send(data));
+});
+
 const server = app.listen(serverPort, () => {
   console.log(`Server run on port ${serverPort}`);
 });

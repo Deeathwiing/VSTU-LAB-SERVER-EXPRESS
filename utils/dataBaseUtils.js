@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
 import "../data/models/item";
 import "../data/models/user";
+import "../data/models/authUser";
+
 import config from "../etc/config.json";
 
 const Item = mongoose.model("Item");
 const User = mongoose.model("User");
+const AuthUser = mongoose.model("AuthUser");
 
 export const setUpConnection = () => {
   mongoose.connect(
@@ -93,4 +96,34 @@ export function createUser(data) {
 
 export const deleteUser = id => {
   return User.findByIdAndDelete(id);
+};
+
+export const authorization = async data => {
+  User.find().then(users => {
+    const checkLogin = users.some(
+      user => data.logEmail === user.email && data.logPass === user.password
+    );
+    const admin = users.some(
+      user =>
+        data.logEmail === user.email &&
+        data.logPass === user.password &&
+        user.administration
+    );
+    const authUser = new AuthUser({
+      admin,
+      checkLogin,
+      logEmail: data.logEmail
+    });
+    return authUser.save();
+  });
+};
+
+export const getAuthUser = async () => {
+  return AuthUser.find().then(user => {
+    return {
+      admin: user[0].admin,
+      logEmail: user[0].logEmail,
+      checkLogin: user[0].checkLogin
+    };
+  });
 };
