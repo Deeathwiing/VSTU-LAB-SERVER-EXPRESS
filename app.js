@@ -32,7 +32,10 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-  db.createUser(req.body).then(data => res.send(data));
+  db.createUser(req.body).then(data => {
+    console.log(data);
+    return res.sendStatus(data);
+  });
 });
 
 app.delete("/users/:id", (req, res) => {

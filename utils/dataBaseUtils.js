@@ -91,7 +91,12 @@ export function createUser(data) {
     lastName: data.lastName,
     password: data.password
   });
-  return user.save();
+  return User.find({ email: data.email }).then(data => {
+    if (data == false) {
+      return user.save().then(() => 201);
+    }
+    return 409;
+  });
 }
 
 export const deleteUser = id => {
