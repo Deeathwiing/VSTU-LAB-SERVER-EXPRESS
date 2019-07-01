@@ -32,8 +32,10 @@ export function createItem(data) {
   return item.save();
 }
 
-export const deleteItem = id => {
-  return Item.findByIdAndDelete(id);
+export const deleteItem = async id => {
+  return Item.findByIdAndDelete(id)
+    .then(() => 201)
+    .catch(() => 409);
 };
 
 export const addRating = async data => {
@@ -99,10 +101,29 @@ export function createUser(data) {
   });
 }
 
-export const deleteUser = id => {
-  return User.findByIdAndDelete(id);
+export const deleteUser = async id => {
+  return User.findByIdAndDelete(id)
+    .then(() => 201)
+    .catch(() => 409);
 };
 
+export const removeRequest = async user => {
+  return User.updateOne(
+    { email: user.logEmail },
+    { deleteAccountRequest: true }
+  )
+    .then(() => 201)
+    .catch(() => 409);
+};
+
+export const editNames = async data => {
+  return User.updateOne(
+    { email: data.user.logEmail },
+    { firstName: data.firstName, lastName: data.lastName }
+  )
+    .then(() => 201)
+    .catch(() => 409);
+};
 export const authorization = async data => {
   User.find().then(users => {
     const checkLogin = users.some(
@@ -124,11 +145,16 @@ export const authorization = async data => {
 };
 
 export const getAuthUser = async () => {
-  return AuthUser.find().then(user => {
-    return {
-      admin: user[0].admin,
-      logEmail: user[0].logEmail,
-      checkLogin: user[0].checkLogin
-    };
-  });
+  return AuthUser.find()
+    .then(user => {
+      return {
+        status: 201,
+        admin: user[0].admin,
+        logEmail: user[0].logEmail,
+        checkLogin: user[0].checkLogin
+      };
+    })
+    .catch(() => {
+      status: 401;
+    });
 };

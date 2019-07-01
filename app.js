@@ -33,13 +33,22 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
   db.createUser(req.body).then(data => {
-    console.log(data);
     return res.sendStatus(data);
   });
 });
 
 app.delete("/users/:id", (req, res) => {
-  db.deleteUser(req.params.id).then(data => res.send(data));
+  db.deleteUser(req.params.id).then(data => {
+    return res.sendStatus(data);
+  });
+});
+
+app.post("/removeRequest", (req, res) => {
+  db.removeRequest(req.body).then(data => res.sendStatus(data));
+});
+
+app.post("/editNames", (req, res) => {
+  db.editNames(req.body).then(data => res.sendStatus(data));
 });
 
 app.post("/authUser", (req, res) => {
@@ -47,7 +56,7 @@ app.post("/authUser", (req, res) => {
 });
 
 app.get("/authUser", (req, res) => {
-  db.getAuthUser().then(data => res.send(data));
+  db.getAuthUser().then(data => res.send(data).sendStatus(data.status));
 });
 
 const server = app.listen(serverPort, () => {
