@@ -11,8 +11,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({ origin: "*" }));
 
-app.get("/items", (req, res) => {
-  db.listItems().then(data => res.send(data));
+app.get("/items/:amount", (req, res) => {
+  console.log(req.params.amount);
+  db.listItems(req.params.amount).then(data => {
+    res.send(data);
+  });
 });
 
 app.post("/items", (req, res) => {
@@ -56,7 +59,7 @@ app.post("/authUser", (req, res) => {
 });
 
 app.get("/authUser", (req, res) => {
-  db.getAuthUser().then(data => res.send(data).sendStatus(data.status));
+  db.getAuthUser().then(data => res.status(data.status).send(data));
 });
 
 const server = app.listen(serverPort, () => {

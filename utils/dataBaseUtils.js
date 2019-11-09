@@ -15,8 +15,11 @@ export const setUpConnection = () => {
   );
 };
 
-export const listItems = () => {
-  return Item.find();
+export const listItems = amount => {
+  let skip = Number(amount);
+  let limit = 15;
+  let sort = { skip, limit };
+  return Item.find({}, null, sort, null);
 };
 
 export function createItem(data) {
