@@ -70,11 +70,14 @@ export const addRating = async data => {
     );
 
     // eslint-disable-next-line max-len
-    const nextAverageRating =
-      ratingValueArr.reduce((sum, current) => sum + current) /
-      ratingValueArr.length;
+    let nextAverageRating = ratingValueArr.reduce(
+      (sum, current) => sum + current
+    );
 
-    foundItem.averageRating = Math.round(nextAverageRating);
+    nextAverageRating /= ratingValueArr.length;
+
+    foundItem.averageRating = nextAverageRating;
+    //console.log(foundItem.averageRating);
 
     return Item.updateOne(
       { _id: data.itemId },
@@ -128,23 +131,24 @@ export const editNames = async data => {
     .catch(() => 409);
 };
 export const authorization = async data => {
-  User.find().then(users => {
-    const checkLogin = users.some(
-      user => data.logEmail === user.email && data.logPass === user.password
-    );
-    const admin = users.some(
-      user =>
-        data.logEmail === user.email &&
-        data.logPass === user.password &&
-        user.administration
-    );
-    const authUser = new AuthUser({
-      admin,
-      checkLogin,
-      logEmail: data.logEmail
-    });
-    return authUser.save();
+  let users = await User.find();
+
+  const checkLogin = users.some(
+    user => data.logEmail === user.email && data.logPass === user.password
+  );
+  const admin = users.some(
+    user =>
+      data.logEmail === user.email &&
+      data.logPass === user.password &&
+      user.administration
+  );
+  const authUser = new AuthUser({
+    admin,
+    checkLogin,
+    logEmail: data.logEmail
   });
+
+  return authUser.save();
 };
 
 export const getAuthUser = async () => {

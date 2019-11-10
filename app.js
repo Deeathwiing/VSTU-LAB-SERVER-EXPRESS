@@ -12,7 +12,6 @@ app.use(bodyParser.json());
 app.use(cors({ origin: "*" }));
 
 app.get("/items/:amount", (req, res) => {
-  console.log(req.params.amount);
   db.listItems(req.params.amount).then(data => {
     res.send(data);
   });
@@ -55,11 +54,10 @@ app.post("/editNames", (req, res) => {
 });
 
 app.post("/authUser", (req, res) => {
-  db.authorization(req.body).then(data => res.send(data));
-});
-
-app.get("/authUser", (req, res) => {
-  db.getAuthUser().then(data => res.status(data.status).send(data));
+  db.authorization(req.body).then(data => {
+    console.log(data);
+    return res.send(data);
+  });
 });
 
 const server = app.listen(serverPort, () => {
