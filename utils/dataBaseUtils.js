@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 import "../data/models/item";
 import "../data/models/user";
-import "../data/models/authUser";
 
 import config from "../etc/config.json";
 
 const Item = mongoose.model("Item");
 const User = mongoose.model("User");
-const AuthUser = mongoose.model("AuthUser");
 
 export const setUpConnection = () => {
   mongoose.connect(
@@ -77,7 +75,6 @@ export const addRating = async data => {
     nextAverageRating /= ratingValueArr.length;
 
     foundItem.averageRating = nextAverageRating;
-    //console.log(foundItem.averageRating);
 
     return Item.updateOne(
       { _id: data.itemId },
@@ -142,26 +139,11 @@ export const authorization = async data => {
       data.logPass === user.password &&
       user.administration
   );
-  const authUser = new AuthUser({
+  const authUser = {
     admin,
     checkLogin,
     logEmail: data.logEmail
-  });
+  };
 
-  return authUser.save();
-};
-
-export const getAuthUser = async () => {
-  return AuthUser.find()
-    .then(user => {
-      return {
-        status: 201,
-        admin: user[0].admin,
-        logEmail: user[0].logEmail,
-        checkLogin: user[0].checkLogin
-      };
-    })
-    .catch(() => {
-      status: 401;
-    });
+  return authUser;
 };

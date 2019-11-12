@@ -55,7 +55,6 @@ app.post("/editNames", (req, res) => {
 
 app.post("/authUser", (req, res) => {
   db.authorization(req.body).then(data => {
-    console.log(data);
     return res.send(data);
   });
 });

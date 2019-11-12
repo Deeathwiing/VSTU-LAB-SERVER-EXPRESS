@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "r": "babel-node app.js",
+    "r": "babel-node app.js --exec nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,7 +22,10 @@
     "bson-ext": "^2.0.2",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "mongodb": "^3.2.3",
-    "mongoose": "^5.5.4"
+    "mongodb": "^3.3.4",
+    "mongoose": "^5.7.10"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.4"
   }
 }
