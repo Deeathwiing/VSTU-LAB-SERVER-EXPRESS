@@ -29,15 +29,15 @@ app.delete("/items/:id", (req, res) => {
   db.deleteItem(req.params.id).then(data => res.send(data));
 });
 
-app.get("/users", (req, res) => {
-  db.listUsers().then(data => res.send(data));
-});
-
-app.post("/users", (req, res) => {
-  db.createUser(req.body).then(data => {
-    return res.sendStatus(data);
+app
+  .get("/users", (req, res) => {
+    db.listUsers().then(data => res.send(data));
+  })
+  .post("/users", (req, res) => {
+    db.createUser(req.body).then(data => {
+      return res.sendStatus(data);
+    });
   });
-});
 
 app.delete("/users/:id", (req, res) => {
   db.deleteUser(req.params.id).then(data => {
