@@ -2,7 +2,7 @@ import { listUsers } from "../services/usersServices/listUsers";
 import { authorization } from "../services/usersServices/authorization";
 import { createUser } from "../services/usersServices/createUser";
 import { deleteUser } from "../services/usersServices/deleteUser";
-import { addRemoveRequest } from "../services/usersServices/addRemoveRequest";
+import { removeRequest as addRemoveRequest } from "../services/usersServices/addRemoveRequest";
 import { editNames } from "../services/usersServices/editNames";
 
 export function getUsers(req, res) {
