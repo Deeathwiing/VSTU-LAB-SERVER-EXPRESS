@@ -12,7 +12,7 @@ export function addItems(req, res) {
   createItem(req.body).then(data => res.send(data));
 }
 export function deleteItem(req, res) {
-  removeItem(req.params.id).then(data => res.send(data));
+  removeItem(req.params.id).then(data => res.sendStatus(data));
 }
 export function rating(req, res) {
   addRating(req.body).then(data => res.send(data));
