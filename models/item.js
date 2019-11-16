@@ -9,7 +9,9 @@ const itemSchema = new Schema({
   price: { type: String },
   tags: { type: String },
   rating: { type: Array },
-  averageRating: { type: Number }
+  averageRating: { type: Number },
+  amount: { type: Number, required: true },
+  lastUpdate: { type: String, required: true }
 });
 
 const Item = mongoose.model("Item", itemSchema);

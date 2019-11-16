@@ -1,4 +1,4 @@
-import Item from "../../models/item";
+import Item from "../../models/item.js";
 
 export const createItem = data => {
   const item = new Item({
@@ -8,7 +8,9 @@ export const createItem = data => {
     price: data.price,
     tags: data.tags,
     rating: data.rating,
-    averageRating: data.averageRating
+    averageRating: data.averageRating,
+    amount: data.amount,
+    lastUpdate: Date.now()
   });
   return item.save();
 };
