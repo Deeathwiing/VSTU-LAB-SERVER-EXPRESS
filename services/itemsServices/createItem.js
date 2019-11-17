@@ -10,7 +10,8 @@ export const createItem = data => {
     rating: data.rating,
     averageRating: data.averageRating,
     amount: data.amount,
-    lastUpdate: Date.now()
+    lastUpdate: Date.now(),
+    ratingAmount: data.rating.length
   });
   return item.save();
 };
