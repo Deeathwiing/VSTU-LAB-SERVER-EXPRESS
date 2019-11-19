@@ -78,7 +78,7 @@ CREATE TABLE rating
   itemId INT Not null  UNIQUE,
   constraint rating_items_fk
   foreign key (itemId) references Items ( itemId),
-    picture blob Not null ,
+    value int Not null ,
    constraint rating_users_fk
     foreign key (userId) references Users ( userId)
     ON DELETE No Action
@@ -89,13 +89,14 @@ CREATE TABLE rating
 CREATE TABLE tags
 (
   tagId INT Not null AUTO_INCREMENT UNIQUE Primary key,
-    text varchar(15) Not null 
+    tagText varchar(15) Not null 
 );
 
 CREATE TABLE itemTags
 (
+ Primary Key (tagId,itemId),
   tagId INT Not null  UNIQUE,
-  itemId INT Not null  UNIQUE Primary Key,
+  itemId INT Not null  UNIQUE,
    constraint itemTags_items_fk
    foreign key (itemId) references Items ( itemId),
    constraint itemTags_tags_fk
