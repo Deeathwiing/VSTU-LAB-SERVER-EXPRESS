@@ -1,9 +1,17 @@
-export function authenticationMiddleware() {
-  return function(req, res, next) {
-    console.log(req);
-    if (req.isAuthenticated()) {
+export function authenticationMiddleware(req, res, next) {
+  console.log(req.user);
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.sendStatus(401);
+}
+
+export function authenticationAdminMiddleware(req, res, next) {
+  console.log(req.user);
+  if (req.isAuthenticated()) {
+    if (req.user.administration) {
       return next();
     }
-    res.redirect("/");
-  };
+  }
+  res.sendStatus(401);
 }

@@ -3,8 +3,6 @@ import cryptoJs from "crypto-js";
 import { verifyPassword } from "./verifyPassword";
 
 export const authorization = async data => {
-  console.log("last" + data.user);
-  console.log("last" + data.isAuthenticated());
   const checkLogin = true;
   let admin = false;
 

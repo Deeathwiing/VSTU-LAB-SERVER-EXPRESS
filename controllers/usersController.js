@@ -7,7 +7,7 @@ import { editNames } from "../services/usersServices/editNames";
 import passport from "passport";
 
 export function getUsers(req, res, next) {
-  passport.authenticate("local"), listUsers(req).then(data => res.send(data));
+  listUsers(req).then(data => res.send(data));
 }
 
 export function authuser(req, res, next) {
@@ -21,7 +21,6 @@ export function authuser(req, res, next) {
       return res.redirect("/login");
     }
     req.logIn(user, function(err) {
-      console.log(user);
       if (err) {
         return next(err);
       }

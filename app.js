@@ -10,7 +10,7 @@ import serveStatic from "serve-static";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import morgan from "morgan";
-import "./etc/passport";
+
 import User from "./models/user";
 
 db.setUpConnection();
@@ -25,7 +25,7 @@ app.use(bodyParser());
 app.use(
   session({
     secret: "Its 322",
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 24 * 60 * 60 * 1000, secure: false },
     resave: false,
     saveUninitialized: false
   })
@@ -39,15 +39,7 @@ app.use(passport.initialize());
 
 app.use(passport.session());
 
-passport.serializeUser(function(user, done) {
-  done(null, user.email);
-});
-
-passport.deserializeUser(function(email, done) {
-  User.findOne({ email: username }, function(err, user) {
-    done(err, user);
-  });
-});
+import "./etc/passport";
 
 app.use("/users", usersRouter);
 app.use("/items", itemsRouter);
