@@ -1,36 +1,25 @@
 import User from "../../models/user";
 import cryptoJs from "crypto-js";
+import { verifyPassword } from "./verifyPassword";
 
 export const authorization = async data => {
-  let users = await User.find();
+  console.log("last" + data.user);
+  console.log("last" + data.isAuthenticated());
+  const checkLogin = true;
+  let admin = false;
 
-  const checkLogin = users.some(
-    user =>
-      data.logEmail === user.email &&
-      data.logPass ===
-        JSON.parse(
-          cryptoJs.AES.decrypt(
-            user.password.toString(),
-            "It's easy 322"
-          ).toString(cryptoJs.enc.Utf8)
-        )
-  );
-  const admin = users.some(
-    user =>
-      data.logEmail === user.email &&
-      data.logPass ===
-        JSON.parse(
-          cryptoJs.AES.decrypt(
-            user.password.toString(),
-            "It's easy 322"
-          ).toString(cryptoJs.enc.Utf8)
-        ) &&
+  await User.findOne({ email: data.body.email }, function(err, user) {
+    if (err) return (admin = false);
+    if (
+      verifyPassword(user.password) === data.body.password &&
       user.administration
-  );
+    )
+      return (admin = true);
+  });
   const authUser = {
     admin,
     checkLogin,
-    logEmail: data.logEmail
+    logEmail: data.body.email
   };
 
   return authUser;

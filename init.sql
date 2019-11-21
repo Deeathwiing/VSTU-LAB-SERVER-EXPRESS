@@ -1,106 +1,86 @@
- create database omVapeShop; 
-USE omVapeShop;
-CREATE TABLE Users
+create database om_vape_shop; 
+USE om_vape_shop;
+CREATE TABLE users
 (
-    userId INT Not null AUTO_INCREMENT  UNIQUE,
-    fullName VARCHAR(40)  Not null CHECK(fullName !=''),
-    userPassword varchar(100) Not null CHECK(userPassword !=''),
-    deleteAccountRequest boolean Not null,
+    id INT AUTO_INCREMENT  UNIQUE,
+    user_password varchar(100) Not null CHECK(user_password !=''),
+    delete_account_request boolean Not null,
+    first_name VARCHAR(20) Not null CHECK(first_name !=''),
+    last_name VARCHAR(20) Not null CHECK(last_name !=''),
+	email VARCHAR(40) Not null CHECK(email !=''),
+	user_update TIMESTAMP Default Null, 
+	user_create TIMESTAMP Default Null, 
+    
+    CONSTRAINT users_pk PRIMARY KEY(id)
    
-   
-   CONSTRAINT users_pk PRIMARY KEY(userId)
 );
  
-CREATE TABLE firstNames
+CREATE TABLE products
 (
-  userId INT Not null AUTO_INCREMENT  UNIQUE Primary Key,
-    firstName VARCHAR(20) Not null CHECK(firstName !=''),
-    constraint firstNames_users_fk
-    foreign key (userId) references Users ( userId)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
-
-CREATE TABLE lastNames
-(
- userId INT Not null AUTO_INCREMENT  UNIQUE Primary Key,
-    lastName VARCHAR(20) Not null CHECK(lastName !=''),
-    constraint lastNamess_users_fk
-    foreign key (userId) references Users ( userId)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
-
-CREATE TABLE administration
-(
- userId INT Not null AUTO_INCREMENT  UNIQUE Primary Key,
-    isAdmin boolean Not null ,
-    constraint administration_users_fk
-    foreign key (userId) references Users ( userId)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
-
-CREATE TABLE emails
-(
- userId INT Not null AUTO_INCREMENT  UNIQUE Primary Key,
-    email VARCHAR(40) Not null CHECK(email !=''),
-    constraint emails_users_fk
-    foreign key (userId) references Users ( userId)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
-
-CREATE TABLE Items
-(
-    itemId INT Not null AUTO_INCREMENT UNIQUE,
+    id INT Not null AUTO_INCREMENT UNIQUE,
     price FLOAT(8) not null,
     title varchar(40) not null,
     amount INT not null,
-    description VARCHAR(500),	
-   CONSTRAINT items_pk PRIMARY KEY(itemId)
-);
-
-CREATE TABLE pictures
-(
- itemId INT Not null AUTO_INCREMENT UNIQUE Primary Key,
-    picture blob Not null ,
-    constraint pictures_itemId_fk
-    foreign key (itemId) references Items ( itemId)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
+    product_description VARCHAR(500),	
+	picture blob Not null ,
+    CONSTRAINT products_pk PRIMARY KEY(id)
 );
 
 CREATE TABLE rating
 (
-  Primary Key (userId,itemId),
-  userId INT Not null   UNIQUE,
-  itemId INT Not null  UNIQUE,
-  constraint rating_items_fk
-  foreign key (itemId) references Items ( itemId),
-    value int Not null ,
-   constraint rating_users_fk
-    foreign key (userId) references Users ( userId)
-    ON DELETE No Action
+    id INT Not null AUTO_INCREMENT UNIQUE,
+	Primary Key (id),
+	user_id INT,
+	item_id INT Not null,
+    rating_value int,
+    
+	constraint rating_products_fk
+	foreign key (item_id) references products ( id )
+    ON DELETE cascade
+    ON UPDATE Cascade,
+    
+	constraint rating_users_fk
+    foreign key (user_id) references users ( id )
+    ON DELETE Set Null
     ON UPDATE Cascade
 );
 
 
 CREATE TABLE tags
 (
-  tagId INT Not null AUTO_INCREMENT UNIQUE Primary key,
-    tagText varchar(15) Not null 
+	id INT Not null AUTO_INCREMENT UNIQUE,
+	tag_id INT Not null UNIQUE Primary key,
+    tag_text varchar(15) Not null 
 );
 
-CREATE TABLE itemTags
+CREATE TABLE products_tags
 (
- Primary Key (tagId,itemId),
-  tagId INT Not null  UNIQUE,
-  itemId INT Not null  UNIQUE,
-   constraint itemTags_items_fk
-   foreign key (itemId) references Items ( itemId),
-   constraint itemTags_tags_fk
-    foreign key (tagId) references tags ( tagId)
-    ON DELETE No Action
+	id INT Not null AUTO_INCREMENT UNIQUE,
+	Primary Key (tag_id,product_id),
+	tag_id INT Not null  UNIQUE,
+	product_id INT Not null  UNIQUE,
+    
+	constraint product_tags_product_fk
+	foreign key (product_id) references products ( id)
+    ON DELETE Cascade
+    ON UPDATE Cascade,
+    
+	constraint product_tags_tag_fk
+	foreign key (tag_id) references tags ( tag_id)
+    ON DELETE Cascade
     ON UPDATE Cascade
+);
+
+CREATE TABLE roles
+(
+    id INT Not null AUTO_INCREMENT UNIQUE,
+	Primary Key (user_id),
+	user_id INT,
+    user_role varchar(15),
+    
+	constraint roles_users_fk
+    foreign key (user_id) references users ( id )
+    ON DELETE Cascade
+    ON UPDATE Cascade
+   
 );
