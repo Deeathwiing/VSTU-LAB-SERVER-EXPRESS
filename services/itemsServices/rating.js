@@ -1,18 +1,18 @@
 import Item from "../../models/item";
 
-export const addRating = async data => {
-  Item.findById(data.itemId).then(foundItem => {
-    const { user } = data;
+export const addRating = async req => {
+  Item.findById(req.body.itemId).then(foundItem => {
+    const user = req.user;
     const personalRating = {
-      user: user.logEmail,
-      ratingValue: data.ratingValue
+      user: user.email,
+      ratingValue: req.body.ratingValue
     };
     const singleRating = foundItem.rating;
 
     let checkRating = false;
     if (singleRating[0]) {
       singleRating.forEach((element, i, rating) => {
-        if (element.user === user.logEmail) {
+        if (element.user === user.email) {
           rating[i] = personalRating;
           checkRating = true;
         }
@@ -37,7 +37,7 @@ export const addRating = async data => {
     foundItem.averageRating = nextAverageRating;
 
     return Item.updateOne(
-      { _id: data.itemId },
+      { _id: req.body.itemId },
       { rating: foundItem.rating, averageRating: foundItem.averageRating }
     );
   });

@@ -1,9 +1,9 @@
 import User from "../../models/user";
 
-export const editNames = data => {
+export const editNames = req => {
   return User.updateOne(
-    { email: data.user.logEmail },
-    { firstName: data.firstName, lastName: data.lastName }
+    { email: req.user.logEmail },
+    { firstName: req.body.firstName, lastName: req.body.lastName }
   )
     .then(() => 201)
     .catch(() => 409);

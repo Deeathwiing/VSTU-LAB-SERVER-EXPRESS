@@ -44,9 +44,9 @@ export function removeUser(req, res) {
 }
 
 export function removeRequest(req, res) {
-  addRemoveRequest(req.body).then(data => res.sendStatus(data));
+  addRemoveRequest(req).then(status => res.sendStatus(status));
 }
 
 export function editprofile(req, res) {
-  editNames(req.body).then(data => res.sendStatus(data));
+  editNames(req).then(data => res.sendStatus(data));
 }

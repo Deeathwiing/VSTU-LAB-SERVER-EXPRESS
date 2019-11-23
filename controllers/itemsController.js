@@ -21,5 +21,5 @@ export function deleteItem(req, res) {
   removeItem(req.params.id).then(data => res.sendStatus(data));
 }
 export function rating(req, res) {
-  addRating(req.body).then(data => res.send(data));
+  addRating(req).then(data => res.send(data));
 }
