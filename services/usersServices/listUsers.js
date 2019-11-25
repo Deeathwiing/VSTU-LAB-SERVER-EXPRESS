@@ -1,6 +1,6 @@
-import User from "../../models/user";
+import { models } from "../../init/dataBaseUtils";
 
 export const listUsers = req => {
-  console.log(req.isAuthenticated());
-  return User.find();
+  console.log("Здесь");
+  return models.User.findAll();
 };

@@ -1,7 +1,7 @@
 import express from "express";
 
 import { serverPort } from "./etc/config.json";
-import * as db from "./repository/dataBaseUtils";
+import * as db from "./init/dataBaseUtils";
 import usersRouter from "./routes/usersRouter";
 import itemsRouter from "./routes/itemsRouter";
 import { appMiddlewares } from "./middlewares/appMiddlewares";

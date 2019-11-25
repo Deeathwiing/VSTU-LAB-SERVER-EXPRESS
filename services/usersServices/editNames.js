@@ -1,10 +1,10 @@
-import User from "../../models/user";
+import { models } from "../../init/dataBaseUtils";
 
 export const editNames = req => {
-  return User.updateOne(
-    { email: req.user.logEmail },
-    { firstName: req.body.firstName, lastName: req.body.lastName }
+  return models.User.update(
+    { firstName: req.body.firstName, lastName: req.body.lastName },
+    { where: { email: req.user.email } }
   )
     .then(() => 201)
-    .catch(() => 409);
+    .catch(err => 409);
 };

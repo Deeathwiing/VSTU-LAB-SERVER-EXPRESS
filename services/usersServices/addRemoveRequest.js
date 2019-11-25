@@ -1,9 +1,13 @@
-import User from "../../models/user";
+import { models } from "../../init/dataBaseUtils";
 
 export const removeRequest = req => {
-  return User.updateOne(
-    { email: req.user.email },
-    { deleteAccountRequest: true }
+  return models.User.update(
+    { deleteAccountRequest: true },
+    {
+      where: {
+        email: req.user.email
+      }
+    }
   )
     .then(() => 201)
     .catch(() => 409);
