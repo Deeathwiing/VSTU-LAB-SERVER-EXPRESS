@@ -1,5 +1,4 @@
 import express from "express";
-
 import { serverPort } from "./etc/config.json";
 import * as db from "./init/dataBaseUtils";
 import usersRouter from "./routes/usersRouter";
@@ -12,7 +11,7 @@ var app = express();
 
 appMiddlewares(app);
 
-import "./etc/passport";
+import "./middlewares/passport";
 
 app.use("/users", usersRouter);
 app.use("/items", itemsRouter);
