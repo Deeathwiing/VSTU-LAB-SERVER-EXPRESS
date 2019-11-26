@@ -1,6 +1,13 @@
-import Item from "../../models/item";
+import { models } from "../../init/dataBaseUtils";
 
-export const addRating = async req => {
+//import Item from "../../models/item";
+
+export const addRating = req => {
+  return models.Rating.addRating(req);
+};
+
+/*
+
   Item.findById(req.body.itemId).then(foundItem => {
     const user = req.user;
     const personalRating = {
@@ -41,4 +48,10 @@ export const addRating = async req => {
       { rating: foundItem.rating, averageRating: foundItem.averageRating }
     );
   });
-};
+
+
+
+
+
+
+*/

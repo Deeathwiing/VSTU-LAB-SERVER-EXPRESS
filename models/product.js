@@ -11,7 +11,7 @@ export const ProductModel = (sequelize, Sequelize) => {
       type: Sequelize.INTEGER
     },
     description: {
-      type: Sequelize.BOOLEAN
+      type: Sequelize.STRING
     },
     picture: {
       type: Sequelize.BLOB

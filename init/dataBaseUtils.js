@@ -4,6 +4,7 @@ import Sequelize from "sequelize";
 import "./models";
 import { initModels } from "./models";
 import { initRelations } from "./relations.js";
+import { initRep } from "./repositories.js";
 
 export const sequelize = new Sequelize("omVapeShop", "root", "12345678", {
   host: "localhost",
@@ -12,6 +13,7 @@ export const sequelize = new Sequelize("omVapeShop", "root", "12345678", {
 
 export const models = initModels(sequelize, Sequelize);
 initRelations(models);
+initRep(models);
 
 export const setUpConnection = () => {
   sequelize

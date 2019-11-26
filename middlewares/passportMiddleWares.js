@@ -1,4 +1,4 @@
-import { verifyRole } from "../services/usersServices/verifyRole";
+import { models } from "../init/dataBaseUtils";
 
 export function authenticationMiddleware(req, res, next) {
   if (req.isAuthenticated()) {
@@ -9,7 +9,7 @@ export function authenticationMiddleware(req, res, next) {
 
 export function authenticationAdminMiddleware(req, res, next) {
   if (req.isAuthenticated()) {
-    if (verifyRole(req.user.id, "administration")) {
+    if (models.User.verifyRole(req.user.id, "administration")) {
       return next();
     }
   }
