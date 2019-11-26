@@ -1,7 +1,5 @@
-import User from "../../models/user";
+import { models } from "../../init/dataBaseUtils";
 
 export const deleteUser = id => {
-  return User.findByIdAndDelete(id)
-    .then(() => 201)
-    .catch(() => 409);
+  return models.User.deleteUser(id);
 };

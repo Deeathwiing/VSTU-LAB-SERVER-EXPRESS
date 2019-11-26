@@ -6,7 +6,7 @@ import { removeRequest as addRemoveRequest } from "../services/usersServices/add
 import { editNames } from "../services/usersServices/editNames";
 import passport from "passport";
 
-export function getUsers(req, res, next) {
+export function getUsers(req, res) {
   listUsers(req).then(data => res.send(data));
 }
 

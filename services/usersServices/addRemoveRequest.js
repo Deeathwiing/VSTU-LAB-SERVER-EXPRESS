@@ -1,10 +1,5 @@
-import User from "../../models/user";
+import { models } from "../../init/dataBaseUtils";
 
 export const removeRequest = req => {
-  return User.updateOne(
-    { email: req.user.email },
-    { deleteAccountRequest: true }
-  )
-    .then(() => 201)
-    .catch(() => 409);
+  return models.User.addRemoveRequest(req.user.id);
 };

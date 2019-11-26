@@ -1,5 +1,6 @@
+import { models } from "../init/dataBaseUtils";
+
 export function authenticationMiddleware(req, res, next) {
-  console.log(req.user);
   if (req.isAuthenticated()) {
     return next();
   }
@@ -7,9 +8,8 @@ export function authenticationMiddleware(req, res, next) {
 }
 
 export function authenticationAdminMiddleware(req, res, next) {
-  console.log(req.user);
   if (req.isAuthenticated()) {
-    if (req.user.administration) {
+    if (models.User.verifyRole(req.user.id, "administration")) {
       return next();
     }
   }

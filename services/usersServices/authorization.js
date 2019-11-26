@@ -1,23 +1,15 @@
-import User from "../../models/user";
-import cryptoJs from "crypto-js";
-import { verifyPassword } from "./verifyPassword";
+import { models } from "../../init/dataBaseUtils";
 
-export const authorization = async data => {
+export const authorization = async req => {
   const checkLogin = true;
   let admin = false;
 
-  await User.findOne({ email: data.body.email }, function(err, user) {
-    if (err) return (admin = false);
-    if (
-      verifyPassword(user.password) === data.body.password &&
-      user.administration
-    )
-      return (admin = true);
-  });
+  admin = await models.User.verifyRole(req.user.id, "administration");
+
   const authUser = {
     admin,
     checkLogin,
-    logEmail: data.body.email
+    logEmail: req.user.email
   };
 
   return authUser;

@@ -1,10 +1,9 @@
-import User from "../../models/user";
+import { models } from "../../init/dataBaseUtils";
 
 export const editNames = req => {
-  return User.updateOne(
-    { email: req.user.logEmail },
-    { firstName: req.body.firstName, lastName: req.body.lastName }
-  )
-    .then(() => 201)
-    .catch(() => 409);
+  return models.User.editNames(
+    req.body.firstName,
+    req.body.lastName,
+    req.user.email
+  );
 };

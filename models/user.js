@@ -11,6 +11,30 @@ const userSchema = new Schema({
   password: { type: String, required: true }
 });
 
-const User = mongoose.model("User", userSchema);
+export const User = mongoose.model("User", userSchema);
 
-export default User;
+export const UserModel = (sequelize, Sequelize) => {
+  const User = sequelize.define("user", {
+    firstName: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    lastName: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    email: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    deleteAccountRequest: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    }
+  });
+  return User;
+};

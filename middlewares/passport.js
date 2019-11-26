@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
 import { verifyPassword } from "../services/usersServices/verifyPassword";
-import User from "../models/user";
+import { models } from "../init/dataBaseUtils";
 
 passport.use(
   new Strategy(
@@ -10,7 +10,9 @@ passport.use(
       passwordField: "password"
     },
     function(username, password, done) {
-      User.findOne({ email: username }, function(err, user) {
+      models.User.findOne({ where: { email: username } }).then((user, err) => {
+        user = user.dataValues;
+
         if (err) {
           return done(err);
         }
@@ -20,7 +22,7 @@ passport.use(
         if (password != verifyPassword(user.password)) {
           return done(null, false, { message: "Incorrect password" });
         }
-        console.log("прошло");
+
         return done(null, user);
       });
     }
@@ -28,13 +30,11 @@ passport.use(
 );
 
 passport.serializeUser(function(user, done) {
-  console.log("serial" + user);
-  done(null, user.email);
+  done(null, user.id);
 });
 
-passport.deserializeUser(function(email, done) {
-  console.log("не попадает даже");
-  User.findOne({ email: email }, function(err, user) {
+passport.deserializeUser(function(id, done) {
+  models.User.findOne({ where: { id: id } }).then(function(user, err) {
     done(err, user);
   });
 });
