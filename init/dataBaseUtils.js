@@ -13,7 +13,7 @@ export const sequelize = new Sequelize("omVapeShop", "root", "12345678", {
 
 export const models = initModels(sequelize, Sequelize);
 initRelations(models);
-initRep(models);
+initRep(models, sequelize);
 
 export const setUpConnection = () => {
   sequelize
