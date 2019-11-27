@@ -1,16 +1,19 @@
-import { listUsers } from "../services/usersServices/listUsers";
-import { authorization } from "../services/usersServices/authorization";
-import { createUser } from "../services/usersServices/createUser";
-import { deleteUser } from "../services/usersServices/deleteUser";
-import { removeRequest as addRemoveRequest } from "../services/usersServices/addRemoveRequest";
-import { editNames } from "../services/usersServices/editNames";
+import {
+  listUsers,
+  authorization,
+  createUser,
+  deleteUser,
+  removeRequest as addRemoveRequest,
+  editNames
+} from "../services/users";
+
 import passport from "passport";
 
-export function getUsers(req, res) {
+function getUsers(req, res) {
   listUsers(req).then(data => res.send(data));
 }
 
-export function authuser(req, res, next) {
+function authuser(req, res, next) {
   req.email = req.body.email;
   req.password = req.body.password;
   passport.authenticate("local", function(err, user, info) {
@@ -31,22 +34,24 @@ export function authuser(req, res, next) {
   })(req, res, next);
 }
 
-export function addUser(req, res) {
+function addUser(req, res) {
   createUser(req.body).then(data => {
     return res.sendStatus(data);
   });
 }
 
-export function removeUser(req, res) {
+function removeUser(req, res) {
   deleteUser(req.params.id).then(data => {
     return res.sendStatus(data);
   });
 }
 
-export function removeRequest(req, res) {
+function removeRequest(req, res) {
   addRemoveRequest(req).then(status => res.sendStatus(status));
 }
 
-export function editprofile(req, res) {
+function editprofile(req, res) {
   editNames(req).then(data => res.sendStatus(data));
 }
+
+export { editprofile, removeRequest, removeUser, addUser, authuser, getUsers };

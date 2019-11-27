@@ -5,7 +5,7 @@ import usersRouter from "./routes/usersRouter";
 import { appMiddlewares } from "./middlewares/appMiddlewares";
 import productsRouter from "./routes/productsRouter.js";
 
-import Rating from "./bugs";
+//import Rating from "./bugs";
 
 db.setUpConnection();
 

@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
-import { verifyPassword } from "../services/usersServices/verifyPassword";
+import { verifyPassword } from "../services/users";
 import { models } from "../init/dataBaseUtils";
 
 passport.use(

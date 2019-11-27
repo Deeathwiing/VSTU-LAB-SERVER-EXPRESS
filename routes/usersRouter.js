@@ -1,5 +1,5 @@
 import express from "express";
-import * as usersController from "../controllers/usersController";
+import * as usersController from "../controllers/users";
 import {
   authenticationMiddleware as checkAuth,
   authenticationAdminMiddleware as checkAdmin

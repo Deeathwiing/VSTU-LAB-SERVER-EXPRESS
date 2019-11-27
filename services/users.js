@@ -1,0 +1,58 @@
+import cryptoJs from "crypto-js";
+import { models } from "../init/dataBaseUtils";
+
+const removeRequest = req => {
+  return models.User.addRemoveRequest(req.user.id);
+};
+
+const verifyPassword = pass =>
+  JSON.parse(
+    cryptoJs.AES.decrypt(pass.toString(), "It's easy 322").toString(
+      cryptoJs.enc.Utf8
+    )
+  );
+const listUsers = req => {
+  console.log("Здесь");
+  return models.User.findAll({ include: [{ model: models.Role }] });
+};
+
+const authorization = async req => {
+  const checkLogin = true;
+  let admin = false;
+
+  admin = await models.User.verifyRole(req.user.id, "administration");
+
+  const authUser = {
+    admin,
+    checkLogin,
+    logEmail: req.user.email
+  };
+
+  return authUser;
+};
+
+const editNames = req => {
+  return models.User.editNames(
+    req.body.firstName,
+    req.body.lastName,
+    req.user.email
+  );
+};
+
+const deleteUser = id => {
+  return models.User.deleteUser(id);
+};
+
+const createUser = data => {
+  return models.User.createUser(data);
+};
+
+export {
+  createUser,
+  deleteUser,
+  editNames,
+  authorization,
+  listUsers,
+  verifyPassword,
+  removeRequest
+};
