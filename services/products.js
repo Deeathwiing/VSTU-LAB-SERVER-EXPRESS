@@ -1,4 +1,4 @@
-import { models } from "../../init/dataBaseUtils";
+import { models } from "../init/dataBaseUtils";
 
 const createProduct = data => {
   return models.Product.createProduct(data);

@@ -1,8 +1,10 @@
-import { createProduct } from "../services/ProductsServices/createProduct.js";
-import { listProducts } from "../services/ProductsServices/getProducts.js";
-import { removeProduct } from "../services/ProductsServices/deleteProduct.js";
-import { addRating } from "../services/ProductsServices/rating.js";
-import { updateProductService } from "../services/ProductsServices/updateProductService.js";
+import {
+  createProduct,
+  listProducts,
+  removeProduct,
+  addRating,
+  updateProductService
+} from "../services/products";
 
 function getProducts(req, res) {
   listProducts(req.params.amount).then(data => {
