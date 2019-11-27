@@ -58,7 +58,7 @@ export const initUserRep = models => {
   };
 
   models.User.deleteUser = id => {
-    return models.User.destroy({ where: { id } })
+    return models.User.destroy({ where: { id, deleteAccountRequest: true } })
       .then(() => 201)
       .catch(() => 409);
   };
