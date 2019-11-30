@@ -5,10 +5,7 @@ export const initRatingRep = models => {
     const user = req.user;
     const userId = Number(user.id);
     const ratingValue = Number(req.body.ratingValue);
-    return models.Rating.upsert(
-      { ratingValue, userId, productId },
-      { fields: [userId, productId] }
-    )
+    return models.Rating.upsert({ ratingValue, userId, productId })
       .then(() => 201)
       .catch(() => 409);
   };
