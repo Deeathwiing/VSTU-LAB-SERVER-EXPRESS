@@ -1,6 +1,6 @@
 import cryptoJs from "crypto-js";
 
-export const initUserRep = models => {
+export const initUserRep = (models, sequelize) => {
   models.User.getAll = () => {
     return models.User.findAll({ include: [{ model: models.Role }] });
   };
@@ -71,12 +71,18 @@ export const initUserRep = models => {
   };
 
   models.User.deleteRoleAdmin = async id => {
-    console.log(id);
-    const user = await models.User.findOne({ where: { id } });
-    const role = await models.Role.findOne({
-      where: { userRole: "user" }
-    });
-    user.setRoles(role);
+    const amount = await sequelize
+      .query(
+        `Select count(roleId) from userroles Where roleId=(Select id from roles Where userRole="administration")`
+      )
+      .then(count => count);
+    if (amount[0][0]["count(roleId)"] > 1) {
+      const user = await models.User.findOne({ where: { id } });
+      const role = await models.Role.findOne({
+        where: { userRole: "user" }
+      });
+      return user.setRoles(role);
+    } else return new Error("Last admin");
   };
 
   models.User.deleteUser = id => {

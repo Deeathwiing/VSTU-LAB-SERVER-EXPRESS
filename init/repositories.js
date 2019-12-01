@@ -4,6 +4,6 @@ import { initRatingRep } from "../repository/ratingRep";
 
 export const initRep = (models, sequelize) => {
   initProductRep(models, sequelize);
-  initUserRep(models);
+  initUserRep(models, sequelize);
   initRatingRep(models);
 };
