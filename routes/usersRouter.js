@@ -13,5 +13,7 @@ usersRouter.use("/delete/:id", checkAdmin, usersController.removeUser);
 usersRouter.use("/removerequest", checkAuth, usersController.removeRequest);
 usersRouter.use("/editprofile", checkAuth, usersController.editprofile);
 usersRouter.use("/authuser", usersController.authuser);
+usersRouter.use("/addadmin/:id", checkAdmin, usersController.addAdmin);
+usersRouter.use("/deleteadmin/:id", checkAdmin, usersController.deleteAdmin);
 
 export default usersRouter;

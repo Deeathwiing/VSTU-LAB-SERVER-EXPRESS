@@ -57,6 +57,24 @@ export const initUserRep = models => {
     } else return 409;
   };
 
+  models.User.addRoleAdmin = async id => {
+    console.log(id);
+    const user = await models.User.findOne({ where: { id } });
+    const role = await models.Role.findOne({
+      where: { userRole: "administration" }
+    });
+    user.setRoles(role);
+  };
+
+  models.User.deleteRoleAdmin = async id => {
+    console.log(id);
+    const user = await models.User.findOne({ where: { id } });
+    const role = await models.Role.findOne({
+      where: { userRole: "user" }
+    });
+    user.setRoles(role);
+  };
+
   models.User.deleteUser = id => {
     return models.User.destroy({ where: { id, deleteAccountRequest: true } })
       .then(() => 201)

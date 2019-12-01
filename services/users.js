@@ -47,6 +47,17 @@ const createUser = data => {
   return models.User.createUser(data);
 };
 
+const addAdminService = id => {
+  return models.User.addRoleAdmin(id)
+    .then(() => 201)
+    .catch(() => 409);
+};
+const deleteAdminService = id => {
+  return models.User.deleteRoleAdmin(id)
+    .then(() => 201)
+    .catch(() => 409);
+};
+
 export {
   createUser,
   deleteUser,
@@ -54,5 +65,7 @@ export {
   authorization,
   listUsers,
   verifyPassword,
-  removeRequest
+  removeRequest,
+  addAdminService,
+  deleteAdminService
 };

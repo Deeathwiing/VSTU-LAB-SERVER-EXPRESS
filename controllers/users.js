@@ -4,7 +4,9 @@ import {
   createUser,
   deleteUser,
   removeRequest as addRemoveRequest,
-  editNames
+  editNames,
+  addAdminService,
+  deleteAdminService
 } from "../services/users";
 
 import passport from "passport";
@@ -54,4 +56,21 @@ function editprofile(req, res) {
   editNames(req).then(data => res.sendStatus(data));
 }
 
-export { editprofile, removeRequest, removeUser, addUser, authuser, getUsers };
+function addAdmin(req, res) {
+  addAdminService(req.params.id).then(data => res.sendStatus(data));
+}
+
+function deleteAdmin(req, res) {
+  deleteAdminService(req.params.id).then(data => res.sendStatus(data));
+}
+
+export {
+  editprofile,
+  removeRequest,
+  removeUser,
+  addUser,
+  authuser,
+  getUsers,
+  addAdmin,
+  deleteAdmin
+};
