@@ -12,8 +12,7 @@ const verifyPassword = pass =>
     )
   );
 const listUsers = req => {
-  console.log("Здесь");
-  return models.User.findAll({ include: [{ model: models.Role }] });
+  return models.User.getAll();
 };
 
 const authorization = async req => {

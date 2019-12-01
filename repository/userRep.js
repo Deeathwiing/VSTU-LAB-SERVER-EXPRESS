@@ -1,6 +1,10 @@
 import cryptoJs from "crypto-js";
 
 export const initUserRep = models => {
+  models.User.getAll = () => {
+    return models.User.findAll({ include: [{ model: models.Role }] });
+  };
+
   models.User.addRemoveRequest = id => {
     return models.User.update(
       { deleteAccountRequest: true },
