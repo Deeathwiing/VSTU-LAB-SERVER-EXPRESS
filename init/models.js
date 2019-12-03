@@ -1,10 +1,10 @@
-import { ProductModel } from "../models/product";
-import { TagModel } from "../models/tag";
-import { UserModel } from "../models/user";
-import { RatingModel } from "../models/rating";
-import { RoleModel } from "../models/role";
+const { ProductModel } = require("../models/product");
+const { TagModel } = require("../models/tag");
+const { UserModel } = require("../models/user");
+const { RatingModel } = require("../models/rating");
+const { RoleModel } = require("../models/role");
 
-export let initModels = (sequelize, Sequelize) => {
+const initModels = (sequelize, Sequelize) => {
   const Product = ProductModel(sequelize, Sequelize);
   const Tag = TagModel(sequelize, Sequelize);
   const User = UserModel(sequelize, Sequelize);
@@ -13,3 +13,4 @@ export let initModels = (sequelize, Sequelize) => {
 
   return { Product, Tag, User, Rating, Role };
 };
+module.exports = { initModels };

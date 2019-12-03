@@ -1,4 +1,4 @@
-import { models } from "../init/dataBaseUtils";
+const { models } = require("../init/dataBaseUtils");
 
 const createProduct = data => {
   return models.Product.createProduct(data);
@@ -21,7 +21,7 @@ const updateProductService = data => {
   return models.Product.updateProduct(data);
 };
 
-export {
+module.exports = {
   updateProductService,
   addRating,
   listProducts,

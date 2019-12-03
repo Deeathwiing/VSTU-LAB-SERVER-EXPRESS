@@ -1,4 +1,4 @@
-export const initProductRep = (models, sequelize) => {
+const initProductRep = (models, sequelize) => {
   models.Product.findAllPagination = async amount => {
     let offset = Number(amount);
     console.log(offset);
@@ -69,6 +69,7 @@ export const initProductRep = (models, sequelize) => {
   };
 };
 
+module.exports = { initProductRep };
 /*
  include: [
         {

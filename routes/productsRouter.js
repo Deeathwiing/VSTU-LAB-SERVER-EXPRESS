@@ -1,16 +1,34 @@
-import express from "express";
-import * as productsController from "../controllers/products.js";
-import {
-  authenticationMiddleware as checkAuth,
-  authenticationAdminMiddleware as checkAdmin
-} from "../middlewares/passportMiddleWares";
+const express = require("express");
+const productsController = require("../controllers/products.js");
+const {
+  authenticationMiddleware
+} = require("../middlewares/passportMiddleWares");
+const {
+  authenticationAdminMiddleware
+} = require("../middlewares/passportMiddleWares");
 
 const productsRouter = express.Router();
 
 productsRouter.use("/getitems/:amount", productsController.getProducts);
-productsRouter.use("/create", checkAdmin, productsController.addProduct);
-productsRouter.use("/update", checkAdmin, productsController.updateProduct);
-productsRouter.use("/delete/:id", checkAdmin, productsController.deleteProduct);
-productsRouter.use("/rating", checkAuth, productsController.rating);
+productsRouter.use(
+  "/create",
+  authenticationAdminMiddleware,
+  productsController.addProduct
+);
+productsRouter.use(
+  "/update",
+  authenticationAdminMiddleware,
+  productsController.updateProduct
+);
+productsRouter.use(
+  "/delete/:id",
+  authenticationAdminMiddleware,
+  productsController.deleteProduct
+);
+productsRouter.use(
+  "/rating",
+  authenticationMiddleware,
+  productsController.rating
+);
 
-export default productsRouter;
+module.exports = productsRouter;

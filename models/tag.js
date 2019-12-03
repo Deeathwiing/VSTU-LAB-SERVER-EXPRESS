@@ -1,4 +1,4 @@
-export const TagModel = (sequelize, Sequelize) => {
+const TagModel = (sequelize, Sequelize) => {
   const Tag = sequelize.define("tag", {
     text: {
       type: Sequelize.STRING,
@@ -7,3 +7,5 @@ export const TagModel = (sequelize, Sequelize) => {
   });
   return Tag;
 };
+
+module.exports = { TagModel };

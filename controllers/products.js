@@ -1,10 +1,10 @@
-import {
+const {
   createProduct,
   listProducts,
   removeProduct,
   addRating,
   updateProductService
-} from "../services/products";
+} = require("../services/products");
 
 function getProducts(req, res) {
   listProducts(req.params.amount).then(data => {
@@ -26,4 +26,10 @@ function rating(req, res) {
   addRating(req).then(data => res.send(data));
 }
 
-export { rating, deleteProduct, updateProduct, addProduct, getProducts };
+module.exports = {
+  rating,
+  deleteProduct,
+  updateProduct,
+  addProduct,
+  getProducts
+};

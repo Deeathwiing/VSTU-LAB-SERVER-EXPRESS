@@ -1,4 +1,4 @@
-export const ProductModel = (sequelize, Sequelize) => {
+const ProductModel = (sequelize, Sequelize) => {
   const Product = sequelize.define("product", {
     price: {
       type: Sequelize.FLOAT
@@ -19,3 +19,4 @@ export const ProductModel = (sequelize, Sequelize) => {
   });
   return Product;
 };
+module.exports = { ProductModel };

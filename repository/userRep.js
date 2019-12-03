@@ -1,6 +1,6 @@
-import cryptoJs from "crypto-js";
+const cryptoJs = require("crypto-js");
 
-export const initUserRep = (models, sequelize) => {
+const initUserRep = (models, sequelize) => {
   models.User.getAll = () => {
     return models.User.findAll({ include: [{ model: models.Role }] });
   };
@@ -97,3 +97,5 @@ export const initUserRep = (models, sequelize) => {
       .catch(() => 409);
   };
 };
+
+module.exports = { initUserRep };

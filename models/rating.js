@@ -1,4 +1,4 @@
-export const RatingModel = (sequelize, Sequelize) => {
+const RatingModel = (sequelize, Sequelize) => {
   const Rating = sequelize.define("rating", {
     ratingValue: {
       type: Sequelize.INTEGER
@@ -16,3 +16,4 @@ export const RatingModel = (sequelize, Sequelize) => {
   });
   return Rating;
 };
+module.exports = { RatingModel };

@@ -1,13 +1,13 @@
-import { models } from "../init/dataBaseUtils";
+const { models } = require("../init/dataBaseUtils");
 
-export function authenticationMiddleware(req, res, next) {
+function authenticationMiddleware(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
   res.sendStatus(401);
 }
 
-export function authenticationAdminMiddleware(req, res, next) {
+function authenticationAdminMiddleware(req, res, next) {
   if (req.isAuthenticated()) {
     if (models.User.verifyRole(req.user.id, "administration")) {
       return next();
@@ -15,3 +15,4 @@ export function authenticationAdminMiddleware(req, res, next) {
   }
   res.sendStatus(401);
 }
+module.exports = { authenticationAdminMiddleware, authenticationMiddleware };

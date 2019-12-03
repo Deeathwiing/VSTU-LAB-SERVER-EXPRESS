@@ -1,4 +1,4 @@
-export const initRelations = models => {
+const initRelations = models => {
   models.Product.belongsToMany(models.Tag, { through: "ProductTag" });
   models.Tag.belongsToMany(models.Product, { through: "ProductTag" });
   models.User.belongsToMany(models.Role, { through: "UserRoles" });
@@ -8,3 +8,4 @@ export const initRelations = models => {
   models.Rating.belongsTo(models.Product);
   models.Rating.belongsTo(models.User);
 };
+module.exports = { initRelations };

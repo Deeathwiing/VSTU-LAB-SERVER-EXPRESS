@@ -1,12 +1,12 @@
-import serveStatic from "serve-static";
-import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
-import session from "express-session";
-import morgan from "morgan";
-import passport from "passport";
-import cors from "cors";
+const serveStatic = require("serve-static");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const session = require("express-session");
+const morgan = require("morgan");
+const passport = require("passport");
+const cors = require("cors");
 
-export const appMiddlewares = app => {
+const appMiddleWares = app => {
   app.use(serveStatic("public"));
 
   app.use(cookieParser());
@@ -29,3 +29,5 @@ export const appMiddlewares = app => {
 
   app.use(passport.session());
 };
+
+module.exports = { appMiddleWares };

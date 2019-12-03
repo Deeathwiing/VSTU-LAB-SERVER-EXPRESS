@@ -1,9 +1,10 @@
-import { initProductRep } from "../repository/productRep";
-import { initUserRep } from "../repository/userRep";
-import { initRatingRep } from "../repository/ratingRep";
+const { initProductRep } = require("../repository/productRep");
+const { initUserRep } = require("../repository/userRep");
+const { initRatingRep } = require("../repository/ratingRep");
 
-export const initRep = (models, sequelize) => {
+const initRep = (models, sequelize) => {
   initProductRep(models, sequelize);
   initUserRep(models, sequelize);
   initRatingRep(models);
 };
+module.exports = { initRep };

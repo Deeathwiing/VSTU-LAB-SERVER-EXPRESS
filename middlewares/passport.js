@@ -1,7 +1,7 @@
-import passport from "passport";
-import { Strategy } from "passport-local";
-import { verifyPassword } from "../services/users";
-import { models } from "../init/dataBaseUtils";
+const passport = require("passport");
+const { Strategy } = require("passport-local");
+const { verifyPassword } = require("../services/users");
+const { models } = require("../init/dataBaseUtils");
 
 passport.use(
   new Strategy(

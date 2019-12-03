@@ -1,19 +1,43 @@
-import express from "express";
-import * as usersController from "../controllers/users";
-import {
-  authenticationMiddleware as checkAuth,
-  authenticationAdminMiddleware as checkAdmin
-} from "../middlewares/passportMiddleWares";
+const express = require("express");
+const usersController = require("../controllers/users");
+const {
+  authenticationMiddleware,
+  authenticationAdminMiddleware
+} = require("../middlewares/passportMiddleWares");
 
 const usersRouter = express.Router();
 
-usersRouter.use("/getusers", checkAdmin, usersController.getUsers);
+usersRouter.use(
+  "/getusers",
+  authenticationAdminMiddleware,
+  usersController.getUsers
+);
 usersRouter.use("/create", usersController.addUser);
-usersRouter.use("/delete/:id", checkAdmin, usersController.removeUser);
-usersRouter.use("/removerequest", checkAuth, usersController.removeRequest);
-usersRouter.use("/editprofile", checkAuth, usersController.editprofile);
+usersRouter.use(
+  "/delete/:id",
+  authenticationAdminMiddleware,
+  usersController.removeUser
+);
+usersRouter.use(
+  "/removerequest",
+  authenticationMiddleware,
+  usersController.removeRequest
+);
+usersRouter.use(
+  "/editprofile",
+  authenticationMiddleware,
+  usersController.editprofile
+);
 usersRouter.use("/authuser", usersController.authuser);
-usersRouter.use("/addadmin/:id", checkAdmin, usersController.addAdmin);
-usersRouter.use("/deleteadmin/:id", checkAdmin, usersController.deleteAdmin);
+usersRouter.use(
+  "/addadmin/:id",
+  authenticationAdminMiddleware,
+  usersController.addAdmin
+);
+usersRouter.use(
+  "/deleteadmin/:id",
+  authenticationAdminMiddleware,
+  usersController.deleteAdmin
+);
 
-export default usersRouter;
+module.exports = usersRouter;

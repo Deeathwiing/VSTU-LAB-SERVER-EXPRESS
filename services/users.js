@@ -1,7 +1,7 @@
-import cryptoJs from "crypto-js";
-import { models } from "../init/dataBaseUtils";
+const cryptoJs = require("crypto-js");
+const { models } = require("../init/dataBaseUtils");
 
-const removeRequest = req => {
+const addRemoveRequest = req => {
   return models.User.addRemoveRequest(req.user.id);
 };
 
@@ -57,14 +57,14 @@ const deleteAdminService = id => {
     .catch(() => 409);
 };
 
-export {
+module.exports = {
   createUser,
   deleteUser,
   editNames,
   authorization,
   listUsers,
   verifyPassword,
-  removeRequest,
+  addRemoveRequest,
   addAdminService,
   deleteAdminService
 };

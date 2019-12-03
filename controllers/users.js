@@ -1,15 +1,15 @@
-import {
+const {
   listUsers,
   authorization,
   createUser,
   deleteUser,
-  removeRequest as addRemoveRequest,
+  addRemoveRequest,
   editNames,
   addAdminService,
   deleteAdminService
-} from "../services/users";
+} = require("../services/users");
 
-import passport from "passport";
+const passport = require("passport");
 
 function getUsers(req, res) {
   listUsers(req).then(data => res.send(data));
@@ -64,7 +64,7 @@ function deleteAdmin(req, res) {
   deleteAdminService(req.params.id).then(data => res.sendStatus(data));
 }
 
-export {
+module.exports = {
   editprofile,
   removeRequest,
   removeUser,

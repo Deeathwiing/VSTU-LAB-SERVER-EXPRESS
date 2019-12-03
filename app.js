@@ -1,25 +1,25 @@
-import express from "express";
-import { serverPort } from "./etc/config.json";
-import * as db from "./init/dataBaseUtils";
-import usersRouter from "./routes/usersRouter";
-import { appMiddlewares } from "./middlewares/appMiddlewares";
-import productsRouter from "./routes/productsRouter.js";
+const express = require("express");
+const config = require("./etc/config.js");
+const db = require("./init/dataBaseUtils");
+const usersRouter = require("./routes/usersRouter");
+const { appMiddleWares } = require("./middlewares/appMiddlewares");
+const productsRouter = require("./routes/productsRouter.js");
 
-//import Rating from "./bugs";
+//const Rating require( "./bugs";
 
 db.setUpConnection();
 
 var app = express();
 
-appMiddlewares(app);
+appMiddleWares(app);
 
-import "./middlewares/passport";
+require("./middlewares/passport");
 
 app.use("/users", usersRouter);
 app.use("/items", productsRouter);
 
-const server = app.listen(serverPort, () => {
-  console.log(`Server run on port ${serverPort}`);
+const server = app.listen(config.serverPort, () => {
+  console.log(`Server run on port ${config.serverPort}`);
 });
 
 module.exports = app;

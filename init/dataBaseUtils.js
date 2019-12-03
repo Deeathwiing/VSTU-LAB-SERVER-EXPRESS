@@ -1,21 +1,21 @@
-import mongoose from "mongoose";
-import config from "../etc/config.json";
-import Sequelize from "sequelize";
-import "./models";
-import { initModels } from "./models";
-import { initRelations } from "./relations.js";
-import { initRep } from "./repositories.js";
+const mongoose = require("mongoose");
+const config = require("../etc/config.js");
+const Sequelize = require("sequelize");
+require("./models");
+const { initModels } = require("./models");
+const { initRelations } = require("./relations.js");
+const { initRep } = require("./repositories.js");
 
-export const sequelize = new Sequelize("omVapeShop", "root", "12345678", {
+const sequelize = new Sequelize("omVapeShop", "root", "12345678", {
   host: "localhost",
   dialect: "mysql"
 });
 
-export const models = initModels(sequelize, Sequelize);
+const models = initModels(sequelize, Sequelize);
 initRelations(models);
 initRep(models, sequelize);
 
-export const setUpConnection = () => {
+const setUpConnection = () => {
   sequelize
     .authenticate()
     .then(() => {
@@ -39,3 +39,5 @@ export const setUpConnection = () => {
     )
     .catch(err => console.log(err));
 };
+
+module.exports = { sequelize, models, setUpConnection };

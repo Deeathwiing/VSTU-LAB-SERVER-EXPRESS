@@ -1,4 +1,4 @@
-export const initRatingRep = models => {
+const initRatingRep = models => {
   models.Rating.addRating = req => {
     console.log(req.body);
     const productId = Number(req.body.itemId);
@@ -10,3 +10,5 @@ export const initRatingRep = models => {
       .catch(() => 409);
   };
 };
+
+module.exports = { initRatingRep };

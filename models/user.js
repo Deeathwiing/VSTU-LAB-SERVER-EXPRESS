@@ -1,19 +1,4 @@
-import mongoose from "mongoose";
-
-const Schema = mongoose.Schema;
-
-const userSchema = new Schema({
-  administration: { type: Boolean, required: true },
-  deleteAccountRequest: { type: Boolean, required: true },
-  email: { type: String, required: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  password: { type: String, required: true }
-});
-
-export const User = mongoose.model("User", userSchema);
-
-export const UserModel = (sequelize, Sequelize) => {
+const UserModel = (sequelize, Sequelize) => {
   const User = sequelize.define("user", {
     firstName: {
       type: Sequelize.STRING,
@@ -38,3 +23,5 @@ export const UserModel = (sequelize, Sequelize) => {
   });
   return User;
 };
+
+module.exports = { UserModel };
