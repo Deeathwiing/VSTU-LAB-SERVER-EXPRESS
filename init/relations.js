@@ -5,4 +5,6 @@ export const initRelations = models => {
   models.Role.belongsToMany(models.User, { through: "UserRoles" });
   models.User.hasMany(models.Rating);
   models.Product.hasMany(models.Rating);
+  models.Rating.belongsTo(models.Product);
+  models.Rating.belongsTo(models.User);
 };

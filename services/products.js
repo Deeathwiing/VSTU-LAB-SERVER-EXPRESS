@@ -8,8 +8,8 @@ const removeProduct = id => {
   return models.Product.deleteProduct(id);
 };
 
-const listProducts = async amount => {
-  let products = await models.Product.findAllPagination(amount);
+const listProducts = amount => {
+  let products = models.Product.findAllPagination(amount);
   return products;
 };
 

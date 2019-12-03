@@ -1,10 +1,12 @@
 export const initProductRep = (models, sequelize) => {
   models.Product.findAllPagination = async amount => {
     let offset = Number(amount);
-    return await models.Product.findAll({
+    console.log(offset);
+    let products;
+    return (products = models.Product.findAll({
       offset,
       limit: 15,
-
+      order: [["amount", "desc"]],
       include: [
         {
           model: models.Rating,
@@ -20,7 +22,7 @@ export const initProductRep = (models, sequelize) => {
           ]
         }
       ]
-    });
+    }).then(products => products));
   };
   models.Product.createProduct = async data => {
     const newProduct = await models.Product.create({
