@@ -3,7 +3,7 @@ const usersController = require("../controllers/users");
 const {
   authenticationMiddleware,
   authenticationAdminMiddleware
-} = require("../middlewares/passportMiddleWares");
+} = require("../middlewares/auth");
 
 const usersRouter = express.Router();
 

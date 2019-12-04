@@ -1,11 +1,9 @@
 const express = require("express");
 const productsController = require("../controllers/products.js");
 const {
-  authenticationMiddleware
-} = require("../middlewares/passportMiddleWares");
-const {
+  authenticationMiddleware,
   authenticationAdminMiddleware
-} = require("../middlewares/passportMiddleWares");
+} = require("../middlewares/auth");
 
 const productsRouter = express.Router();
 

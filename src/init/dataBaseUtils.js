@@ -1,15 +1,19 @@
 const mongoose = require("mongoose");
-const config = require("../../etc/config.js");
 const Sequelize = require("sequelize");
 require("./models");
 const { initModels } = require("./models");
 const { initRelations } = require("./relations.js");
 const { initRep } = require("./repositories.js");
 
-const sequelize = new Sequelize("omVapeShop", "root", "12345678", {
-  host: "localhost",
-  dialect: "mysql"
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME_SQL,
+  process.env.DB_USERNAME_SQL,
+  process.env.DB_PASSWORD_SQL,
+  {
+    host: process.env.DB_HOST_SQL,
+    dialect: "mysql"
+  }
+);
 
 const models = initModels(sequelize, Sequelize);
 initRelations(models);
@@ -31,7 +35,7 @@ const setUpConnection = () => {
     )
     .then(
       mongoose.connect(
-        `mongodb://${config.db.host}:${config.db.port}/${config.db.name}`
+        `mongodb://${process.env.DB_HOST_MONGO}:${process.env.DB_PORT_MONGO}/${process.env.DB_NAME_MONGO}`
       )
     )
     .then(() =>

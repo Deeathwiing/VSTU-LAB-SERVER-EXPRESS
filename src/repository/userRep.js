@@ -42,7 +42,7 @@ const initUserRep = (models, sequelize) => {
     if (result == null) {
       let encryptedPass = cryptoJs.AES.encrypt(
         JSON.stringify(data.password),
-        "It's easy 322"
+        process.env.SECRET_KEY
       );
       encryptedPass = encryptedPass.toString();
       try {

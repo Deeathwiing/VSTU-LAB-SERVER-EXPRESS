@@ -1,25 +1,26 @@
 const express = require("express");
-const config = require("./etc/config.js");
 const db = require("./src/init/dataBaseUtils");
-const { appMiddleWares } = require("./src/middlewares/appMiddlewares");
 const Router = require("./src/loaders/router.js");
-
-//const Rating require( "./bugs";
+const AppLoader = require("./src/loaders/appLoader");
+const PassportLoader = require("./src/loaders/passport");
 
 var app = express();
-
-appMiddleWares(app);
 
 require("./src/middlewares/passport");
 
 new Router(app).init();
 
+new AppLoader(app).init();
+
+new PassportLoader(app).init();
+
 const connect = async () => {
   await db.setUpConnection();
-  await app.listen(config.serverPort, () => {
-    console.log(`Server run on port ${config.serverPort}`);
+  await app.listen(process.env.SERVER_PORT, () => {
+    console.log(`Server run on port ${process.env.SERVER_PORT}`);
   });
 };
+
 connect();
 
 module.exports = app;
