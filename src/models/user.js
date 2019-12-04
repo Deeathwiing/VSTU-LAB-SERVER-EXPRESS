@@ -10,7 +10,8 @@ const UserModel = (sequelize, Sequelize) => {
     },
     email: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      Unique: true
     },
     deleteAccountRequest: {
       type: Sequelize.BOOLEAN,

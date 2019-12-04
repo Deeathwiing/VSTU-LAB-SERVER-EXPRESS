@@ -23,7 +23,7 @@ function authuser(req, res, next) {
       return next(err);
     }
     if (!user) {
-      return res.redirect("/login");
+      return res.sendStatus(401);
     }
     req.logIn(user, function(err) {
       if (err) {

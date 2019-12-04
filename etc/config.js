@@ -1,5 +1,4 @@
 const config = {
-  apiPrefix: "http://localhost:3001",
   serverPort: 3002,
   db: {
     name: "OMVapeShop",

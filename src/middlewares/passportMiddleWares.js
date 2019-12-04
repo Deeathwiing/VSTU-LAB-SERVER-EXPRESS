@@ -8,10 +8,8 @@ function authenticationMiddleware(req, res, next) {
 }
 
 function authenticationAdminMiddleware(req, res, next) {
-  if (req.isAuthenticated()) {
-    if (models.User.verifyRole(req.user.id, "administration")) {
-      return next();
-    }
+  if (models.User.verifyRole(req.user.id, "administration")) {
+    return next();
   }
   res.sendStatus(401);
 }

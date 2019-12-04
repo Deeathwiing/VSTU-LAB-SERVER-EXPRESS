@@ -13,7 +13,7 @@ ORDER BY \`products\`.\`amount\` DESC
 LIMIT ${offset}, 15;
 `
     );
-    console.log(products);
+
     return products[0];
   };
   models.Product.createProduct = async data => {
@@ -30,12 +30,6 @@ LIMIT ${offset}, 15;
       const tag = await models.Tag.create({ text: element });
       await newProduct.addTag(tag);
     });
-
-    /*
-      .tags()
-      .then(() => 201)
-      .catch(() => 409);
-      */
   };
 
   models.Product.updateProduct = data => {
@@ -57,7 +51,7 @@ LIMIT ${offset}, 15;
   models.Product.deleteProduct = id => {
     return models.Product.destroy({ where: { id } })
       .then(() => 201)
-      .catch(() => 409);
+      .catch(err => 409);
   };
 };
 

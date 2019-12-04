@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const config = require("../etc/config.js");
+const config = require("../../etc/config.js");
 const Sequelize = require("sequelize");
 require("./models");
 const { initModels } = require("./models");
@@ -16,7 +16,7 @@ initRelations(models);
 initRep(models, sequelize);
 
 const setUpConnection = () => {
-  sequelize
+  return sequelize
     .authenticate()
     .then(() => {
       console.log("Connection has been established successfully(sql).");
