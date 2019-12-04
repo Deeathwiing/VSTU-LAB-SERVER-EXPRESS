@@ -3,26 +3,18 @@ const initProductRep = (models, sequelize) => {
     let offset = Number(amount);
     console.log(offset);
     let products;
-    return (products = models.Product.findAll({
-      offset,
-      limit: 15,
-      order: [["amount", "desc"]],
-      include: [
-        {
-          model: models.Rating,
-          attributes: [
-            [
-              sequelize.fn("avg", sequelize.col("ratingValue")),
-              "averageRating"
-            ],
-            [
-              sequelize.fn("count", sequelize.col("ratingValue")),
-              "amountOfRatings"
-            ]
-          ]
-        }
-      ]
-    }).then(products => products));
+    products = await sequelize.query(
+      `
+SELECT \`products\`.*, (Select avg(ratingValue) from ratings where productId = \`products\`.\`id\` ) as averageRating, 
+(Select count(ratingValue) from ratings where productId = \`products\`.\`id\` ) as amountOfRatings
+from products 
+LEFT OUTER JOIN \`ratings\` ON \`products\`.\`id\` = \`ratings\`.\`productId\`
+ORDER BY \`products\`.\`amount\` DESC
+LIMIT ${offset}, 15;
+`
+    );
+    console.log(products);
+    return products[0];
   };
   models.Product.createProduct = async data => {
     const newProduct = await models.Product.create({
@@ -135,6 +127,24 @@ attributes: [
           sequelize.fn("count", sequelize.col("ratingValue"))
         ]
       }
+
+
+   */
+
+/*
+
+ products = await sequelize.query(
+      `
+SELECT \`products\`.*, (Select avg(ratingValue) from ratings where productId = \`products\`.\`id\` ) as averageRating,
+(Select count(ratingValue) from ratings where productId = \`products\`.\`id\` ) as amountOfRatings
+from products
+LEFT OUTER JOIN \`ratings\` ON \`products\`.\`id\` = \`ratings\`.\`productId\`
+ORDER BY \`products\`.\`amount\` DESC
+LIMIT ${offset}, 15;
+`
+    );
+    console.log(products);
+    return products[0];
 
 
    */
