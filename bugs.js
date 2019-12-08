@@ -6,7 +6,3 @@ export const Rating = sequelize.define("rating", {
   }
 });
 */
-/*
-След баг в repositories => ratingRep.js => addRating. Проблема с upsert,постоянно 
-добавляет поля,вместо того чтобы обновлять 
-*/

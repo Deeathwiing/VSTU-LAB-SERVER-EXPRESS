@@ -1,7 +1,7 @@
-const passport = require("passport");
 const { Strategy } = require("passport-local");
-const { verifyPassword } = require("../services/users");
+const Users = require("../services/users");
 const { models } = require("../init/dataBaseUtils");
+const passport = require("passport");
 
 class PassportMid {
   init = () => {
@@ -22,7 +22,7 @@ class PassportMid {
               if (!user) {
                 return done(null, false, { message: "Incorrect username" });
               }
-              if (password != verifyPassword(user.password)) {
+              if (password != Users.verifyPassword(user.password)) {
                 return done(null, false, { message: "Incorrect password" });
               }
 
@@ -42,6 +42,7 @@ class PassportMid {
         done(err, user);
       });
     });
+    return passport;
   };
 }
 

@@ -1,47 +1,44 @@
 const express = require("express");
-const usersController = require("../controllers/users");
-const {
-  authenticationMiddleware,
-  authenticationAdminMiddleware
-} = require("../middlewares/auth");
+const UsersController = require("../controllers/users");
+const Auth = require("../middlewares/auth");
 
 const usersRouter = express.Router();
 
 usersRouter.use(
   "/getusers",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  usersController.getUsers
+  Auth.authenticationMiddleware,
+  Auth.authenticationAdminMiddleware,
+  UsersController.getUsers
 );
-usersRouter.use("/create", usersController.addUser);
+usersRouter.use("/create", UsersController.addUser);
 usersRouter.use(
   "/delete/:id",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  usersController.removeUser
+  Auth.authenticationMiddleware,
+  Auth.authenticationAdminMiddleware,
+  UsersController.removeUser
 );
 usersRouter.use(
   "/removerequest",
-  authenticationMiddleware,
-  usersController.removeRequest
+  Auth.authenticationMiddleware,
+  UsersController.removeRequest
 );
 usersRouter.use(
   "/editprofile",
-  authenticationMiddleware,
-  usersController.editprofile
+  Auth.authenticationMiddleware,
+  UsersController.editprofile
 );
-usersRouter.use("/authuser", usersController.authuser);
+usersRouter.use("/authuser", UsersController.authuser);
 usersRouter.use(
   "/addadmin/:id",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  usersController.addAdmin
+  Auth.authenticationMiddleware,
+  Auth.authenticationAdminMiddleware,
+  UsersController.addAdmin
 );
 usersRouter.use(
   "/deleteadmin/:id",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  usersController.deleteAdmin
+  Auth.authenticationMiddleware,
+  Auth.authenticationAdminMiddleware,
+  UsersController.deleteAdmin
 );
 
 module.exports = usersRouter;

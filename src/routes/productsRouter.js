@@ -1,32 +1,32 @@
 const express = require("express");
-const productsController = require("../controllers/products.js");
-const {
-  authenticationMiddleware,
-  authenticationAdminMiddleware
-} = require("../middlewares/auth");
+const ProductsController = require("../controllers/products");
+const Auth = require("../middlewares/auth");
 
 const productsRouter = express.Router();
 
-productsRouter.use("/getitems/:amount", productsController.getProducts);
+productsRouter.use("/getitems/:amount", ProductsController.getProducts);
 productsRouter.use(
   "/create",
-  authenticationAdminMiddleware,
-  productsController.addProduct
+  Auth.authenticationMiddleware,
+  Auth.authenticationAdminMiddleware,
+  ProductsController.addProduct
 );
 productsRouter.use(
   "/update",
-  authenticationAdminMiddleware,
-  productsController.updateProduct
+  Auth.authenticationMiddleware,
+  Auth.authenticationAdminMiddleware,
+  ProductsController.updateProduct
 );
 productsRouter.use(
   "/delete/:id",
-  authenticationAdminMiddleware,
-  productsController.deleteProduct
+  Auth.authenticationMiddleware,
+  Auth.authenticationAdminMiddleware,
+  ProductsController.deleteProduct
 );
 productsRouter.use(
   "/rating",
-  authenticationMiddleware,
-  productsController.rating
+  Auth.authenticationMiddleware,
+  ProductsController.rating
 );
 
 module.exports = productsRouter;

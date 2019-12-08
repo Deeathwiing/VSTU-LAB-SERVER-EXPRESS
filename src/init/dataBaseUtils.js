@@ -5,15 +5,18 @@ const { initModels } = require("./models");
 const { initRelations } = require("./relations.js");
 const { initRep } = require("./repositories.js");
 
-const sequelize = new Sequelize(
-  process.env.DB_NAME_SQL,
-  process.env.DB_USERNAME_SQL,
-  process.env.DB_PASSWORD_SQL,
-  {
-    host: process.env.DB_HOST_SQL,
-    dialect: "mysql"
-  }
-);
+// const sequelize = async () =>
+//   await new Sequelize(
+//     process.env.DB_NAME_SQL,
+//     process.env.DB_USERNAME_SQL,
+//     process.env.DB_PASSWORD_SQL,
+//     {
+//       host: process.env.DB_HOST_SQL,
+//       dialect: "mysql"
+//     }
+//   );
+
+const sequelize = require("./sequelize");
 
 const models = initModels(sequelize, Sequelize);
 initRelations(models);

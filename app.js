@@ -1,20 +1,18 @@
 const express = require("express");
 const db = require("./src/init/dataBaseUtils");
-const Router = require("./src/loaders/router.js");
-const AppLoader = require("./src/loaders/appLoader");
-const PassportLoader = require("./src/loaders/passport");
+const InitLoaders = require("./src/loaders/");
+const PassportMid = require("./src/middlewares/passport");
+
+//const Rating322 = require("./src/models/test.js");
 
 var app = express();
 
-require("./src/middlewares/passport");
+new InitLoaders(app).init();
 
-new Router(app).init();
-
-new AppLoader(app).init();
-
-new PassportLoader(app).init();
+new PassportMid().init();
 
 const connect = async () => {
+  //console.log(db.sequelize);
   await db.setUpConnection();
   await app.listen(process.env.SERVER_PORT, () => {
     console.log(`Server run on port ${process.env.SERVER_PORT}`);
@@ -23,4 +21,4 @@ const connect = async () => {
 
 connect();
 
-module.exports = app;
+exports.app = app;

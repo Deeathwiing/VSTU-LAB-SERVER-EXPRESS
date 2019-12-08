@@ -24,6 +24,7 @@ class AppLoader {
         saveUninitialized: false
       })
     );
+
     this.app.use(morgan("combined"));
 
     this.app.use(cors({ origin: "http://localhost:3000", credentials: true }));

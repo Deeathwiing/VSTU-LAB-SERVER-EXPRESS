@@ -3,6 +3,7 @@ const { TagModel } = require("../models/tag");
 const { UserModel } = require("../models/user");
 const { RatingModel } = require("../models/rating");
 const { RoleModel } = require("../models/role");
+const Rating322 = require("../models/test.js");
 
 const initModels = (sequelize, Sequelize) => {
   const Product = ProductModel(sequelize, Sequelize);
