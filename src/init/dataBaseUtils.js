@@ -4,23 +4,11 @@ require("./models");
 const { initModels } = require("./models");
 const { initRelations } = require("./relations.js");
 const { initRep } = require("./repositories.js");
-
-// const sequelize = async () =>
-//   await new Sequelize(
-//     process.env.DB_NAME_SQL,
-//     process.env.DB_USERNAME_SQL,
-//     process.env.DB_PASSWORD_SQL,
-//     {
-//       host: process.env.DB_HOST_SQL,
-//       dialect: "mysql"
-//     }
-//   );
-
 const sequelize = require("./sequelize");
+const models = require("./models");
 
-const models = initModels(sequelize, Sequelize);
-initRelations(models);
-initRep(models, sequelize);
+initRelations();
+initRep();
 
 const setUpConnection = () => {
   return sequelize
@@ -47,4 +35,4 @@ const setUpConnection = () => {
     .catch(err => console.log(err));
 };
 
-module.exports = { sequelize, models, setUpConnection };
+module.exports = { models, setUpConnection };

@@ -1,11 +1,11 @@
-const TagModel = (sequelize, Sequelize) => {
-  const Tag = sequelize.define("tag", {
-    text: {
-      type: Sequelize.STRING,
-      allowNull: false
-    }
-  });
-  return Tag;
-};
+const sequelize = require("../init/sequelize");
+const Sequelize = require("sequelize");
 
-module.exports = { TagModel };
+const TagModel = sequelize.define("tag", {
+  text: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
+
+module.exports = TagModel;

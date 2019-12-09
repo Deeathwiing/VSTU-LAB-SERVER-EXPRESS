@@ -1,4 +1,6 @@
-const initRelations = models => {
+const models = require("./models");
+
+const initRelations = () => {
   models.Product.belongsToMany(models.Tag, { through: "ProductTag" });
   models.Tag.belongsToMany(models.Product, { through: "ProductTag" });
   models.User.belongsToMany(models.Role, { through: "UserRoles" });

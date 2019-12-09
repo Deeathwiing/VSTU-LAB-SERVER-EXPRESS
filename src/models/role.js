@@ -1,9 +1,10 @@
-const RoleModel = (sequelize, Sequelize) => {
-  const Role = sequelize.define("role", {
-    userRole: {
-      type: Sequelize.STRING
-    }
-  });
-  return Role;
-};
-module.exports = { RoleModel };
+const sequelize = require("../init/sequelize");
+const Sequelize = require("sequelize");
+
+const RoleModel = sequelize.define("role", {
+  userRole: {
+    type: Sequelize.STRING
+  }
+});
+
+module.exports = RoleModel;

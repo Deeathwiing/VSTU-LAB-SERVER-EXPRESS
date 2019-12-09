@@ -1,28 +1,28 @@
-const UserModel = (sequelize, Sequelize) => {
-  const User = sequelize.define("user", {
-    firstName: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    lastName: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    email: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      Unique: true
-    },
-    deleteAccountRequest: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false
-    },
-    password: {
-      type: Sequelize.STRING,
-      allowNull: false
-    }
-  });
-  return User;
-};
+const sequelize = require("../init/sequelize");
+const Sequelize = require("sequelize");
 
-module.exports = { UserModel };
+const UserModel = sequelize.define("user", {
+  firstName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  lastName: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    Unique: true
+  },
+  deleteAccountRequest: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
+
+module.exports = UserModel;

@@ -1,7 +1,6 @@
 const initProductRep = (models, sequelize) => {
   models.Product.findAllPagination = async amount => {
     let offset = Number(amount);
-    console.log(offset);
     let products;
     products = await sequelize.query(
       `
