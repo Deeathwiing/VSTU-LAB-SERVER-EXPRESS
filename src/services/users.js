@@ -1,5 +1,5 @@
 const cryptoJs = require("crypto-js");
-const { models } = require("../init/dataBaseUtils");
+const models = require("../init/models");
 
 class Users {
   addRemoveRequest = req => {

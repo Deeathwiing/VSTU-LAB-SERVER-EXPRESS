@@ -1,6 +1,6 @@
 const { Strategy } = require("passport-local");
 const Users = require("../services/users");
-const { models } = require("../init/dataBaseUtils");
+const models = require("../init/models");
 const passport = require("passport");
 
 class PassportMid {

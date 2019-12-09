@@ -1,4 +1,4 @@
-const { models } = require("../init/dataBaseUtils");
+const models = require("../init/models");
 
 class Auth {
   authenticationMiddleware = (req, res, next) => {
@@ -8,8 +8,8 @@ class Auth {
     res.sendStatus(401);
   };
 
-  authenticationAdminMiddleware = (req, res, next) => {
-    if (models.User.verifyRole(req.user.id, "administration")) {
+  authenticationAdminMiddleware = async (req, res, next) => {
+    if (await models.User.verifyRole(req.user.id, "administration")) {
       return next();
     }
     res.sendStatus(401);

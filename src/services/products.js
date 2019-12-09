@@ -1,4 +1,4 @@
-const { models } = require("../init/dataBaseUtils");
+const models = require("../init/models");
 
 class Product {
   createProduct = data => {

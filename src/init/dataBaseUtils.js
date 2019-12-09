@@ -1,12 +1,7 @@
 const mongoose = require("mongoose");
-const Sequelize = require("sequelize");
-require("./models");
-const { initModels } = require("./models");
 const { initRelations } = require("./relations.js");
 const { initRep } = require("./repositories.js");
 const sequelize = require("./sequelize");
-const models = require("./models");
-
 initRelations();
 initRep();
 
@@ -35,4 +30,4 @@ const setUpConnection = () => {
     .catch(err => console.log(err));
 };
 
-module.exports = { models, setUpConnection };
+module.exports = { setUpConnection };

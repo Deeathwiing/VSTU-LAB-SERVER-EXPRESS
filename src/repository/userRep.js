@@ -30,6 +30,7 @@ const initUserRep = (models, sequelize) => {
     let result = await models.User.findOne({ where: { id } })
       .then(user => user.getRoles())
       .then(roles => parsingArrayRoles(roles, typeOfRole));
+
     return result;
   };
 
