@@ -5,6 +5,7 @@ class Router {
   constructor(app) {
     this.app = app;
   }
+
   init = () => {
     this.app.use("/users", usersRouter);
     this.app.use("/items", productsRouter);

@@ -5,6 +5,7 @@ class Auth {
     if (req.isAuthenticated()) {
       return next();
     }
+
     res.sendStatus(401);
   };
 
@@ -12,6 +13,7 @@ class Auth {
     if (await models.User.verifyRole(req.user.id, "administration")) {
       return next();
     }
+
     res.sendStatus(401);
   };
 }

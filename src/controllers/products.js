@@ -6,6 +6,7 @@ class ProductsController {
       res.send(data);
     });
   };
+
   addProduct = (req, res) => {
     Product.createProduct(req.body).then(data => res.send(data));
   };
@@ -17,6 +18,7 @@ class ProductsController {
   deleteProduct = (req, res) => {
     Product.removeProduct(req.params.id).then(data => res.sendStatus(data));
   };
+
   rating = (req, res) => {
     Product.addRating(req).then(data => res.send(data));
   };

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { initRelations } = require("./relations.js");
 const { initRep } = require("./repositories.js");
 const sequelize = require("./sequelize");
+
 initRelations();
 initRep();
 

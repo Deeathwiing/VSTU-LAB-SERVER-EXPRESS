@@ -11,6 +11,7 @@ class PassportMid {
           usernameField: "email",
           passwordField: "password"
         },
+
         function(username, password, done) {
           models.User.findOne({ where: { email: username } }).then(
             (user, err) => {
@@ -19,9 +20,11 @@ class PassportMid {
               if (err) {
                 return done(err);
               }
+
               if (!user) {
                 return done(null, false, { message: "Incorrect username" });
               }
+
               if (password != Users.verifyPassword(user.password)) {
                 return done(null, false, { message: "Incorrect password" });
               }
@@ -42,6 +45,7 @@ class PassportMid {
         done(err, user);
       });
     });
+
     return passport;
   };
 }

@@ -4,11 +4,13 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const morgan = require("morgan");
 const cors = require("cors");
+const PassportMid = require("../middlewares/passport");
 
 class AppLoader {
   constructor(app) {
     this.app = app;
   }
+
   init = () => {
     this.app.use(serveStatic("public"));
 
@@ -28,6 +30,8 @@ class AppLoader {
     this.app.use(morgan("combined"));
 
     this.app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
+    new PassportMid().init();
   };
 }
 

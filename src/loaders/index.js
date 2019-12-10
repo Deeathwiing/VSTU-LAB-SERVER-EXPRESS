@@ -6,6 +6,7 @@ class InitLoaders {
   constructor(app) {
     this.app = app;
   }
+
   init = () => {
     new AppLoader(this.app).init();
 

@@ -9,18 +9,23 @@ class UsersController {
 
   authuser = (req, res, next) => {
     req.email = req.body.email;
+
     req.password = req.body.password;
+
     passport.authenticate("local", function(err, user, info) {
       if (err) {
         return next(err);
       }
+
       if (!user) {
         return res.sendStatus(401);
       }
+
       req.logIn(user, function(err) {
         if (err) {
           return next(err);
         }
+
         return Users.authorization(req, res).then(data => {
           return res.send(data);
         });

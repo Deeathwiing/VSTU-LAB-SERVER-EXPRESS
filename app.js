@@ -7,8 +7,6 @@ var app = express();
 
 new InitLoaders(app).init();
 
-new PassportMid().init();
-
 const connect = async () => {
   await db.setUpConnection();
   await app.listen(process.env.SERVER_PORT, () => {
