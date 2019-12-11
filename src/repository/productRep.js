@@ -7,7 +7,6 @@ const initProductRep = (models, sequelize) => {
 SELECT \`products\`.*, (Select avg(ratingValue) from ratings where productId = \`products\`.\`id\` ) as averageRating, 
 (Select count(ratingValue) from ratings where productId = \`products\`.\`id\` ) as amountOfRatings
 from products 
-LEFT OUTER JOIN \`ratings\` ON \`products\`.\`id\` = \`ratings\`.\`productId\`
 ORDER BY \`products\`.\`amount\` DESC
 LIMIT ${offset}, 15;
 `
@@ -141,3 +140,13 @@ LIMIT ${offset}, 15;
 
 
    */
+
+// LEFT OUTER JOIN \`ratings\` ON \`products\`.\`id\` = \`ratings\`.\`productId\`
+
+// (Select
+//     CONCAT(
+//   (Select`text` from tags Where id in
+// (Select tagId from producttag Where productId = `products`.`id`)
+//  )
+//     ) as tags
+// )
