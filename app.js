@@ -1,7 +1,6 @@
 const express = require("express");
 const db = require("./src/init/dataBaseUtils");
 const InitLoaders = require("./src/loaders/");
-const PassportMid = require("./src/middlewares/passport");
 
 var app = express();
 

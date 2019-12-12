@@ -1,17 +1,21 @@
+const { Op } = require("sequelize");
 const initProductRep = (models, sequelize) => {
   models.Product.findAllPagination = async amount => {
     let offset = Number(amount);
+
     let products;
+
     products = await sequelize.query(
       `
-SELECT \`products\`.*, (Select avg(ratingValue) from ratings where productId = \`products\`.\`id\` ) as averageRating, 
+SELECT \`products\`.*, (Select avg(ratingValue) from ratings where productId = \`products\`.\`id\` ) as averageRating,
 (Select count(ratingValue) from ratings where productId = \`products\`.\`id\` ) as amountOfRatings
-from products 
+from products
 ORDER BY \`products\`.\`amount\` DESC
 LIMIT ${offset}, 15;
 `
     );
 
+    console.log(products);
     return products[0];
   };
   models.Product.createProduct = async data => {
@@ -60,11 +64,11 @@ module.exports = { initProductRep };
           model: models.Rating,
           attributes: [
             [
-              sequelize.fn("avg", sequelize.col("ratingValue")),
+              sequelize.fn("avg", "ratingValue")),
               "averageRating"
             ],
             [
-              sequelize.fn("count", sequelize.col("ratingValue")),
+              sequelize.fn("count", "ratingValue")),
               "amountOfRatings"
             ]
           ]
@@ -84,11 +88,11 @@ module.exports = { initProductRep };
         "createdAt",
         "updatedAt",
         [
-          sequelize.fn("avg", sequelize.col("ratings.ratingValue")),
+          sequelize.fn("avg", "ratings.ratingValue")),
           "averageRating"
         ],
         [
-          sequelize.fn("count", sequelize.col("ratings.ratingValue")),
+          sequelize.fn("count", "ratings.ratingValue")),
           "amountOfRatings"
         ]
       ],
@@ -114,9 +118,9 @@ attributes: [
       include: {
         model: models.Rating,
         attributes: [
-          sequelize.fn("avg", sequelize.col("ratingValue")),
+          sequelize.fn("avg", "ratingValue")),
 
-          sequelize.fn("count", sequelize.col("ratingValue"))
+          sequelize.fn("count", "ratingValue"))
         ]
       }
 
@@ -130,7 +134,6 @@ attributes: [
 SELECT \`products\`.*, (Select avg(ratingValue) from ratings where productId = \`products\`.\`id\` ) as averageRating,
 (Select count(ratingValue) from ratings where productId = \`products\`.\`id\` ) as amountOfRatings
 from products
-LEFT OUTER JOIN \`ratings\` ON \`products\`.\`id\` = \`ratings\`.\`productId\`
 ORDER BY \`products\`.\`amount\` DESC
 LIMIT ${offset}, 15;
 `
@@ -150,3 +153,112 @@ LIMIT ${offset}, 15;
 //  )
 //     ) as tags
 // )
+
+// models.Product.findAllPagination = async amount => {
+//   let offset = Number(amount);
+
+//   let products;
+
+//   products = await models.Product.findAll({
+//     offset,
+//     limit: 15,
+//     order: [["amount", "desc"]],
+//     attributes: [
+//       "id",
+//       "price",
+//       "title",
+//       "amount",
+//       "description",
+//       "picture",
+//       "createdAt",
+//       "updatedAt"
+//     ],
+
+//     include: [
+//       {
+//         model: models.Rating,
+//         attributes: [
+//           "productId",
+//           "ratingValue",
+//           [
+//             sequelize.fn("avg", sequelize.col("ratingValue")),
+//             "averageRating"
+//           ],
+//           [
+//             sequelize.fn("count", sequelize.col("ratingValue")),
+//             "amountOfRatings"
+//           ]
+//         ],
+//         group: ["product.id", "ratings.productId"]
+//       }
+//     ],
+//     group: ["product.id"],
+//     raw: true
+//   });
+
+//   console.log(products);
+//   return products;
+// };
+
+// products = await models.Product.findAll({
+//   offset,
+//   limit: 15,
+//   order: [["amount", "desc"]],
+//   attributes: [
+//     "id",
+//     "price",
+//     "title",
+//     "amount",
+//     "description",
+//     "picture",
+//     "createdAt",
+//     "updatedAt",
+//     [
+//       sequelize.fn("avg", sequelize.col("ratings.ratingValue")),
+//       "averageRating"
+//     ],
+//     [
+//       sequelize.fn("count", sequelize.col("ratings.ratingValue")),
+//       "amountOfRatings"
+//     ]
+//   ],
+
+//   include: [
+//     {
+//       model: models.Rating,
+//       attributes: [],
+//       group: ["product.id", "ratings.productId"]
+//     }
+//   ],
+//   group: ["product.id", "ratings.productId"],
+//   raw: true
+// });
+
+// products = await models.Product.findAll({
+//   offset,
+//   limit: 15,
+//   order: [["amount", "desc"]],
+//   attributes: [
+//     "id",
+//     "price",
+//     "title",
+//     "amount",
+//     "description",
+//     "picture",
+//     "createdAt",
+//     "updatedAt"
+//   ],
+
+//   include: [
+//     {
+//       model: models.Rating,
+//       attributes: {
+//         include: [
+//           [sequelize.fn("avg", "ratingValue"), "averageRating"],
+//           [sequelize.fn("count", "ratingValue"), "amountOfRatings"]
+//         ]
+//       },
+//       group: ["product.id", "ratings.productId"]
+//     }
+//   ]
+// });
