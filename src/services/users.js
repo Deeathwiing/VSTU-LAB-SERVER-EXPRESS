@@ -1,9 +1,9 @@
 const cryptoJs = require("crypto-js");
-const models = require("../init/models");
+const UserRep = require("../repository/userRep");
 
 class Users {
   addRemoveRequest = req => {
-    return models.User.addRemoveRequest(req.user.id);
+    return UserRep.addRemoveRequest(req.user.id);
   };
 
   verifyPassword = pass =>
@@ -13,14 +13,14 @@ class Users {
       )
     );
   listUsers = req => {
-    return models.User.getAll();
+    return UserRep.getAll();
   };
 
   authorization = async req => {
     const checkLogin = true;
     let admin = false;
-
-    admin = await models.User.verifyRole(req.user.id, "administration");
+    console.log(UserRep);
+    admin = await UserRep.verifyRole(req.user.id, "administration");
 
     const authUser = {
       admin,
@@ -32,7 +32,7 @@ class Users {
   };
 
   editNames = req => {
-    return models.User.editNames(
+    return UserRep.editNames(
       req.body.firstName,
       req.body.lastName,
       req.user.email
@@ -40,20 +40,20 @@ class Users {
   };
 
   deleteUser = id => {
-    return models.User.deleteUser(id);
+    return UserRep.deleteUser(id);
   };
 
   createUser = data => {
-    return models.User.createUser(data);
+    return UserRep.createUser(data);
   };
 
   addAdminService = id => {
-    return models.User.addRoleAdmin(id)
+    return UserRep.addRoleAdmin(id)
       .then(() => 201)
       .catch(() => 409);
   };
   deleteAdminService = id => {
-    return models.User.deleteRoleAdmin(id)
+    return UserRep.deleteRoleAdmin(id)
       .then(() => 201)
       .catch(() => 409);
   };

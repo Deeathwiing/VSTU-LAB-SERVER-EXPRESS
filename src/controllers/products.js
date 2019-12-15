@@ -2,7 +2,7 @@ const Product = require("../services/products");
 
 class ProductsController {
   getProducts = (req, res) => {
-    Product.listProducts(req.params.amount).then(data => {
+    Product.listProducts(req.params.amount, req.body).then(data => {
       res.send(data);
     });
   };

@@ -1,24 +1,93 @@
 const { Op } = require("sequelize");
-const initProductRep = (models, sequelize) => {
-  models.Product.findAllPagination = async amount => {
+const models = require("../init/models");
+const sequelize = require("../init/sequelize");
+class ProductRep {
+  findAllPagination = async (amount, options) => {
+    console.log(options);
+    const { withImg, sortByName, sortByDate } = options;
     let offset = Number(amount);
 
+    const whereOptionsFunc = () => {
+      if (withImg) {
+        return {
+          picture: {
+            [Op.not]: [{}, []]
+          }
+        };
+      }
+      return null;
+    };
+
+    const whereOptions = whereOptionsFunc();
+    console.log(whereOptions);
+    const orderOptionsFunc = () => {
+      if (sortByName) {
+        return [
+          ["amount", "desc"],
+          ["title", "desc"]
+        ];
+      }
+      if (sortByDate) {
+        return [
+          ["amount", "desc"],
+          ["updatedAt", "desc"]
+        ];
+      }
+      return [["amount", "desc"]];
+    };
+    const orderOptions = orderOptionsFunc();
+
+    console.log(orderOptions);
     let products;
 
-    products = await sequelize.query(
-      `
-SELECT \`products\`.*, (Select avg(ratingValue) from ratings where productId = \`products\`.\`id\` ) as averageRating,
-(Select count(ratingValue) from ratings where productId = \`products\`.\`id\` ) as amountOfRatings
-from products
-ORDER BY \`products\`.\`amount\` DESC
-LIMIT ${offset}, 15;
-`
-    );
+    //15ms sequelize without avg,count,etc
+    //4 ms with avg,count (raw SQL)
+    //19  sequelize with 2 table(rat,tag)
 
-    console.log(products);
-    return products[0];
+    let now = Date.now();
+    products = await models.Product.findAll({
+      subQuery: false,
+
+      offset,
+
+      limit: 15,
+
+      where: whereOptions,
+      order: orderOptions,
+
+      attributes: [
+        "id",
+        "price",
+        "title",
+        "amount",
+        "description",
+        "picture",
+        "createdAt",
+        "updatedAt",
+        [
+          sequelize.fn("avg", sequelize.col("ratings.ratingValue")),
+          "averageRating"
+        ],
+        [
+          sequelize.fn("count", sequelize.col("ratings.ratingValue")),
+          "amountOfRatings"
+        ]
+      ],
+
+      include: [
+        {
+          model: models.Rating,
+          attributes: []
+        }
+      ],
+
+      group: ["product.id"]
+    });
+    let after = Date.now();
+    console.log(after - now);
+    return products;
   };
-  models.Product.createProduct = async data => {
+  createProduct = async data => {
     const newProduct = await models.Product.create({
       picture: data.picture,
       title: data.title,
@@ -34,7 +103,7 @@ LIMIT ${offset}, 15;
     });
   };
 
-  models.Product.updateProduct = data => {
+  updateProduct = data => {
     return models.Product.update(
       {
         picture: data.picture,
@@ -50,14 +119,14 @@ LIMIT ${offset}, 15;
       .catch(() => 409);
   };
 
-  models.Product.deleteProduct = id => {
+  deleteProduct = id => {
     return models.Product.destroy({ where: { id } })
       .then(() => 201)
       .catch(err => 409);
   };
-};
+}
 
-module.exports = { initProductRep };
+module.exports = new ProductRep();
 /*
  include: [
         {

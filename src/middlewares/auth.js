@@ -1,4 +1,4 @@
-const models = require("../init/models");
+const UserRep = require("..//repository/userRep");
 
 class Auth {
   authenticationMiddleware = (req, res, next) => {
@@ -10,7 +10,7 @@ class Auth {
   };
 
   authenticationAdminMiddleware = async (req, res, next) => {
-    if (await models.User.verifyRole(req.user.id, "administration")) {
+    if (await UserRep.verifyRole(req.user.id, "administration")) {
       return next();
     }
 

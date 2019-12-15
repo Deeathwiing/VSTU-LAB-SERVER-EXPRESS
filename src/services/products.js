@@ -1,25 +1,25 @@
-const models = require("../init/models");
-
+const ProductRep = require("../repository/productRep");
+const RatingRep = require("../repository/ratingRep");
 class Product {
   createProduct = data => {
-    return models.Product.createProduct(data);
+    return ProductRep.createProduct(data);
   };
 
   removeProduct = id => {
-    return models.Product.deleteProduct(id);
+    return ProductRep.deleteProduct(id);
   };
 
-  listProducts = amount => {
-    let products = models.Product.findAllPagination(amount);
+  listProducts = (amount, options) => {
+    let products = ProductRep.findAllPagination(amount, options);
     return products;
   };
 
   addRating = req => {
-    return models.Rating.addRating(req);
+    return RatingRep.addRating(req);
   };
 
   updateProductService = data => {
-    return models.Product.updateProduct(data);
+    return ProductRep.updateProduct(data);
   };
 }
 module.exports = new Product();

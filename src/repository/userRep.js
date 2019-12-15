@@ -1,11 +1,13 @@
 const cryptoJs = require("crypto-js");
+const models = require("../init/models");
+const sequelize = require("../init/sequelize");
 
-const initUserRep = (models, sequelize) => {
-  models.User.getAll = () => {
+class UserRep {
+  getAll = () => {
     return models.User.findAll({ include: [{ model: models.Role }] });
   };
 
-  models.User.addRemoveRequest = id => {
+  addRemoveRequest = id => {
     return models.User.update(
       { deleteAccountRequest: true },
       {
@@ -18,7 +20,7 @@ const initUserRep = (models, sequelize) => {
       .catch(() => 409);
   };
 
-  models.User.verifyRole = async (id, typeOfRole) => {
+  verifyRole = async (id, typeOfRole) => {
     const parsingArrayRoles = (roles, typeOfRole) => {
       return roles.some(role => {
         if (role.dataValues.userRole === typeOfRole) {
@@ -34,7 +36,7 @@ const initUserRep = (models, sequelize) => {
     return result;
   };
 
-  models.User.createUser = async data => {
+  createUser = async data => {
     const result = await models.User.findOne({
       where: {
         email: data.email
@@ -62,7 +64,7 @@ const initUserRep = (models, sequelize) => {
     } else return 409;
   };
 
-  models.User.addRoleAdmin = async id => {
+  addRoleAdmin = async id => {
     console.log(id);
     const user = await models.User.findOne({ where: { id } });
     const role = await models.Role.findOne({
@@ -71,7 +73,7 @@ const initUserRep = (models, sequelize) => {
     user.setRoles(role);
   };
 
-  models.User.deleteRoleAdmin = async id => {
+  deleteRoleAdmin = async id => {
     const amount = await sequelize
       .query(
         `Select count(roleId) from userroles Where roleId=(Select id from roles Where userRole="administration")`
@@ -86,17 +88,17 @@ const initUserRep = (models, sequelize) => {
     } else return new Error("Last admin");
   };
 
-  models.User.deleteUser = id => {
+  deleteUser = id => {
     return models.User.destroy({ where: { id, deleteAccountRequest: true } })
       .then(() => 201)
       .catch(() => 409);
   };
 
-  models.User.editNames = (firstName, lastName, email) => {
+  editNames = (firstName, lastName, email) => {
     return models.User.update({ firstName, lastName }, { where: { email } })
       .then(() => 201)
       .catch(() => 409);
   };
-};
+}
 
-module.exports = { initUserRep };
+module.exports = new UserRep();
