@@ -23,14 +23,14 @@ class ProductRep {
     const orderOptionsFunc = () => {
       if (sortByName) {
         return [
-          ["amount", "desc"],
-          ["title", "desc"]
+          ["title", "desc"],
+          ["amount", "desc"]
         ];
       }
       if (sortByDate) {
         return [
-          ["amount", "desc"],
-          ["updatedAt", "desc"]
+          ["updatedAt", "desc"],
+          ["amount", "desc"]
         ];
       }
       return [["amount", "desc"]];
@@ -38,14 +38,13 @@ class ProductRep {
     const orderOptions = orderOptionsFunc();
 
     console.log(orderOptions);
-    let products;
 
     //15ms sequelize without avg,count,etc
     //4 ms with avg,count (raw SQL)
     //19  sequelize with 2 table(rat,tag)
 
     let now = Date.now();
-    products = await models.Product.findAll({
+    const productsWithRating = await models.Product.findAll({
       subQuery: false,
 
       offset,
@@ -83,8 +82,49 @@ class ProductRep {
 
       group: ["product.id"]
     });
+    const productsWithTags = await models.Product.findAll({
+      offset,
+
+      limit: 15,
+
+      where: whereOptions,
+      order: orderOptions,
+
+      attributes: [
+        "id",
+        "price",
+        "title",
+        "amount",
+        "description",
+        "picture",
+        "createdAt",
+        "updatedAt"
+      ],
+
+      include: [
+        {
+          model: models.Tag,
+          attributes: ["text"]
+        }
+      ],
+
+      group: ["product.id"]
+    });
+    let products = productsWithTags.map(function(item, i, arr) {
+      let items = item.dataValues;
+      items.averageRating = productsWithRating.find(
+        product => product.dataValues.id == items.id
+      ).dataValues.averageRating;
+
+      items.amountOfRatings = productsWithRating.find(
+        product => product.dataValues.id == items.id
+      ).dataValues.amountOfRatings;
+
+      return items;
+    });
     let after = Date.now();
     console.log(after - now);
+    // console.log(products);
     return products;
   };
   createProduct = async data => {
