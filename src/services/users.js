@@ -48,14 +48,10 @@ class Users {
   };
 
   addAdminService = id => {
-    return UserRep.addRoleAdmin(id)
-      .then(() => 201)
-      .catch(() => 409);
+    return UserRep.addRoleAdmin(id);
   };
   deleteAdminService = id => {
-    return UserRep.deleteRoleAdmin(id)
-      .then(() => 201)
-      .catch(() => 409);
+    return UserRep.deleteRoleAdmin(id);
   };
 }
 module.exports = new Users();

@@ -1,26 +1,34 @@
 const Product = require("../services/products");
 
 class ProductsController {
-  getProducts = (req, res) => {
+  getProducts = (req, res, next) => {
     Product.listProducts(req.params.amount, req.body).then(data => {
-      res.send(data);
+      res.send(data).catch(err => next(err));
     });
   };
 
-  addProduct = (req, res) => {
-    Product.createProduct(req.body).then(data => res.send(data));
+  addProduct = (req, res, next) => {
+    Product.createProduct(req.body)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 
-  updateProduct = (req, res) => {
-    Product.updateProductService(req.body).then(data => res.send(data));
+  updateProduct = (req, res, next) => {
+    Product.updateProductService(req.body)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 
-  deleteProduct = (req, res) => {
-    Product.removeProduct(req.params.id).then(data => res.sendStatus(data));
+  deleteProduct = (req, res, next) => {
+    Product.removeProduct(req.params.id)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 
-  rating = (req, res) => {
-    Product.addRating(req).then(data => res.send(data));
+  rating = (req, res, next) => {
+    Product.addRating(req)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 }
 module.exports = new ProductsController();

@@ -1,10 +1,13 @@
 const Users = require("../services/users");
+const customError = require("../init/customError");
 
 const passport = require("passport");
 
 class UsersController {
-  getUsers = (req, res) => {
-    Users.listUsers(req).then(data => res.send(data));
+  getUsers = (req, res, next) => {
+    Users.listUsers(req)
+      .then(data => res.send(data))
+      .catch(err => next(err));
   };
 
   authuser = (req, res, next) => {
@@ -14,16 +17,34 @@ class UsersController {
 
     passport.authenticate("local", function(err, user, info) {
       if (err) {
-        return next(err);
+        return next(
+          new customError(
+            "authError",
+            401,
+            "You are not logged in - wrong password or email,user not found "
+          )
+        );
       }
 
       if (!user) {
-        return res.sendStatus(401);
+        return next(
+          new customError(
+            "authError",
+            401,
+            "You are not logged in - wrong password or email,user not found "
+          )
+        );
       }
 
       req.logIn(user, function(err) {
         if (err) {
-          return next(err);
+          return next(
+            new customError(
+              "authError",
+              401,
+              "You are not logged in - wrong password or email,user not found "
+            )
+          );
         }
 
         return Users.authorization(req, res).then(data => {
@@ -33,32 +54,40 @@ class UsersController {
     })(req, res, next);
   };
 
-  addUser = (req, res) => {
-    Users.createUser(req.body).then(data => {
-      return res.sendStatus(data);
-    });
+  addUser = (req, res, next) => {
+    Users.createUser(req.body)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 
-  removeUser = (req, res) => {
-    Users.deleteUser(req.params.id).then(data => {
-      return res.sendStatus(data);
-    });
+  removeUser = (req, res, next) => {
+    Users.deleteUser(req.params.id)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 
-  removeRequest = (req, res) => {
-    Users.addRemoveRequest(req).then(status => res.sendStatus(status));
+  removeRequest = (req, res, next) => {
+    Users.addRemoveRequest(req)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 
-  editprofile = (req, res) => {
-    Users.editNames(req).then(data => res.sendStatus(data));
+  editprofile = (req, res, next) => {
+    Users.editNames(req)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 
-  addAdmin = (req, res) => {
-    Users.addAdminService(req.params.id).then(data => res.sendStatus(data));
+  addAdmin = (req, res, next) => {
+    Users.addAdminService(req.params.id)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 
-  deleteAdmin = (req, res) => {
-    Users.deleteAdminService(req.params.id).then(data => res.sendStatus(data));
+  deleteAdmin = (req, res, next) => {
+    Users.deleteAdminService(req.params.id)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
   };
 }
 

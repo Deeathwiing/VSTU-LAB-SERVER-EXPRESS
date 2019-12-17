@@ -1,4 +1,5 @@
 const UserRep = require("..//repository/userRep");
+const CustomError = require("../init/customError");
 
 class Auth {
   authenticationMiddleware = (req, res, next) => {
@@ -14,7 +15,7 @@ class Auth {
       return next();
     }
 
-    res.sendStatus(401);
+    next(new CustomError("authAdminError", 401, "You are not admin"));
   };
 }
 module.exports = new Auth();

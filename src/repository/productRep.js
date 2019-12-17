@@ -1,168 +1,246 @@
 const { Op } = require("sequelize");
 const models = require("../init/models");
 const sequelize = require("../init/sequelize");
+const CustomError = require("../init/customError");
 class ProductRep {
   findAllPagination = async (amount, options) => {
-    console.log(options);
-    const { withImg, sortByName, sortByDate } = options;
-    let offset = Number(amount);
+    try {
+      console.log(options);
 
-    const whereOptionsFunc = () => {
-      if (withImg) {
-        return {
-          picture: {
-            [Op.not]: [{}, []]
-          }
-        };
-      }
-      return null;
-    };
+      const { withImg, sortByName, sortByDate } = options;
 
-    const whereOptions = whereOptionsFunc();
-    console.log(whereOptions);
-    const orderOptionsFunc = () => {
-      if (sortByName) {
-        return [
-          ["title", "desc"],
-          ["amount", "desc"]
-        ];
-      }
-      if (sortByDate) {
-        return [
-          ["updatedAt", "desc"],
-          ["amount", "desc"]
-        ];
-      }
-      return [["amount", "desc"]];
-    };
-    const orderOptions = orderOptionsFunc();
+      let offset = Number(amount);
 
-    console.log(orderOptions);
+      const whereOptionsFunc = () => {
+        if (withImg) {
+          return {
+            picture: {
+              [Op.not]: [{}, []]
+            }
+          };
+        }
+        return null;
+      };
 
-    //15ms sequelize without avg,count,etc
-    //4 ms with avg,count (raw SQL)
-    //19  sequelize with 2 table(rat,tag)
+      const whereOptions = whereOptionsFunc();
 
-    let now = Date.now();
-    const productsWithRating = await models.Product.findAll({
-      subQuery: false,
+      console.log(whereOptions);
 
-      offset,
+      const orderOptionsFunc = () => {
+        if (sortByName) {
+          return [
+            ["title", "desc"],
+            ["amount", "desc"]
+          ];
+        }
 
-      limit: 15,
+        if (sortByDate) {
+          return [
+            ["updatedAt", "desc"],
+            ["amount", "desc"]
+          ];
+        }
 
-      where: whereOptions,
-      order: orderOptions,
+        return [["amount", "desc"]];
+      };
 
-      attributes: [
-        "id",
-        "price",
-        "title",
-        "amount",
-        "description",
-        "picture",
-        "createdAt",
-        "updatedAt",
-        [
-          sequelize.fn("avg", sequelize.col("ratings.ratingValue")),
-          "averageRating"
+      const orderOptions = orderOptionsFunc();
+
+      console.log(orderOptions);
+
+      //15ms sequelize without avg,count,etc
+      //4 ms with avg,count (raw SQL)
+      //19  sequelize with 2 table(rat,tag)
+
+      let now = Date.now();
+
+      const productsWithRating = await models.Product.findAll({
+        subQuery: false,
+
+        offset,
+
+        limit: 15,
+
+        where: whereOptions,
+        order: orderOptions,
+
+        attributes: [
+          "id",
+          "price",
+          "title",
+          "amount",
+          "description",
+          "picture",
+          "createdAt",
+          "updatedAt",
+          [
+            sequelize.fn("avg", sequelize.col("ratings.ratingValue")),
+            "averageRating"
+          ],
+          [
+            sequelize.fn("count", sequelize.col("ratings.ratingValue")),
+            "amountOfRatings"
+          ]
         ],
-        [
-          sequelize.fn("count", sequelize.col("ratings.ratingValue")),
-          "amountOfRatings"
-        ]
-      ],
 
-      include: [
-        {
-          model: models.Rating,
-          attributes: []
-        }
-      ],
+        include: [
+          {
+            model: models.Rating,
+            attributes: []
+          }
+        ],
 
-      group: ["product.id"]
-    });
-    const productsWithTags = await models.Product.findAll({
-      offset,
+        group: ["product.id"]
+      });
 
-      limit: 15,
+      if (!productsWithRating)
+        throw new CustomError(
+          "findAllPaginationError",
+          404,
+          "Products with Rating not found"
+        );
 
-      where: whereOptions,
-      order: orderOptions,
+      const productsWithTags = await models.Product.findAll({
+        offset,
 
-      attributes: [
-        "id",
-        "price",
-        "title",
-        "amount",
-        "description",
-        "picture",
-        "createdAt",
-        "updatedAt"
-      ],
+        limit: 15,
 
-      include: [
-        {
-          model: models.Tag,
-          attributes: ["text"]
-        }
-      ],
+        where: whereOptions,
+        order: orderOptions,
 
-      group: ["product.id"]
-    });
-    let products = productsWithTags.map(function(item, i, arr) {
-      let items = item.dataValues;
-      items.averageRating = productsWithRating.find(
-        product => product.dataValues.id == items.id
-      ).dataValues.averageRating;
+        attributes: [
+          "id",
+          "price",
+          "title",
+          "amount",
+          "description",
+          "picture",
+          "createdAt",
+          "updatedAt"
+        ],
 
-      items.amountOfRatings = productsWithRating.find(
-        product => product.dataValues.id == items.id
-      ).dataValues.amountOfRatings;
+        include: [
+          {
+            model: models.Tag,
+            attributes: ["text"]
+          }
+        ],
 
-      return items;
-    });
-    let after = Date.now();
-    console.log(after - now);
-    // console.log(products);
-    return products;
+        group: ["product.id"]
+      });
+
+      if (!productsWithTags)
+        throw new CustomError(
+          "findAllPaginationError",
+          404,
+          "Products with Tags not found"
+        );
+
+      let products = productsWithTags.map(function(item, i, arr) {
+        let items = item.dataValues;
+
+        items.averageRating = productsWithRating.find(
+          product => product.dataValues.id == items.id
+        ).dataValues.averageRating;
+
+        items.amountOfRatings = productsWithRating.find(
+          product => product.dataValues.id == items.id
+        ).dataValues.amountOfRatings;
+
+        return items;
+      });
+      let after = Date.now();
+      console.log(after - now);
+      // console.log(products);
+      return products;
+    } catch (e) {
+      throw new CustomError(
+        "findAllPaginationError",
+        400,
+        "Bad request or problem with server,please stand by and try again"
+      );
+    }
   };
+
   createProduct = async data => {
-    const newProduct = await models.Product.create({
-      picture: data.picture,
-      title: data.title,
-      description: data.description,
-      price: data.price,
-      amount: data.amount
-    });
-    const arrayOfTags = await data.tags.split(",");
-    console.log(arrayOfTags);
-    arrayOfTags.forEach(async element => {
-      const tag = await models.Tag.create({ text: element });
-      await newProduct.addTag(tag);
-    });
-  };
-
-  updateProduct = data => {
-    return models.Product.update(
-      {
+    try {
+      const newProduct = await models.Product.create({
         picture: data.picture,
         title: data.title,
         description: data.description,
         price: data.price,
-        tags: data.tags,
         amount: data.amount
-      },
-      { where: { id: data.id } }
-    )
-      .then(() => 201)
-      .catch(() => 409);
+      });
+
+      if (!newProduct)
+        throw new CustomError("createProductError", 404, "Product not created");
+
+      const arrayOfTags = data.tags.split(",");
+
+      console.log(arrayOfTags);
+
+      arrayOfTags.forEach(async element => {
+        const tag = await models.Tag.create({ text: element });
+
+        if (!tag)
+          throw new CustomError("createProductError", 404, "Tag not created");
+
+        const result = await newProduct.addTag(tag);
+
+        if (!result)
+          throw new CustomError(
+            "createProductError",
+            404,
+            "Tag not added to product"
+          );
+      });
+    } catch (e) {
+      throw new CustomError(
+        "createProductError",
+        400,
+        "Bad request or problem with server,please stand by and try again"
+      );
+    }
   };
 
-  deleteProduct = id => {
-    return models.Product.destroy({ where: { id } })
-      .then(() => 201)
-      .catch(err => 409);
+  updateProduct = async data => {
+    try {
+      const result = await models.Product.update(
+        {
+          picture: data.picture,
+          title: data.title,
+          description: data.description,
+          price: data.price,
+          tags: data.tags,
+          amount: data.amount
+        },
+        { where: { id: data.id } }
+      );
+
+      if (!result)
+        throw new CustomError("updateProductError", 404, "Product not updated");
+    } catch (e) {
+      throw new CustomError(
+        "updateProductError",
+        400,
+        "Bad request or problem with server,please stand by and try again"
+      );
+    }
+  };
+
+  deleteProduct = async id => {
+    try {
+      const result = await models.Product.destroy({ where: { id } });
+
+      if (!result)
+        throw new CustomError("deleteProductError", 404, "Product not deleted");
+    } catch (e) {
+      throw new CustomError(
+        "deleteProductError",
+        400,
+        "Bad request or problem with server,please stand by and try again"
+      );
+    }
   };
 }
 
