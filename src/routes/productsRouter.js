@@ -7,7 +7,7 @@ const {
 
 const productsRouter = express.Router();
 
-productsRouter.use("/getitems/:amount", ProductsController.getProducts);
+productsRouter.use("/getitems", ProductsController.getProducts);
 productsRouter.use(
   "/create",
   authenticationMiddleware,

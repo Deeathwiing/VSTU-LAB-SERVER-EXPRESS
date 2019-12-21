@@ -10,6 +10,7 @@ class ProductRep {
       const { withImg, sortByName, sortByDate } = options;
 
       let offset = Number(amount);
+      console.log(offset);
 
       const whereOptionsFunc = () => {
         if (withImg) {
@@ -161,7 +162,7 @@ class ProductRep {
 
       return products;
     } catch (e) {
-      return console.log(e);
+      return e;
     }
   };
 
@@ -198,11 +199,7 @@ class ProductRep {
           );
       });
     } catch (e) {
-      throw new CustomError(
-        "createProductError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      return e;
     }
   };
 
