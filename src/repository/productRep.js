@@ -136,29 +136,32 @@ class ProductRep {
           "Products with Tags not found"
         );
 
-      let products = productsWithTags.map(function(item, i, arr) {
-        let items = item.dataValues;
+      let products = await productsWithTags.map(async function(item, i, arr) {
+        let items = await item.dataValues;
 
-        items.averageRating = productsWithRating.find(
-          product => product.dataValues.id == items.id
-        ).dataValues.averageRating;
+        console.log(items.id);
+        console.log(productsWithRating[i].dataValues.id);
 
-        items.amountOfRatings = productsWithRating.find(
+        let foundedProduct = await productsWithRating.find(
           product => product.dataValues.id == items.id
-        ).dataValues.amountOfRatings;
+        );
+
+        let averageRating = foundedProduct.dataValues.averageRating;
+
+        let amountOfRatings = foundedProduct.dataValues.amountOfRatings;
+
+        items.averageRating = averageRating;
+
+        items.amountOfRatings = amountOfRatings;
 
         return items;
       });
       let after = Date.now();
       console.log(after - now);
-      // console.log(products);
+
       return products;
     } catch (e) {
-      throw new CustomError(
-        "findAllPaginationError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      return console.log(e);
     }
   };
 

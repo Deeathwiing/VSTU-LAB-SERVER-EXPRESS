@@ -2,9 +2,11 @@ const Product = require("../services/products");
 
 class ProductsController {
   getProducts = (req, res, next) => {
-    Product.listProducts(req.params.amount, req.body).then(data => {
-      res.send(data).catch(err => next(err));
-    });
+    Product.listProducts(req.params.amount, req.body)
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => next(err));
   };
 
   addProduct = (req, res, next) => {
