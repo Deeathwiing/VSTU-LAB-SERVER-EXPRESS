@@ -15,11 +15,8 @@ class UserRep {
 
       return users;
     } catch (e) {
-      throw new CustomError(
-        "getUsersError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
 
@@ -41,11 +38,8 @@ class UserRep {
           "Bad request or problem with server,please stand by and try again"
         );
     } catch (e) {
-      throw new CustomError(
-        "addRemoveError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
 
@@ -82,11 +76,8 @@ class UserRep {
 
       return result;
     } catch (e) {
-      throw new CustomError(
-        "verifyRoleError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
 
@@ -136,11 +127,8 @@ class UserRep {
           throw new CustomError("createUserError", 409, "Role not added");
       }
     } catch (e) {
-      throw new CustomError(
-        "createUserError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
 
@@ -163,11 +151,8 @@ class UserRep {
       if (!result)
         throw new CustomError("addRoleAdminError", 404, "Role not added");
     } catch (e) {
-      throw new CustomError(
-        "addRoleAdminError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
 
@@ -214,11 +199,8 @@ class UserRep {
         "Last admin, hold on to the end"
       );
     } catch (e) {
-      throw new CustomError(
-        "deleteRoleAdminError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
 
@@ -231,11 +213,8 @@ class UserRep {
       if (!result)
         throw new CustomError("deleteUserError", 404, "User not deleted");
     } catch (e) {
-      throw new CustomError(
-        "deleteUserError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
 
@@ -249,11 +228,8 @@ class UserRep {
         { where: { email } }
       );
     } catch (e) {
-      throw new CustomError(
-        "editNamesError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
 }

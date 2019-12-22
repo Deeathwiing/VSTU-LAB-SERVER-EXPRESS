@@ -19,11 +19,8 @@ class RatingRep {
         throw new CustomError("ratingError", 409, "Rating not added");
       }
     } catch (e) {
-      throw new CustomError(
-        "ratingError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
 }

@@ -15,7 +15,7 @@ usersRouter.use(
 );
 usersRouter.use("/create", UsersController.addUser);
 usersRouter.use(
-  "/delete/:id",
+  "/delete",
   authenticationMiddleware,
   authenticationAdminMiddleware,
   UsersController.removeUser
@@ -32,13 +32,13 @@ usersRouter.use(
 );
 usersRouter.use("/authuser", UsersController.authuser);
 usersRouter.use(
-  "/addadmin/:id",
+  "/addadmin",
   authenticationMiddleware,
   authenticationAdminMiddleware,
   UsersController.addAdmin
 );
 usersRouter.use(
-  "/deleteadmin/:id",
+  "/deleteadmin",
   authenticationMiddleware,
   authenticationAdminMiddleware,
   UsersController.deleteAdmin

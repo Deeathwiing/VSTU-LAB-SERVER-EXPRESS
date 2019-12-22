@@ -7,7 +7,24 @@ const {
 
 const productsRouter = express.Router();
 
-productsRouter.use("/getitems", ProductsController.getProducts);
+// productsRouter
+//   .get(ProductsController.getProducts)
+//   .post(
+//     authenticationMiddleware,
+//     authenticationAdminMiddleware,
+//     ProductsController.addProduct
+//   )
+//   .patch(
+//     authenticationMiddleware,
+//     authenticationAdminMiddleware,
+//     ProductsController.updateProduct
+//   )
+//   .delete(
+//     authenticationMiddleware,
+//     authenticationAdminMiddleware,
+//     ProductsController.deleteProduct
+//   );
+productsRouter.use("/getProducts", ProductsController.getProducts);
 productsRouter.use(
   "/create",
   authenticationMiddleware,
@@ -21,7 +38,7 @@ productsRouter.use(
   ProductsController.updateProduct
 );
 productsRouter.use(
-  "/delete/:id",
+  "/delete",
   authenticationMiddleware,
   authenticationAdminMiddleware,
   ProductsController.deleteProduct

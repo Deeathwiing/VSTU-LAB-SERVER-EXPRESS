@@ -9,9 +9,13 @@ class Product {
     return ProductRep.deleteProduct(id);
   };
 
-  listProducts = (amount, options) => {
-    let products = ProductRep.findAllPagination(amount, options);
-    return products;
+  listProducts = async (amount, withImg, sortByName, sortByDate) => {
+    return ProductRep.findAllPagination(
+      amount,
+      withImg,
+      sortByName,
+      sortByDate
+    );
   };
 
   addRating = req => {

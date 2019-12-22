@@ -61,7 +61,7 @@ class UsersController {
   };
 
   removeUser = (req, res, next) => {
-    Users.deleteUser(req.params.id)
+    Users.deleteUser(req.query.id)
       .then(() => res.sendStatus(200))
       .catch(err => next(err));
   };
@@ -79,13 +79,13 @@ class UsersController {
   };
 
   addAdmin = (req, res, next) => {
-    Users.addAdminService(req.params.id)
+    Users.addAdminService(req.query.id)
       .then(() => res.sendStatus(200))
       .catch(err => next(err));
   };
 
   deleteAdmin = (req, res, next) => {
-    Users.deleteAdminService(req.params.id)
+    Users.deleteAdminService(req.query.id)
       .then(() => res.sendStatus(200))
       .catch(err => next(err));
   };

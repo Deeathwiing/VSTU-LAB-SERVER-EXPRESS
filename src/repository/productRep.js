@@ -3,17 +3,13 @@ const models = require("../init/models");
 const sequelize = require("../init/sequelize");
 const CustomError = require("../init/customError");
 class ProductRep {
-  findAllPagination = async (amount, options) => {
+  async findAllPagination(amount, withImg, sortByName, sortByDate) {
     try {
-      console.log(options);
-
-      const { withImg, sortByName, sortByDate } = options;
-
       let offset = Number(amount);
       console.log(offset);
 
       const whereOptionsFunc = () => {
-        if (withImg) {
+        if (withImg == true) {
           return {
             picture: {
               [Op.not]: [{}, []]
@@ -28,14 +24,14 @@ class ProductRep {
       console.log(whereOptions);
 
       const orderOptionsFunc = () => {
-        if (sortByName) {
+        if (sortByName == true) {
           return [
             ["title", "desc"],
             ["amount", "desc"]
           ];
         }
 
-        if (sortByDate) {
+        if (sortByDate == true) {
           return [
             ["updatedAt", "desc"],
             ["amount", "desc"]
@@ -137,36 +133,45 @@ class ProductRep {
           "Products with Tags not found"
         );
 
-      let products = await productsWithTags.map(async function(item, i, arr) {
-        let items = await item.dataValues;
+      let products = productsWithTags.map(function(item, i, arr) {
+        try {
+          let items = item.dataValues;
 
-        console.log(items.id);
-        console.log(productsWithRating[i].dataValues.id);
+          // console.log(items.id);
+          // console.log(productsWithRating[i].dataValues.id);
 
-        let foundedProduct = await productsWithRating.find(
-          product => product.dataValues.id == items.id
-        );
+          let foundedProduct = productsWithRating.find(
+            product => product.dataValues.id == items.id
+          );
 
-        let averageRating = foundedProduct.dataValues.averageRating;
+          let averageRating = foundedProduct.dataValues.averageRating;
 
-        let amountOfRatings = foundedProduct.dataValues.amountOfRatings;
+          let amountOfRatings = foundedProduct.dataValues.amountOfRatings;
 
-        items.averageRating = averageRating;
+          items.averageRating = averageRating;
 
-        items.amountOfRatings = amountOfRatings;
+          items.amountOfRatings = amountOfRatings;
 
-        return items;
+          return items;
+        } catch (e) {
+          throw new CustomError(
+            "mergedArrError",
+            404,
+            "Problem with merged array"
+          );
+        }
       });
       let after = Date.now();
       console.log(after - now);
 
       return products;
     } catch (e) {
-      return e;
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
-  };
+  }
 
-  createProduct = async data => {
+  async createProduct(data) {
     try {
       const newProduct = await models.Product.create({
         picture: data.picture,
@@ -199,11 +204,12 @@ class ProductRep {
           );
       });
     } catch (e) {
-      return e;
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
-  };
+  }
 
-  updateProduct = async data => {
+  async updateProduct(data) {
     try {
       const result = await models.Product.update(
         {
@@ -220,28 +226,22 @@ class ProductRep {
       if (!result)
         throw new CustomError("updateProductError", 404, "Product not updated");
     } catch (e) {
-      throw new CustomError(
-        "updateProductError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
-  };
+  }
 
-  deleteProduct = async id => {
+  async deleteProduct(id) {
     try {
       const result = await models.Product.destroy({ where: { id } });
 
       if (!result)
         throw new CustomError("deleteProductError", 404, "Product not deleted");
     } catch (e) {
-      throw new CustomError(
-        "deleteProductError",
-        400,
-        "Bad request or problem with server,please stand by and try again"
-      );
+      if (e instanceof CustomError) throw e;
+      throw new CustomError("undefined error", 400, "Something wrong");
     }
-  };
+  }
 }
 
 module.exports = new ProductRep();

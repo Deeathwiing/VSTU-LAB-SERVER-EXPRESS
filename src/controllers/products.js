@@ -1,12 +1,25 @@
 const Product = require("../services/products");
 
 class ProductsController {
-  getProducts = (req, res, next) => {
-    Product.listProducts(req.query.amount, req.body)
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => next(err));
+  getProducts = async (req, res, next) => {
+    console.log(
+      req.query.amount,
+      req.query.withImg,
+      req.query.sortByName,
+      req.query.sortByDate
+    );
+    try {
+      let products = await Product.listProducts(
+        req.query.amount,
+        req.query.withImg,
+        req.query.sortByName,
+        req.query.sortByDate
+      );
+
+      res.status(201).send(products);
+    } catch (e) {
+      next(e);
+    }
   };
 
   addProduct = (req, res, next) => {
@@ -22,7 +35,7 @@ class ProductsController {
   };
 
   deleteProduct = (req, res, next) => {
-    Product.removeProduct(req.params.id)
+    Product.removeProduct(req.query.id)
       .then(() => res.sendStatus(200))
       .catch(err => next(err));
   };
