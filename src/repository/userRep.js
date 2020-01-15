@@ -220,13 +220,13 @@ class UserRep {
 
   editNames = (firstName, lastName, email) => {
     try {
-      if (!result)
-        throw new CustomError("deleteUserError", 404, "User not deleted");
-
       const result = models.User.update(
         { firstName, lastName },
         { where: { email } }
       );
+      if (!result)
+        throw new CustomError("deleteUserError", 404, "User not deleted");
+      return result;
     } catch (e) {
       if (e instanceof CustomError) throw e;
       throw new CustomError("undefined error", 400, "Something wrong");

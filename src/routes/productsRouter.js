@@ -24,29 +24,26 @@ const productsRouter = express.Router();
 //     authenticationAdminMiddleware,
 //     ProductsController.deleteProduct
 //   );
-productsRouter.use("/getProducts", ProductsController.getProducts);
-productsRouter.use(
-  "/create",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  ProductsController.addProduct
-);
-productsRouter.use(
-  "/update",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  ProductsController.updateProduct
-);
-productsRouter.use(
-  "/delete",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  ProductsController.deleteProduct
-);
-productsRouter.use(
-  "/rating",
-  authenticationMiddleware,
-  ProductsController.rating
-);
+productsRouter
+  .get("/getProducts", ProductsController.getProducts)
+  .post(
+    "/create",
+    authenticationMiddleware,
+    authenticationAdminMiddleware,
+    ProductsController.addProduct
+  )
+  .put(
+    "/update",
+    authenticationMiddleware,
+    authenticationAdminMiddleware,
+    ProductsController.updateProduct
+  )
+  .delete(
+    "/delete",
+    authenticationMiddleware,
+    authenticationAdminMiddleware,
+    ProductsController.deleteProduct
+  )
+  .put("/rating", authenticationMiddleware, ProductsController.rating);
 
 module.exports = productsRouter;

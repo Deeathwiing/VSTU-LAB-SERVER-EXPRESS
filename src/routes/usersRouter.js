@@ -7,41 +7,41 @@ const {
 
 const usersRouter = express.Router();
 
-usersRouter.use(
-  "/getusers",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  UsersController.getUsers
-);
-usersRouter.use("/create", UsersController.addUser);
-usersRouter.use(
-  "/delete",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  UsersController.removeUser
-);
-usersRouter.use(
-  "/removerequest",
-  authenticationMiddleware,
-  UsersController.removeRequest
-);
-usersRouter.use(
-  "/editprofile",
-  authenticationMiddleware,
-  UsersController.editprofile
-);
-usersRouter.use("/authuser", UsersController.authuser);
-usersRouter.use(
-  "/addadmin",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  UsersController.addAdmin
-);
-usersRouter.use(
-  "/deleteadmin",
-  authenticationMiddleware,
-  authenticationAdminMiddleware,
-  UsersController.deleteAdmin
-);
+usersRouter
+  .get(
+    "/getusers",
+    authenticationMiddleware,
+    authenticationAdminMiddleware,
+    UsersController.getUsers
+  )
+
+  .post("/create", UsersController.addUser)
+  .delete(
+    "/delete",
+    authenticationMiddleware,
+    authenticationAdminMiddleware,
+    UsersController.removeUser
+  )
+  .put("/editprofile", authenticationMiddleware, UsersController.editprofile)
+
+  .put(
+    "/removerequest",
+    authenticationMiddleware,
+    UsersController.removeRequest
+  )
+
+  .put(
+    "/addadmin",
+    authenticationMiddleware,
+    authenticationAdminMiddleware,
+    UsersController.addAdmin
+  )
+  .put(
+    "/deleteadmin",
+    authenticationMiddleware,
+    authenticationAdminMiddleware,
+    UsersController.deleteAdmin
+  )
+  .post("/authuser", UsersController.authuser);
 
 module.exports = usersRouter;
