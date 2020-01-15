@@ -15,7 +15,6 @@ usersRouter
     UsersController.getUsers
   )
 
-  .post("/create", UsersController.addUser)
   .delete(
     "/delete",
     authenticationMiddleware,
@@ -41,7 +40,6 @@ usersRouter
     authenticationMiddleware,
     authenticationAdminMiddleware,
     UsersController.deleteAdmin
-  )
-  .post("/authuser", UsersController.authuser);
+  );
 
 module.exports = usersRouter;

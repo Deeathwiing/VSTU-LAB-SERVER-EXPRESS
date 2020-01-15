@@ -1,5 +1,6 @@
 const usersRouter = require("../routes/usersRouter.js");
 const productsRouter = require("../routes/productsRouter.js");
+const authRouter = require("../routes/auth");
 
 class Router {
   constructor(app) {
@@ -9,6 +10,7 @@ class Router {
   init = () => {
     this.app.use("/users", usersRouter);
     this.app.use("/items", productsRouter);
+    this.app.use("/auth", authRouter);
   };
 }
 
