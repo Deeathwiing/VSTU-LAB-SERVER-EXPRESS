@@ -6,14 +6,16 @@ class ProductsController {
       req.query.amount,
       req.query.withImg,
       req.query.sortByName,
-      req.query.sortByDate
+      req.query.sortByDate,
+      req.query.page
     );
     try {
       let products = await Product.listProducts(
         req.query.amount,
         req.query.withImg,
         req.query.sortByName,
-        req.query.sortByDate
+        req.query.sortByDate,
+        req.query.page
       );
 
       res.status(201).send(products);

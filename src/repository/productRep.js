@@ -3,10 +3,11 @@ const models = require("../init/models");
 const sequelize = require("../init/sequelize");
 const CustomError = require("../init/customError");
 class ProductRep {
-  async findAllPagination(amount, withImg, sortByName, sortByDate) {
+  async findAllPagination(amount, withImg, sortByName, sortByDate, page) {
     try {
-      let offset = Number(amount);
-      console.log(offset);
+      let offset = Number(amount * (Math.floor(page) - 1));
+      console.log("offset: " + offset);
+      if (offset < 0) offset = 0;
 
       const whereOptionsFunc = () => {
         if (withImg == true) {
@@ -56,7 +57,7 @@ class ProductRep {
 
         offset,
 
-        limit: 15,
+        limit: Number(amount),
 
         where: whereOptions,
         order: orderOptions,
@@ -100,7 +101,7 @@ class ProductRep {
       const productsWithTags = await models.Product.findAll({
         offset,
 
-        limit: 15,
+        limit: Number(amount),
 
         where: whereOptions,
         order: orderOptions,

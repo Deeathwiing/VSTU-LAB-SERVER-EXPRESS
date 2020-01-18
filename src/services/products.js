@@ -9,12 +9,13 @@ class Product {
     return ProductRep.deleteProduct(id);
   };
 
-  listProducts = async (amount, withImg, sortByName, sortByDate) => {
+  listProducts = async (amount, withImg, sortByName, sortByDate, page) => {
     return ProductRep.findAllPagination(
       amount,
       withImg,
       sortByName,
-      sortByDate
+      sortByDate,
+      page
     );
   };
 
