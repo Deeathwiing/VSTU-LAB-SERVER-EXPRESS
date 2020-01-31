@@ -25,10 +25,9 @@ class ProductsController {
   };
 
   addProduct = (req, res, next) => {
-    console.log("Files Controller: " + req.file);
+    //console.log("Files Controller: " + req.file);
     //console.log("Body Controller: " + req.body);
-    console.log(req.body);
-
+    console.log(filename);
     Product.createProduct(req.body, req.file)
       .then(() => res.sendStatus(200))
       .catch(err => next(err));

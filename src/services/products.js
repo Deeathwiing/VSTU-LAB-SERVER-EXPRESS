@@ -1,8 +1,8 @@
 const ProductRep = require("../repository/productRep");
 const RatingRep = require("../repository/ratingRep");
 class Product {
-  createProduct = data => {
-    return ProductRep.createProduct(data);
+  createProduct = (data, image) => {
+    return ProductRep.createProduct(data, image);
   };
 
   removeProduct = id => {

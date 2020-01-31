@@ -174,11 +174,11 @@ class ProductRep {
     }
   }
 
-  async createProduct(data, image) {
-    try {
-      console.log(data);
-      console.log(image);
+  async createProduct(data, image, protocol) {
+    console.log(data);
+    console.log(image);
 
+    try {
       const newProduct = await models.Product.create({
         picture: "none",
         title: data.title,
@@ -186,6 +186,17 @@ class ProductRep {
         price: data.price,
         amount: data.amount
       });
+
+      console.log(newProduct.dataValues.id);
+
+      fs.writeFile(
+        `static/productImages/${newProduct.dataValues.id}.png`,
+        image.buffer,
+        function(error) {
+          if (error)
+            throw new CustomError("saveImageError", 404, "Image dont save");
+        }
+      );
 
       if (!newProduct)
         throw new CustomError("createProductError", 404, "Product not created");

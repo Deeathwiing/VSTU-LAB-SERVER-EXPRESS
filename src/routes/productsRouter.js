@@ -7,17 +7,8 @@ const {
 const path = require("path");
 const multer = require("multer");
 
-const storage = multer.diskStorage({
-  destination: "./static/productImages/",
-  filename: function(req, file, cb) {
-    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1000000 }
-}).single("picture");
+var storage = multer.memoryStorage();
+var upload = multer({ storage: storage });
 
 const productsRouter = express.Router();
 
@@ -27,7 +18,7 @@ productsRouter
     "/create",
     authenticationMiddleware,
     authenticationAdminMiddleware,
-    upload,
+    upload.single("picture"),
     ProductsController.addProduct
   )
   .put(
