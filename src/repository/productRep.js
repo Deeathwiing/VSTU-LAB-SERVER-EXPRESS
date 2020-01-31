@@ -2,6 +2,8 @@ const { Op } = require("sequelize");
 const models = require("../init/models");
 const sequelize = require("../init/sequelize");
 const CustomError = require("../init/customError");
+const fs = require("fs");
+
 class ProductRep {
   async findAllPagination(amount, withImg, sortByName, sortByDate, page) {
     try {
@@ -172,10 +174,13 @@ class ProductRep {
     }
   }
 
-  async createProduct(data) {
+  async createProduct(data, image) {
     try {
+      console.log(data);
+      console.log(image);
+
       const newProduct = await models.Product.create({
-        picture: data.picture,
+        picture: "none",
         title: data.title,
         description: data.description,
         price: data.price,
@@ -186,8 +191,6 @@ class ProductRep {
         throw new CustomError("createProductError", 404, "Product not created");
 
       const arrayOfTags = data.tags.split(",");
-
-      console.log(arrayOfTags);
 
       arrayOfTags.forEach(async element => {
         const tag = await models.Tag.create({ text: element });
@@ -205,6 +208,7 @@ class ProductRep {
           );
       });
     } catch (e) {
+      console.log(e);
       if (e instanceof CustomError) throw e;
       throw new CustomError("undefined error", 400, "Something wrong");
     }

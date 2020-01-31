@@ -5,6 +5,7 @@ const session = require("express-session");
 const morgan = require("morgan");
 const cors = require("cors");
 const PassportMid = require("../middlewares/passport");
+const express = require("express");
 
 class AppLoader {
   constructor(app) {
@@ -12,8 +13,6 @@ class AppLoader {
   }
 
   init = () => {
-    this.app.use(serveStatic("public"));
-
     this.app.use(cookieParser());
 
     this.app.use(bodyParser());
@@ -32,6 +31,13 @@ class AppLoader {
     this.app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
     new PassportMid().init();
+
+    this.app.use(bodyParser.json());
+    this.app.use(
+      bodyParser.urlencoded({
+        extended: false
+      })
+    );
   };
 }
 
