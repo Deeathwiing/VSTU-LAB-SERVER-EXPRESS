@@ -16,7 +16,7 @@ const ProductModel = sequelize.define("product", {
     type: Sequelize.STRING
   },
   picture: {
-    type: Sequelize.BLOB
+    type: Sequelize.STRING
   }
 });
 

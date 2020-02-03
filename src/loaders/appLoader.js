@@ -13,6 +13,16 @@ class AppLoader {
   }
 
   init = () => {
+    this.app.use(bodyParser.json());
+
+    this.app.use(
+      bodyParser.urlencoded({
+        extended: false
+      })
+    );
+
+    this.app.use("/static", express.static("static"));
+
     this.app.use(cookieParser());
 
     this.app.use(bodyParser());
@@ -31,13 +41,6 @@ class AppLoader {
     this.app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
     new PassportMid().init();
-
-    this.app.use(bodyParser.json());
-    this.app.use(
-      bodyParser.urlencoded({
-        extended: false
-      })
-    );
   };
 }
 
