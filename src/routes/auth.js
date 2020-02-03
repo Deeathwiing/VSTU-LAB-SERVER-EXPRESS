@@ -1,14 +1,23 @@
-const express = require("express");
-const UsersController = require("../controllers/users");
-const {
-  authenticationAdminMiddleware,
-  authenticationMiddleware
-} = require("../middlewares/auth");
-
-const authRouter = express.Router();
+const express = require("express"),
+  UsersController = require("../controllers/users"),
+  {
+    authenticationAdminMiddleware,
+    authenticationMiddleware
+  } = require("../middlewares/auth"),
+  authRouter = express.Router(),
+  validator = require("../middlewares/validator(joi)"),
+  schemas = require("../validationSchemas/schemas");
 
 authRouter
-  .post("/create", UsersController.addUser)
-  .post("/authuser", UsersController.authuser);
+  .post(
+    "/create",
+    validator({ body: schemas.registration }),
+    UsersController.addUser
+  )
+  .post(
+    "/authuser",
+    validator({ body: schemas.login }),
+    UsersController.authuser
+  );
 
 module.exports = authRouter;

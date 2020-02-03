@@ -5,7 +5,7 @@ module.exports = Joi.object({
     .min(5)
     .max(50)
     .required()
-    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+    .pattern(new RegExp(/^[0-9a-z-\.]+\@[0-9a-z-]{2,}\.[a-z]{2,}$/i))
     .messages({
       "string.base": `Invalid type. Email must be a string`,
       "string.empty": `Please enter your email`,
@@ -16,7 +16,7 @@ module.exports = Joi.object({
     .min(3)
     .max(20)
     .required()
-    .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+    .pattern(new RegExp("^[A-Za-z0-9]{3,30}$"))
     .messages({
       "string.empty": `Please enter your Password`,
       "string.min": `Password should have a minimum length of {#limit}`,

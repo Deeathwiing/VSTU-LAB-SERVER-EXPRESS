@@ -7,7 +7,9 @@ const express = require("express"),
   path = require("path"),
   multer = require("multer"),
   uuidv4 = require("uuid/v4"),
-  CustomError = require("../init/customError");
+  CustomError = require("../init/customError"),
+  validator = require("../middlewares/validator(joi)"),
+  schemas = require("../validationSchemas/schemas");
 
 const DIR = "./static/productImages";
 
@@ -49,22 +51,29 @@ var upload = multer({
 const productsRouter = express.Router();
 
 productsRouter
-  .get("/getProducts", ProductsController.getProducts)
+  .get(
+    "/getProducts",
+    validator({ query: schemas.getProducts }),
+    ProductsController.getProducts
+  )
   .post(
     "/create",
     authenticationMiddleware,
     authenticationAdminMiddleware,
     upload.single("picture"),
+    validator({ body: schemas.createProduct }),
     ProductsController.addProduct
   )
   .put(
     "/update",
+    validator({ body: schemas.updateProduct }),
     authenticationMiddleware,
     authenticationAdminMiddleware,
     ProductsController.updateProduct
   )
   .delete(
     "/delete",
+    validator({ query: schemas.checkId }),
     authenticationMiddleware,
     authenticationAdminMiddleware,
     ProductsController.deleteProduct

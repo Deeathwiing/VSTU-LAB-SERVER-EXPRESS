@@ -2,7 +2,6 @@ const { Op } = require("sequelize");
 const models = require("../init/models");
 const sequelize = require("../init/sequelize");
 const CustomError = require("../init/customError");
-const fs = require("fs");
 
 class ProductRep {
   async findAllPagination(amount, withImg, sortByName, sortByDate, page) {

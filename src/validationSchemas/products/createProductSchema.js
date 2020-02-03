@@ -1,8 +1,6 @@
 const Joi = require("@hapi/joi");
 
 module.exports = Joi.object({
-  picture: Joi.binary(),
-
   title: Joi.string()
     .required()
     .messages({

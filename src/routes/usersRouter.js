@@ -1,11 +1,12 @@
-const express = require("express");
-const UsersController = require("../controllers/users");
-const {
-  authenticationAdminMiddleware,
-  authenticationMiddleware
-} = require("../middlewares/auth");
-
-const usersRouter = express.Router();
+const express = require("express"),
+  UsersController = require("../controllers/users"),
+  {
+    authenticationAdminMiddleware,
+    authenticationMiddleware
+  } = require("../middlewares/auth"),
+  usersRouter = express.Router(),
+  validator = require("../middlewares/validator(joi)"),
+  schemas = require("../validationSchemas/schemas");
 
 usersRouter
   .get(
@@ -17,26 +18,35 @@ usersRouter
 
   .delete(
     "/delete",
+    validator({ query: schemas.checkId }),
     authenticationMiddleware,
     authenticationAdminMiddleware,
     UsersController.removeUser
   )
-  .put("/editprofile", authenticationMiddleware, UsersController.editprofile)
+  .put(
+    "/editprofile",
+    validator({ body: schemas.updateProfile }),
+    authenticationMiddleware,
+    UsersController.editprofile
+  )
 
   .put(
     "/removerequest",
+
     authenticationMiddleware,
     UsersController.removeRequest
   )
 
   .put(
     "/addadmin",
+    validator({ query: schemas.checkId }),
     authenticationMiddleware,
     authenticationAdminMiddleware,
     UsersController.addAdmin
   )
   .put(
     "/deleteadmin",
+    validator({ query: schemas.checkId }),
     authenticationMiddleware,
     authenticationAdminMiddleware,
     UsersController.deleteAdmin
