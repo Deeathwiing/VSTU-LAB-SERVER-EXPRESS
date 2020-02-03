@@ -176,15 +176,25 @@ class ProductRep {
 
   async createProduct(data, image, protocol, host) {
     const url = protocol + "://" + host;
+    let newProduct;
     try {
-      const newProduct = await models.Product.create({
-        picture: url + "/static/productImages/" + image.filename,
-        title: data.title,
-        description: data.description,
-        price: data.price,
-        amount: data.amount
-      });
-
+      if (image) {
+        newProduct = await models.Product.create({
+          picture: url + "/static/productImages/" + image.filename,
+          title: data.title,
+          description: data.description,
+          price: data.price,
+          amount: data.amount
+        });
+      } else {
+        newProduct = await models.Product.create({
+          picture: "",
+          title: data.title,
+          description: data.description,
+          price: data.price,
+          amount: data.amount
+        });
+      }
       if (!newProduct)
         throw new CustomError("createProductError", 404, "Product not created");
 
