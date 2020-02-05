@@ -1,7 +1,8 @@
-const cryptoJs = require("crypto-js");
-const models = require("../init/models");
-const sequelize = require("../init/sequelize");
-const CustomError = require("../init/customError");
+const cryptoJs = require("crypto-js"),
+  models = require("../init/models"),
+  sequelize = require("../init/sequelize"),
+  CustomError = require("../init/customError"),
+  nodemailer = require("../helpers/nodemailer");
 
 class UserRep {
   getAll = async () => {
@@ -204,14 +205,22 @@ class UserRep {
     }
   };
 
-  deleteUser = id => {
+  deleteUser = async id => {
     try {
-      const result = models.User.destroy({
+      const user = await models.User.findOne({
+        where: { id, deleteAccountRequest: true }
+      });
+
+      console.log(user.dataValues.email);
+
+      const result = await models.User.destroy({
         where: { id, deleteAccountRequest: true }
       });
 
       if (!result)
         throw new CustomError("deleteUserError", 404, "User not deleted");
+
+      nodemailer.main(user.dataValues, "Hi, your account has been deleted.");
     } catch (e) {
       if (e instanceof CustomError) throw e;
       throw new CustomError("undefined error", 400, "Something wrong");
