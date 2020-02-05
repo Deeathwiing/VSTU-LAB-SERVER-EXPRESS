@@ -1,11 +1,12 @@
-const serveStatic = require("serve-static");
-const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
-const session = require("express-session");
-const morgan = require("morgan");
-const cors = require("cors");
-const PassportMid = require("../middlewares/passport");
-const express = require("express");
+const serveStatic = require("serve-static"),
+  cookieParser = require("cookie-parser"),
+  bodyParser = require("body-parser"),
+  session = require("express-session"),
+  morgan = require("morgan"),
+  cors = require("cors"),
+  PassportMid = require("../middlewares/passport"),
+  express = require("express"),
+  cronJob = require("../helpers/cron/cron");
 
 class AppLoader {
   constructor(app) {
@@ -41,6 +42,8 @@ class AppLoader {
     this.app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
     new PassportMid().init();
+
+    cronJob.start();
   };
 }
 

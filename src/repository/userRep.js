@@ -2,7 +2,7 @@ const cryptoJs = require("crypto-js"),
   models = require("../init/models"),
   sequelize = require("../init/sequelize"),
   CustomError = require("../init/customError"),
-  nodemailer = require("../helpers/nodemailer");
+  nodemailer = require("../helpers/nodemailer/nodemailer");
 
 class UserRep {
   getAll = async () => {
