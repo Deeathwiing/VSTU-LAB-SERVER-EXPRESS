@@ -4,7 +4,7 @@ const cryptoJs = require("crypto-js"),
   CustomError = require("../init/customError"),
   nodemailer = require("../helpers/nodemailer/nodemailer");
 
-class UserRep {
+class UserRepository {
   getAll = async () => {
     try {
       const users = await models.User.findAll({
@@ -242,4 +242,4 @@ class UserRep {
     }
   };
 }
-module.exports = new UserRep();
+module.exports = new UserRepository();

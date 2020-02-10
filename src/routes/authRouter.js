@@ -1,9 +1,5 @@
 const express = require("express"),
   UsersController = require("../controllers/users"),
-  {
-    authenticationAdminMiddleware,
-    authenticationMiddleware
-  } = require("../middlewares/auth"),
   authRouter = express.Router(),
   validator = require("../middlewares/validator(joi)"),
   schemas = require("../validationSchemas/schemas");

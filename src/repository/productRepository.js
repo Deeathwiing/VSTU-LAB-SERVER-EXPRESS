@@ -3,7 +3,7 @@ const models = require("../init/models");
 const sequelize = require("../init/sequelize");
 const CustomError = require("../init/customError");
 
-class ProductRep {
+class ProductRepository {
   async findAllPagination(amount, withImg, sortByName, sortByDate, page) {
     try {
       let offset = Number(amount * (Math.floor(page) - 1));
@@ -256,7 +256,7 @@ class ProductRep {
   }
 }
 
-module.exports = new ProductRep();
+module.exports = new ProductRepository();
 /*
  include: [
         {

@@ -1,7 +1,7 @@
 const models = require("../init/models");
 const CustomError = require("../init/customError");
 
-class RatingRep {
+class RatingRepository {
   addRating = async req => {
     try {
       const productId = Number(req.body.itemId);
@@ -25,4 +25,4 @@ class RatingRep {
   };
 }
 
-module.exports = new RatingRep();
+module.exports = new RatingRepository();

@@ -1,7 +1,7 @@
 const cryptoJs = require("crypto-js");
-const UserRep = require("../repository/userRep");
+const UserRep = require("../repository/userRepository");
 
-class Users {
+class UserServices {
   addRemoveRequest = req => {
     return UserRep.addRemoveRequest(req.user.id);
   };
@@ -54,4 +54,4 @@ class Users {
     return UserRep.deleteRoleAdmin(id);
   };
 }
-module.exports = new Users();
+module.exports = new UserServices();

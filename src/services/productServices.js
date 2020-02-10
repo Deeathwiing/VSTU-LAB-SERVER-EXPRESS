@@ -1,6 +1,7 @@
-const ProductRep = require("../repository/productRep");
-const RatingRep = require("../repository/ratingRep");
-class Product {
+const ProductRep = require("../repository/productRepository");
+const RatingRep = require("../repository/ratingRepository");
+
+class ProductServices {
   createProduct = (data, image, protocol, host) => {
     return ProductRep.createProduct(data, image, protocol, host);
   };
@@ -27,4 +28,4 @@ class Product {
     return ProductRep.updateProduct(data);
   };
 }
-module.exports = new Product();
+module.exports = new ProductServices();

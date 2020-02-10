@@ -1,4 +1,4 @@
-const UserRep = require("..//repository/userRep");
+const UserRep = require("..//repository/userRepository");
 const CustomError = require("../init/customError");
 
 authenticationMiddleware = (req, res, next) => {

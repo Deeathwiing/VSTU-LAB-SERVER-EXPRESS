@@ -1,6 +1,6 @@
 const CronJob = require("cron").CronJob,
   user = require("../../init/models").User,
-  userRep = require("../../repository/userRep");
+  userRep = require("../../repository/userRepository");
 
 const job = new CronJob(
   "* * 23 1 * *",

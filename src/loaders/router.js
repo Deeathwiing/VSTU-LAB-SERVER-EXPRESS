@@ -1,6 +1,6 @@
 const usersRouter = require("../routes/usersRouter.js");
 const productsRouter = require("../routes/productsRouter.js");
-const authRouter = require("../routes/auth");
+const authRouter = require("../routes/authRouter");
 
 class Router {
   constructor(app) {
