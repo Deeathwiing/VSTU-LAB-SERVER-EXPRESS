@@ -1,5 +1,5 @@
 const Users = require("../services/userServices");
-const customError = require("../init/customError");
+const customError = require("../helpers/customError");
 
 const passport = require("passport");
 

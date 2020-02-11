@@ -1,4 +1,4 @@
-const CustomError = require("../init/customError");
+const CustomError = require("../helpers/customError");
 
 const validate = (schema, validateData) => {
   if (schema) {

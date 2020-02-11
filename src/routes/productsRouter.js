@@ -7,7 +7,7 @@ const express = require("express"),
   path = require("path"),
   multer = require("multer"),
   uuidv4 = require("uuid/v4"),
-  CustomError = require("../init/customError"),
+  CustomError = require("../helpers/customError"),
   validator = require("../middlewares/validator(joi)"),
   schemas = require("../validationSchemas/schemas");
 

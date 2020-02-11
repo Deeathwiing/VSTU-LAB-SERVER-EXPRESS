@@ -1,5 +1,5 @@
 const models = require("../init/models");
-const CustomError = require("../init/customError");
+const CustomError = require("../helpers/customError");
 
 class RatingRepository {
   addRating = async req => {

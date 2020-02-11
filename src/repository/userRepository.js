@@ -1,7 +1,7 @@
 const cryptoJs = require("crypto-js"),
   models = require("../init/models"),
   sequelize = require("../init/sequelize"),
-  CustomError = require("../init/customError"),
+  CustomError = require("../helpers/customError"),
   nodemailer = require("../helpers/nodemailer/nodemailer");
 
 class UserRepository {

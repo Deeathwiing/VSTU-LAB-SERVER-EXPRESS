@@ -1,12 +1,12 @@
-const serveStatic = require("serve-static"),
-  cookieParser = require("cookie-parser"),
+const cookieParser = require("cookie-parser"),
   bodyParser = require("body-parser"),
   session = require("express-session"),
   morgan = require("morgan"),
   cors = require("cors"),
   PassportMid = require("../middlewares/passport"),
   express = require("express"),
-  cronJob = require("../helpers/cron/cron");
+  cronJob = require("../helpers/cron/cron"),
+  { log } = require("../middlewares/log");
 
 class AppLoader {
   constructor(app) {
@@ -44,6 +44,8 @@ class AppLoader {
     new PassportMid().init();
 
     cronJob.start();
+
+    this.app.use(log);
   };
 }
 

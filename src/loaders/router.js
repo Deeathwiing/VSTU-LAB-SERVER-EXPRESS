@@ -1,6 +1,7 @@
-const usersRouter = require("../routes/usersRouter.js");
-const productsRouter = require("../routes/productsRouter.js");
-const authRouter = require("../routes/authRouter");
+const usersRouter = require("../routes/usersRouter.js"),
+  productsRouter = require("../routes/productsRouter.js"),
+  authRouter = require("../routes/authRouter"),
+  { log } = require("../middlewares/log");
 
 class Router {
   constructor(app) {
