@@ -1,0 +1,5 @@
+FROM node
+WORKDIR /app/loggingserver
+COPY . /app/loggingserver
+RUN npm i
+CMD npm run r

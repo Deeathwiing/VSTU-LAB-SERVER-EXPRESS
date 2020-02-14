@@ -1,0 +1,7 @@
+FROM node
+WORKDIR /app/mailerserver
+# COPY package.json /app
+# COPY config.js /app
+COPY . /app/mailerserver
+RUN npm i
+CMD npm run r

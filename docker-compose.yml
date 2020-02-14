@@ -1,0 +1,72 @@
+version: "3.7"
+services:
+  mainserver:
+    image: main-server
+    container_name: mainserver
+    build:
+      context: ./mainserver
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      SERVER_PORT: 3002
+      DB_NAME_SQL: omVapeShop
+      DB_USERNAME_SQL: root
+      DB_PASSWORD_SQL: 12345678
+      DB_HOST_SQL: mysql
+      SESSION_SECRET: Its 322
+      SECRET_KEY: It's easy 322
+    links:
+      - mysql
+    ports:
+      - 3002:3002
+  loggingserver:
+    image: loggingserver
+    container_name: loggingserver
+    build:
+      context: ./loggingserver
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      LOG_PORT: 3010
+      DB_HOST_MONGO: mongo
+      DB_PORT_MONGO: 27017
+      DB_NAME_MONGO: OMVapeShop
+    links:
+      - mongo
+    ports:
+      - 3010:3010
+  mailerserver:
+    image: mailerserver
+    container_name: mailerserver
+    build:
+      context: ./mailerserver
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      MAILER_PORT: 3006
+      EMAIL: 322andreykorotkins@gmail.com
+      EMAIL_PASSWORD: 12345678_QWERTY
+    ports:
+      - 3006:3006
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    # MONGO_INITDB_DATABASE: OMVapeShop
+    # volumes:
+    #   - ./mongo_data:/data/db
+  mysql:
+    container_name: mysql
+    image: mysql
+    restart: on-failure
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: omVapeShop
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678
+      MYSQL_ROOT_PASSWORD: 12345678
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql_data:/var/lib/mysql
