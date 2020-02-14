@@ -2,19 +2,18 @@
 Express Server
 Simple e-shop
 
-## Install:
+# Install:
 
 ```sh
 git clone https://github.com/Deeathwiing/VSTU-LAB-SERVER-EXPRESS.git
 ```
+# Run:
 
-# next step
+##### Before starting, configure docker-compose.yml in root directory && create a roles in sql table
+
+
 ```sh
-npm i
-```
-## Run:
-```sh
-npm run r
+docker-compose up --build
 ```
 
 
