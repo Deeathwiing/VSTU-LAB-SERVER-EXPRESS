@@ -19,6 +19,8 @@ services:
       - mysql
     ports:
       - 3002:3002
+    volumes:
+      - ./static/productImages:/app/mainserver/static/productImages
   loggingserver:
     image: loggingserver
     container_name: loggingserver
