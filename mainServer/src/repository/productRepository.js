@@ -1,13 +1,13 @@
-const { Op } = require("sequelize");
-const models = require("../init/models");
-const sequelize = require("../init/sequelize");
-const CustomError = require("../helpers/customError");
+const { Op } = require("sequelize"),
+  models = require("../init/models"),
+  sequelize = require("../init/sequelize"),
+  CustomError = require("../helpers/customError");
 
 class ProductRepository {
   async findAllPagination(amount, withImg, sortByName, sortByDate, page) {
     try {
       let offset = Number(amount * (Math.floor(page) - 1));
-      console.log("offset: " + offset);
+
       if (offset < 0) offset = 0;
 
       const whereOptionsFunc = () => {
@@ -18,12 +18,11 @@ class ProductRepository {
             }
           };
         }
+
         return null;
       };
 
       const whereOptions = whereOptionsFunc();
-
-      console.log(whereOptions);
 
       const orderOptionsFunc = () => {
         if (sortByName == true) {
@@ -45,14 +44,6 @@ class ProductRepository {
 
       const orderOptions = orderOptionsFunc();
 
-      console.log(orderOptions);
-
-      //15ms sequelize without avg,count,etc
-      //4 ms with avg,count (raw SQL)
-      //19  sequelize with 2 table(rat,tag)
-
-      let now = Date.now();
-
       const productsWithRating = await models.Product.findAll({
         subQuery: false,
 
@@ -61,6 +52,7 @@ class ProductRepository {
         limit: Number(amount),
 
         where: whereOptions,
+
         order: orderOptions,
 
         attributes: [
@@ -72,10 +64,12 @@ class ProductRepository {
           "picture",
           "createdAt",
           "updatedAt",
+
           [
             sequelize.fn("avg", sequelize.col("ratings.ratingValue")),
             "averageRating"
           ],
+
           [
             sequelize.fn("count", sequelize.col("ratings.ratingValue")),
             "amountOfRatings"
@@ -105,6 +99,7 @@ class ProductRepository {
         limit: Number(amount),
 
         where: whereOptions,
+
         order: orderOptions,
 
         attributes: [
@@ -139,9 +134,6 @@ class ProductRepository {
         try {
           let items = item.dataValues;
 
-          // console.log(items.id);
-          // console.log(productsWithRating[i].dataValues.id);
-
           let foundedProduct = productsWithRating.find(
             product => product.dataValues.id == items.id
           );
@@ -163,19 +155,20 @@ class ProductRepository {
           );
         }
       });
-      let after = Date.now();
-      console.log(after - now);
 
       return products;
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   }
 
   async createProduct(data, image, protocol, host) {
     const url = protocol + "://" + host;
+
     let newProduct;
+
     try {
       if (image) {
         newProduct = await models.Product.create({
@@ -194,6 +187,7 @@ class ProductRepository {
           amount: data.amount
         });
       }
+
       if (!newProduct)
         throw new CustomError("createProductError", 404, "Product not created");
 
@@ -215,8 +209,8 @@ class ProductRepository {
           );
       });
     } catch (e) {
-      console.log(e);
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   }
@@ -232,6 +226,7 @@ class ProductRepository {
           tags: data.tags,
           amount: data.amount
         },
+
         { where: { id: data.id } }
       );
 
@@ -239,6 +234,7 @@ class ProductRepository {
         throw new CustomError("updateProductError", 404, "Product not updated");
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   }
@@ -251,213 +247,10 @@ class ProductRepository {
         throw new CustomError("deleteProductError", 404, "Product not deleted");
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   }
 }
 
 module.exports = new ProductRepository();
-/*
- include: [
-        {
-          model: models.Rating,
-          attributes: [
-            [
-              sequelize.fn("avg", "ratingValue")),
-              "averageRating"
-            ],
-            [
-              sequelize.fn("count", "ratingValue")),
-              "amountOfRatings"
-            ]
-          ]
-        }
-      ]
-   */
-
-/*
-
- attributes: [
-        "id",
-        "price",
-        "title",
-        "amount",
-        "description",
-        "picture",
-        "createdAt",
-        "updatedAt",
-        [
-          sequelize.fn("avg", "ratings.ratingValue")),
-          "averageRating"
-        ],
-        [
-          sequelize.fn("count", "ratings.ratingValue")),
-          "amountOfRatings"
-        ]
-      ],
-      include: [{ model: models.Rating, as: "ratings", attributes: [] }],
-      group: ["product.id", "rating.productId"]
-
-
-   */
-
-/*
-
-attributes: [
-        "id",
-        "price",
-        "title",
-        "amount",
-        "description",
-        "picture",
-        "createdAt",
-        "updatedAt"
-      ],
-
-      include: {
-        model: models.Rating,
-        attributes: [
-          sequelize.fn("avg", "ratingValue")),
-
-          sequelize.fn("count", "ratingValue"))
-        ]
-      }
-
-
-   */
-
-/*
-
- products = await sequelize.query(
-      `
-SELECT \`products\`.*, (Select avg(ratingValue) from ratings where productId = \`products\`.\`id\` ) as averageRating,
-(Select count(ratingValue) from ratings where productId = \`products\`.\`id\` ) as amountOfRatings
-from products
-ORDER BY \`products\`.\`amount\` DESC
-LIMIT ${offset}, 15;
-`
-    );
-    console.log(products);
-    return products[0];
-
-
-   */
-
-// LEFT OUTER JOIN \`ratings\` ON \`products\`.\`id\` = \`ratings\`.\`productId\`
-
-// (Select
-//     CONCAT(
-//   (Select`text` from tags Where id in
-// (Select tagId from producttag Where productId = `products`.`id`)
-//  )
-//     ) as tags
-// )
-
-// models.Product.findAllPagination = async amount => {
-//   let offset = Number(amount);
-
-//   let products;
-
-//   products = await models.Product.findAll({
-//     offset,
-//     limit: 15,
-//     order: [["amount", "desc"]],
-//     attributes: [
-//       "id",
-//       "price",
-//       "title",
-//       "amount",
-//       "description",
-//       "picture",
-//       "createdAt",
-//       "updatedAt"
-//     ],
-
-//     include: [
-//       {
-//         model: models.Rating,
-//         attributes: [
-//           "productId",
-//           "ratingValue",
-//           [
-//             sequelize.fn("avg", sequelize.col("ratingValue")),
-//             "averageRating"
-//           ],
-//           [
-//             sequelize.fn("count", sequelize.col("ratingValue")),
-//             "amountOfRatings"
-//           ]
-//         ],
-//         group: ["product.id", "ratings.productId"]
-//       }
-//     ],
-//     group: ["product.id"],
-//     raw: true
-//   });
-
-//   console.log(products);
-//   return products;
-// };
-
-// products = await models.Product.findAll({
-//   offset,
-//   limit: 15,
-//   order: [["amount", "desc"]],
-//   attributes: [
-//     "id",
-//     "price",
-//     "title",
-//     "amount",
-//     "description",
-//     "picture",
-//     "createdAt",
-//     "updatedAt",
-//     [
-//       sequelize.fn("avg", sequelize.col("ratings.ratingValue")),
-//       "averageRating"
-//     ],
-//     [
-//       sequelize.fn("count", sequelize.col("ratings.ratingValue")),
-//       "amountOfRatings"
-//     ]
-//   ],
-
-//   include: [
-//     {
-//       model: models.Rating,
-//       attributes: [],
-//       group: ["product.id", "ratings.productId"]
-//     }
-//   ],
-//   group: ["product.id", "ratings.productId"],
-//   raw: true
-// });
-
-// products = await models.Product.findAll({
-//   offset,
-//   limit: 15,
-//   order: [["amount", "desc"]],
-//   attributes: [
-//     "id",
-//     "price",
-//     "title",
-//     "amount",
-//     "description",
-//     "picture",
-//     "createdAt",
-//     "updatedAt"
-//   ],
-
-//   include: [
-//     {
-//       model: models.Rating,
-//       attributes: {
-//         include: [
-//           [sequelize.fn("avg", "ratingValue"), "averageRating"],
-//           [sequelize.fn("count", "ratingValue"), "amountOfRatings"]
-//         ]
-//       },
-//       group: ["product.id", "ratings.productId"]
-//     }
-//   ]
-// });

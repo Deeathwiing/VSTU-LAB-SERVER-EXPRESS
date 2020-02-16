@@ -1,5 +1,5 @@
-const ProductRep = require("../repository/productRepository");
-const RatingRep = require("../repository/ratingRepository");
+const ProductRep = require("../repository/productRepository"),
+  RatingRep = require("../repository/ratingRepository");
 
 class ProductServices {
   createProduct = (data, image, protocol, host) => {

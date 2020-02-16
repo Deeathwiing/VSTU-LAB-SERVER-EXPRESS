@@ -1,7 +1,5 @@
-const mongoose = require("mongoose"),
-  { initRelations } = require("./relations.js"),
-  sequelize = require("./sequelize"),
-  config = require("../../config");
+const { initRelations } = require("./relations.js"),
+  sequelize = require("./sequelize");
 
 initRelations();
 
@@ -12,11 +10,11 @@ const setUpConnection = () => {
       console.log("Connection has been established successfully(sql).");
     })
     .catch(err => {
-      console.error("Unable to connect to the database:", err);
+      console.error("Unable to connect to the database:(sql)", err);
     })
     .then(
       sequelize.sync().then(result => {
-        console.log("Run");
+        console.log("Sequelize was sync");
       })
     );
 };

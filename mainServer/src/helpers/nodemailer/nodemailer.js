@@ -3,8 +3,6 @@ const axios = require("axios"),
 
 class NodeMailer {
   async main(receiver, message) {
-    console.log(receiver);
-    console.log(message);
     axios
       .post(
         "http://mailerserver:3006/main/sendemail",

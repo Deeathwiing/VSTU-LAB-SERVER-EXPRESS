@@ -7,6 +7,7 @@ var app = express();
 
 const connect = async () => {
   await connections.setUpConnection();
+
   await app.listen(config.loggingServerPort, () => {
     console.log(`Server run on port ${config.loggingServerPort}`);
   });

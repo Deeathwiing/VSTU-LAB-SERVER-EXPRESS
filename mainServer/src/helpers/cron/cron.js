@@ -5,10 +5,10 @@ const CronJob = require("cron").CronJob,
 const job = new CronJob(
   "* * 23 1 * *",
   async () => {
-    console.log("You will see this message every second");
     const users = await user.findAll({
       where: { deleteAccountRequest: true }
     });
+
     users.forEach((element, i, arr) => {
       const date = element.dataValues.updatedAt.toString();
 

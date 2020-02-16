@@ -18,6 +18,7 @@ class LogRepository {
         );
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError(
         "error in logRepository.js",
         400,

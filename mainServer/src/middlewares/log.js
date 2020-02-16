@@ -1,8 +1,8 @@
 const axios = require("axios");
 
 const log = (req, res, next) => {
-  //res.status(err.statusCode || 400).send({ message: err.message });
   const date = new Date().toString();
+
   const data = {
     headers: req.headers,
     httpVersion: req.httpVersion,
@@ -21,6 +21,7 @@ const log = (req, res, next) => {
       { withCredentials: true }
     )
     .catch(e => console.log(e));
+
   next();
 };
 

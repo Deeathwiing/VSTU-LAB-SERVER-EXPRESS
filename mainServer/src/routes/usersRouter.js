@@ -11,22 +11,32 @@ const express = require("express"),
 usersRouter
   .get(
     "/getusers",
+
     authenticationMiddleware,
+
     authenticationAdminMiddleware,
+
     UsersController.getUsers
   )
 
   .delete(
     "/delete",
+
     validator({ query: schemas.checkId }),
+
     authenticationMiddleware,
+
     authenticationAdminMiddleware,
+
     UsersController.removeUser
   )
   .put(
     "/editprofile",
+
     validator({ body: schemas.updateProfile }),
+
     authenticationMiddleware,
+
     UsersController.editprofile
   )
 
@@ -34,21 +44,30 @@ usersRouter
     "/removerequest",
 
     authenticationMiddleware,
+
     UsersController.removeRequest
   )
 
   .put(
     "/addadmin",
+
     validator({ query: schemas.checkId }),
+
     authenticationMiddleware,
+
     authenticationAdminMiddleware,
+
     UsersController.addAdmin
   )
   .put(
     "/deleteadmin",
+
     validator({ query: schemas.checkId }),
+
     authenticationMiddleware,
+
     authenticationAdminMiddleware,
+
     UsersController.deleteAdmin
   );
 

@@ -1,12 +1,15 @@
-const models = require("../init/models");
-const CustomError = require("../helpers/customError");
+const models = require("../init/models"),
+  CustomError = require("../helpers/customError");
 
 class RatingRepository {
   addRating = async req => {
     try {
       const productId = Number(req.body.itemId);
+
       const user = req.user;
+
       const userId = Number(user.id);
+
       const ratingValue = Number(req.body.ratingValue);
 
       const result = await models.Rating.upsert({
@@ -20,6 +23,7 @@ class RatingRepository {
       }
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };

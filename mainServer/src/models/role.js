@@ -1,5 +1,5 @@
-const sequelize = require("../init/sequelize");
-const Sequelize = require("sequelize");
+const sequelize = require("../init/sequelize"),
+  Sequelize = require("sequelize");
 
 const RoleModel = sequelize.define("role", {
   userRole: {

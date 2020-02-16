@@ -1,7 +1,7 @@
-const { Strategy } = require("passport-local");
-const Users = require("../services/userServices");
-const models = require("../init/models");
-const passport = require("passport");
+const { Strategy } = require("passport-local"),
+  Users = require("../services/userServices"),
+  models = require("../init/models"),
+  passport = require("passport");
 
 class PassportMid {
   init = () => {

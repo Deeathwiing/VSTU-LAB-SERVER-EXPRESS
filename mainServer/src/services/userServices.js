@@ -1,5 +1,5 @@
-const cryptoJs = require("crypto-js");
-const UserRep = require("../repository/userRepository");
+const cryptoJs = require("crypto-js"),
+  UserRep = require("../repository/userRepository");
 
 class UserServices {
   addRemoveRequest = req => {
@@ -12,6 +12,7 @@ class UserServices {
         cryptoJs.enc.Utf8
       )
     );
+
   listUsers = req => {
     return UserRep.getAll();
   };

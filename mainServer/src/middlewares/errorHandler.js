@@ -2,8 +2,9 @@ const axios = require("axios");
 
 const errorHandler = (err, req, res, next) => {
   const date = new Date().toString();
+
   const data = JSON.stringify(err);
-  console.log(err);
+
   axios
     .post(
       "http://loggingserver:3010/error/logError",

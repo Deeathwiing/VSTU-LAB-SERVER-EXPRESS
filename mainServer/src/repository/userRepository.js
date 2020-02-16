@@ -18,6 +18,7 @@ class UserRepository {
       return users;
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
@@ -26,6 +27,7 @@ class UserRepository {
     try {
       const result = await models.User.update(
         { deleteAccountRequest: true },
+
         {
           where: {
             id
@@ -41,6 +43,7 @@ class UserRepository {
         );
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
@@ -79,6 +82,7 @@ class UserRepository {
       return result;
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
@@ -129,8 +133,8 @@ class UserRepository {
           throw new CustomError("createUserError", 409, "Role not added");
       }
     } catch (e) {
-      console.log(e);
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
@@ -155,6 +159,7 @@ class UserRepository {
         throw new CustomError("addRoleAdminError", 404, "Role not added");
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
@@ -164,8 +169,6 @@ class UserRepository {
       const amount = await sequelize.query(
         `Select count(roleId) from userroles Where roleId=(Select id from roles Where userRole="administration")`
       );
-
-      console.log(amount);
 
       if (!amount)
         throw new CustomError(
@@ -203,6 +206,7 @@ class UserRepository {
       );
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
@@ -212,8 +216,6 @@ class UserRepository {
       const user = await models.User.findOne({
         where: { id, deleteAccountRequest: true }
       });
-
-      console.log(user.dataValues.email);
 
       const result = await models.User.destroy({
         where: { id, deleteAccountRequest: true }
@@ -225,6 +227,7 @@ class UserRepository {
       nodemailer.main(user.dataValues, "Hi, your account has been deleted.");
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
@@ -233,13 +236,17 @@ class UserRepository {
     try {
       const result = models.User.update(
         { firstName, lastName },
+
         { where: { email } }
       );
+
       if (!result)
         throw new CustomError("deleteUserError", 404, "User not deleted");
+
       return result;
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };

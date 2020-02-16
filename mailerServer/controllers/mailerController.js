@@ -9,6 +9,7 @@ class MailerController {
         .catch(err => next(err));
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError(
         "error in MailerController.js",
         400,

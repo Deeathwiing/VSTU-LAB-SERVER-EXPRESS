@@ -2,13 +2,6 @@ const Product = require("../services/productServices");
 
 class ProductsController {
   getProducts = async (req, res, next) => {
-    console.log(
-      req.query.amount,
-      req.query.withImg,
-      req.query.sortByName,
-      req.query.sortByDate,
-      req.query.page
-    );
     try {
       let products = await Product.listProducts(
         req.query.amount,
@@ -25,9 +18,6 @@ class ProductsController {
   };
 
   addProduct = (req, res, next) => {
-    //console.log("Files Controller: " + req.file);
-    //console.log("Body Controller: " + req.body);
-
     Product.createProduct(req.body, req.file, req.protocol, req.get("host"))
       .then(() => res.sendStatus(200))
       .catch(err => next(err));

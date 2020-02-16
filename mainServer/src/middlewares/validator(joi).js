@@ -15,9 +15,10 @@ const validate = (schema, validateData) => {
 };
 
 module.exports = objectOfValidation => (req, res, next) => {
-  console.log(req.body);
   validate(objectOfValidation.body, req.body);
+
   validate(objectOfValidation.params, req.params);
+
   validate(objectOfValidation.query, req.query);
 
   next();

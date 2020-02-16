@@ -10,6 +10,7 @@ class LogController {
         .catch(err => next(err));
     } catch (e) {
       if (e instanceof CustomError) throw e;
+
       throw new CustomError(
         "error in logController.js",
         400,

@@ -1,5 +1,5 @@
-const UserRep = require("../repository/userRepository");
-const CustomError = require("../helpers/customError");
+const UserRep = require("../repository/userRepository"),
+  CustomError = require("../helpers/customError");
 
 authenticationMiddleware = (req, res, next) => {
   if (req.isAuthenticated()) {

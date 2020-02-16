@@ -7,12 +7,16 @@ const express = require("express"),
 authRouter
   .post(
     "/create",
+
     validator({ body: schemas.registration }),
+
     UsersController.addUser
   )
   .post(
     "/authuser",
+
     validator({ body: schemas.login }),
+
     UsersController.authuser
   );
 

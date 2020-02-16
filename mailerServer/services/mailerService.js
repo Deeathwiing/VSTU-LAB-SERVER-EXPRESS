@@ -1,6 +1,5 @@
 const nodemailer = require("nodemailer"),
-  config = require("../config"),
-  CustomError = require("../middlewares/customError");
+  config = require("../config");
 
 class MailerService {
   async sendMessage(email, message) {
