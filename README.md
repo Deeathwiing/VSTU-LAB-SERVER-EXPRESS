@@ -9,11 +9,16 @@ git clone https://github.com/Deeathwiing/VSTU-LAB-SERVER-EXPRESS.git
 ```
 # Run:
 
-##### Before starting, configure docker-compose.yml in root directory && create a roles in sql table
+##### Before starting, configure docker-compose.yml in root directory
 
+##### In root directory
 
 ```sh
-docker-compose up --build
+npm start
 ```
+##### After create a roles in sql table
 
-
+# Stop:
+```sh
+npm stop
+```
