@@ -1,5 +1,11 @@
 version: "3.7"
 services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
   mainserver:
     image: main-server
     container_name: mainserver
@@ -17,6 +23,7 @@ services:
       SECRET_KEY: It's easy 322
     links:
       - mysql
+      - rabbitmq
     ports:
       - 3002:3002
     volumes:
@@ -35,6 +42,7 @@ services:
       DB_NAME_MONGO: OMVapeShop
     links:
       - mongo
+      - rabbitmq
     ports:
       - 3010:3010
   mailerserver:
@@ -48,6 +56,8 @@ services:
       MAILER_PORT: 3006
       EMAIL: 322andreykorotkins@gmail.com
       EMAIL_PASSWORD: 12345678_QWERTY
+    links:
+      - rabbitmq
     ports:
       - 3006:3006
   mongo:

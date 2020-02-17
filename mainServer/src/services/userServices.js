@@ -19,8 +19,9 @@ class UserServices {
 
   authorization = async req => {
     const checkLogin = true;
+
     let admin = false;
-    console.log(UserRep);
+
     admin = await UserRep.verifyRole(req.user.id, "administration");
 
     const authUser = {

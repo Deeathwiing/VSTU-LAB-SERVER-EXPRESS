@@ -1,17 +1,11 @@
-const express = require("express"),
-  config = require("./config"),
-  AppLoader = require("./loaders/appLoader");
-
-var app = express();
+const rabbitMQ = require("./middlewares/rabbitMQ");
 
 const connect = async () => {
-  await app.listen(config.mailerServerPort, () => {
-    console.log(`Server run on port ${config.mailerServerPort}`);
-  });
+  try {
+    await rabbitMQ.consume();
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 connect();
-
-new AppLoader(app).init();
-
-exports.app = app;

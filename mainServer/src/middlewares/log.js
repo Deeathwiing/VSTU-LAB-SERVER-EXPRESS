@@ -1,9 +1,11 @@
-const axios = require("axios");
+const rabbitLogger = require("../helpers/rabbitMQ/rabbitLogger");
 
-const log = (req, res, next) => {
+const log = async (req, res, next) => {
   const date = new Date().toString();
 
   const data = {
+    error: false,
+    date,
     headers: req.headers,
     httpVersion: req.httpVersion,
     method: req.method,
@@ -14,13 +16,14 @@ const log = (req, res, next) => {
     startTime: req._startTime
   };
 
-  axios
-    .post(
-      "http://loggingserver:3010/main/log",
-      { date, data },
-      { withCredentials: true }
-    )
-    .catch(e => console.log(e));
+  await rabbitLogger.send(data);
+  // axios
+  //   .post(
+  //     "http://loggingserver:3010/main/log",
+  //     { date, data },
+  //     { withCredentials: true }
+  //   )
+  //   .catch(e => console.log(e));
 
   next();
 };
