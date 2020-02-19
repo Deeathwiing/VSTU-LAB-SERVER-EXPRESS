@@ -6,9 +6,15 @@ const cryptoJs = require("crypto-js"),
   config = require("../../config");
 
 class UserRepository {
-  getAll = async () => {
+  findAllPagination = async (amount, page) => {
     try {
+      let offset = Number(amount * (Math.floor(page) - 1));
+
+      if (offset < 0) offset = 0;
+
       const users = await models.User.findAll({
+        offset,
+        limit: Number(amount),
         include: [{ model: models.Role }]
       });
 
@@ -17,6 +23,7 @@ class UserRepository {
 
       return users;
     } catch (e) {
+      console.log(e);
       if (e instanceof CustomError) throw e;
 
       throw new CustomError("undefined error", 400, "Something wrong");

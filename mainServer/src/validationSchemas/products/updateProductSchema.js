@@ -50,5 +50,6 @@ module.exports = Joi.object({
       "number.base": `Invalid type. Amount must be a number`,
       "number.empty": `Please enter product amount`,
       "number.positive": `Invalid amount, the amount must be a positive number`
-    })
+    }),
+  picture: Joi.string()
 });

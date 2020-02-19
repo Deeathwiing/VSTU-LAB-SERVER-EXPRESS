@@ -12,6 +12,8 @@ usersRouter
   .get(
     "/getusers",
 
+    validator({ query: schemas.getUsers }),
+
     authenticationMiddleware,
 
     authenticationAdminMiddleware,

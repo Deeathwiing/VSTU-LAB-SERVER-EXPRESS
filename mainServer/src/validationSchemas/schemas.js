@@ -5,7 +5,8 @@ const login = require("./auth/loginSchema"),
   rating = require("./products/updateRatingSchema"),
   updateProfile = require("./users/updateProfileSchema"),
   getProducts = require("./products/getProductsSchema"),
-  checkId = require("./checkIdSchema");
+  checkId = require("./checkIdSchema"),
+  getUsers = require("./users/getUsersSchema");
 
 module.exports = {
   login,
@@ -15,5 +16,6 @@ module.exports = {
   rating,
   updateProfile,
   getProducts,
-  checkId
+  checkId,
+  getUsers
 };

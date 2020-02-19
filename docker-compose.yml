@@ -65,7 +65,6 @@ services:
     image: mongo
     ports:
       - 27017:27017
-    # MONGO_INITDB_DATABASE: OMVapeShop
     # volumes:
     #   - ./mongo_data:/data/db
   mysql:

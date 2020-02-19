@@ -24,6 +24,7 @@ class ProductsController {
   };
 
   updateProduct = (req, res, next) => {
+    console.log(req.body);
     Product.updateProductService(req.body)
       .then(() => res.sendStatus(200))
       .catch(err => next(err));

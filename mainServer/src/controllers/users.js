@@ -4,10 +4,13 @@ const customError = require("../helpers/customError");
 const passport = require("passport");
 
 class UsersController {
-  getUsers = (req, res, next) => {
-    Users.listUsers(req)
-      .then(data => res.send(data))
-      .catch(err => next(err));
+  getUsers = async (req, res, next) => {
+    try {
+      const users = await Users.listUsers(req.query.amount, req.query.page);
+      res.status(201).send(users);
+    } catch (e) {
+      next(e);
+    }
   };
 
   authuser = (req, res, next) => {

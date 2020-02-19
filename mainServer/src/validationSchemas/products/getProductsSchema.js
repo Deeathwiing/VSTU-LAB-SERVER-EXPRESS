@@ -23,21 +23,21 @@ module.exports = Joi.object({
   withImg: Joi.boolean()
     .required()
     .messages({
-      "boolean.base": `Invalid type. WithImg must be a string`,
+      "boolean.base": `Invalid type. WithImg must be a boolean`,
       "boolean.empty": `Please enter WithImg`,
       "any.required": `WithImg is a required field`
     }),
   sortByName: Joi.boolean()
     .required()
     .messages({
-      "boolean.base": `Invalid type. SortByName must be a string`,
+      "boolean.base": `Invalid type. SortByName must be a boolean`,
       "boolean.empty": `Please enter SortByName`,
       "any.required": `SortByName is a required field`
     }),
   sortByDate: Joi.boolean()
     .required()
     .messages({
-      "boolean.base": `Invalid type. SortByDate must be a string`,
+      "boolean.base": `Invalid type. SortByDate must be a boolean`,
       "boolean.empty": `Please enter SortByDate`,
       "any.required": `SortByDate is a required field`
     })

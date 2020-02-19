@@ -76,6 +76,9 @@ productsRouter
   )
   .put(
     "/update",
+
+    upload.single("picture"),
+
     validator({ body: schemas.updateProduct }),
 
     authenticationMiddleware,

@@ -1,15 +1,13 @@
 const CustomError = require("../helpers/customError");
 
 const validate = (schema, validateData) => {
+  console.log(validateData);
   if (schema) {
     const { error } = schema.validate(validateData);
 
     if (error) {
-      throw new CustomError(
-        "validateError",
-        404,
-        `${error.details[0].message}!`
-      );
+      console.log(error);
+      throw new CustomError("validateError", 404, `Error with Validation!`);
     }
   }
 };
