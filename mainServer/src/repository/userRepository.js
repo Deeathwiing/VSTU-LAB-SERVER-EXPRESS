@@ -239,9 +239,16 @@ class UserRepository {
     }
   };
 
-  editNames = (firstName, lastName, email) => {
+  verifyPassword = pass =>
+    JSON.parse(
+      cryptoJs.AES.decrypt(pass.toString(), process.env.SECRET_KEY).toString(
+        cryptoJs.enc.Utf8
+      )
+    );
+
+  editNames = async (firstName, lastName, email) => {
     try {
-      const result = models.User.update(
+      const result = await models.User.update(
         { firstName, lastName },
 
         { where: { email } }
@@ -257,5 +264,47 @@ class UserRepository {
       throw new CustomError("undefined error", 400, "Something wrong");
     }
   };
+
+  changePassword = async (prevPassword, newPassword, email) => {
+    console.log(prevPassword + newPassword);
+    try {
+      const user = await models.User.findOne({ where: { email } });
+      console.log(user);
+      if (!user)
+        throw new CustomError("change password error", 404, "User not found");
+      console.log(user.password);
+      if (this.verifyPassword(user.password) == prevPassword) {
+        let encryptedPass = cryptoJs.AES.encrypt(
+          JSON.stringify(data.password),
+          config.secretKey
+        );
+
+        encryptedPass = encryptedPass.toString();
+
+        const result = await models.User.update(
+          { password: encryptedPass },
+
+          { where: { email } }
+        );
+
+        if (!result)
+          throw new CustomError("deleteUserError", 404, "User not deleted");
+
+        return result;
+      }
+      throw new CustomError(
+        "change password error",
+        404,
+        "Wrong previous password"
+      );
+    } catch (e) {
+      console.log(e);
+
+      if (e instanceof CustomError) throw e;
+
+      throw new CustomError("undefined error", 400, "Something wrong");
+    }
+  };
 }
+
 module.exports = new UserRepository();

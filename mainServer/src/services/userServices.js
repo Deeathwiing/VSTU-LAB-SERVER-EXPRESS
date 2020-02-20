@@ -41,6 +41,10 @@ class UserServices {
     );
   };
 
+  changePassword = (data, email) => {
+    return UserRep.changePassword(data.prevPassword, data.newPassword, email);
+  };
+
   deleteUser = id => {
     return UserRep.deleteUser(id);
   };

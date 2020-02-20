@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
   }
 });
 
-var upload = multer({
+const upload = multer({
   storage: storage,
 
   fileFilter: (req, file, cb) => {
@@ -51,6 +51,9 @@ var upload = multer({
   }
 });
 
+// const memoryStorage = multer.memoryStorage();
+// const memoryUpload = multer({ storage: memoryStorage });
+
 const productsRouter = express.Router();
 
 productsRouter
@@ -70,12 +73,16 @@ productsRouter
 
     upload.single("picture"),
 
-    validator({ body: schemas.createProduct }),
+    validator({ body: schemas.createProduct, file: schemas.image }),
 
     ProductsController.addProduct
   )
   .put(
     "/update",
+
+    // memoryUpload.single("picture"),
+
+    // validator({ file: schemas.image }),
 
     upload.single("picture"),
 

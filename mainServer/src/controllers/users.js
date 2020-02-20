@@ -81,6 +81,12 @@ class UsersController {
       .catch(err => next(err));
   };
 
+  changePassword = (req, res, next) => {
+    Users.changePassword(req.body, req.user.email)
+      .then(() => res.sendStatus(200))
+      .catch(err => next(err));
+  };
+
   addAdmin = (req, res, next) => {
     Users.addAdminService(req.query.id)
       .then(() => res.sendStatus(200))

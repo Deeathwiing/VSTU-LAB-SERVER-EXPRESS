@@ -71,6 +71,15 @@ usersRouter
     authenticationAdminMiddleware,
 
     UsersController.deleteAdmin
+  )
+  .put(
+    "/changePassword",
+
+    validator({ body: schemas.changePassword }),
+
+    authenticationMiddleware,
+
+    UsersController.changePassword
   );
 
 module.exports = usersRouter;

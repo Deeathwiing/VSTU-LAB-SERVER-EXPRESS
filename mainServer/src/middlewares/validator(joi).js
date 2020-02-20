@@ -1,23 +1,26 @@
 const CustomError = require("../helpers/customError");
 
-const validate = (schema, validateData) => {
-  console.log(validateData);
+const validate = async (schema, validateData) => {
   if (schema) {
-    const { error } = schema.validate(validateData);
+    const { error } = await schema.validate(validateData);
 
     if (error) {
-      console.log(error);
       throw new CustomError("validateError", 404, `Error with Validation!`);
     }
   }
 };
 
-module.exports = objectOfValidation => (req, res, next) => {
-  validate(objectOfValidation.body, req.body);
+module.exports = objectOfValidation => async (req, res, next) => {
+  await validate(objectOfValidation.body, req.body);
 
-  validate(objectOfValidation.params, req.params);
+  await validate(objectOfValidation.params, req.params);
 
-  validate(objectOfValidation.query, req.query);
+  await validate(objectOfValidation.query, req.query);
+
+  // if (req.hasOwnProperty("file")) {
+  //   console.log(req.file);
+  //   await validate(objectOfValidation.file, req.file.buffer);
+  // }
 
   next();
 };

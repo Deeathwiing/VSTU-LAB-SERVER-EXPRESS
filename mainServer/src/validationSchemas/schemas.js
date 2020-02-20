@@ -6,7 +6,9 @@ const login = require("./auth/loginSchema"),
   updateProfile = require("./users/updateProfileSchema"),
   getProducts = require("./products/getProductsSchema"),
   checkId = require("./checkIdSchema"),
-  getUsers = require("./users/getUsersSchema");
+  getUsers = require("./users/getUsersSchema"),
+  image = require("./products/imageSchema"),
+  changePassword = require("./users/changePasswordSchema");
 
 module.exports = {
   login,
@@ -17,5 +19,7 @@ module.exports = {
   updateProfile,
   getProducts,
   checkId,
-  getUsers
+  getUsers,
+  image,
+  changePassword
 };
