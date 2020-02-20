@@ -215,23 +215,58 @@ class ProductRepository {
     }
   }
 
-  async updateProduct(data) {
+  async updateProduct(data, image, protocol, host) {
+    const url = protocol + "://" + host;
+
+    let newProduct;
     try {
-      const result = await models.Product.update(
-        {
-          picture: data.picture,
-          title: data.title,
-          description: data.description,
-          price: data.price,
-          tags: data.tags,
-          amount: data.amount
-        },
+      if (image) {
+        newProduct = await models.Product.update(
+          {
+            picture: url + "/static/productImages/" + image.filename,
+            title: data.title,
+            description: data.description,
+            price: data.price,
+            amount: data.amount
+          },
 
-        { where: { id: data.id } }
-      );
+          { where: { id: data.id } }
+        );
+      } else {
+        newProduct = await models.Product.update(
+          {
+            picture: "",
+            title: data.title,
+            description: data.description,
+            price: data.price,
+            amount: data.amount
+          },
 
-      if (!result)
+          { where: { id: data.id } }
+        );
+      }
+      if (!newProduct)
         throw new CustomError("updateProductError", 404, "Product not updated");
+
+      const product = await models.Product.findOne({ where: { id: data.id } });
+
+      const arrayOfTags = data.tags.split(",");
+
+      arrayOfTags.forEach(async element => {
+        const tag = await models.Tag.create({ text: element });
+
+        if (!tag)
+          throw new CustomError("createProductError", 404, "Tag not created");
+
+        const result = await product.addTag(tag);
+
+        if (!result)
+          throw new CustomError(
+            "updateProductError",
+            404,
+            "Tag not added to product"
+          );
+      });
     } catch (e) {
       if (e instanceof CustomError) throw e;
 

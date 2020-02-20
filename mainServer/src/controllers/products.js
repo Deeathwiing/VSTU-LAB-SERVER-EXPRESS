@@ -24,8 +24,12 @@ class ProductsController {
   };
 
   updateProduct = (req, res, next) => {
-    console.log(req.body);
-    Product.updateProductService(req.body)
+    Product.updateProductService(
+      req.body,
+      req.file,
+      req.protocol,
+      req.get("host")
+    )
       .then(() => res.sendStatus(200))
       .catch(err => next(err));
   };

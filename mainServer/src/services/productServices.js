@@ -24,8 +24,8 @@ class ProductServices {
     return RatingRep.addRating(req);
   };
 
-  updateProductService = data => {
-    return ProductRep.updateProduct(data);
+  updateProductService = (data, image, protocol, host) => {
+    return ProductRep.updateProduct(data, image, protocol, host);
   };
 }
 module.exports = new ProductServices();
