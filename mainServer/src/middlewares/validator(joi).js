@@ -11,16 +11,20 @@ const validate = async (schema, validateData) => {
 };
 
 module.exports = objectOfValidation => async (req, res, next) => {
-  await validate(objectOfValidation.body, req.body);
+  try {
+    await validate(objectOfValidation.body, req.body);
 
-  await validate(objectOfValidation.params, req.params);
+    await validate(objectOfValidation.params, req.params);
 
-  await validate(objectOfValidation.query, req.query);
+    await validate(objectOfValidation.query, req.query);
 
-  // if (req.hasOwnProperty("file")) {
-  //   console.log(req.file);
-  //   await validate(objectOfValidation.file, req.file.buffer);
-  // }
+    // if (req.hasOwnProperty("file")) {
+    //   console.log(req.file);
+    //   await validate(objectOfValidation.file, req.file.buffer);
+    // }
 
-  next();
+    next();
+  } catch (e) {
+    next(e);
+  }
 };

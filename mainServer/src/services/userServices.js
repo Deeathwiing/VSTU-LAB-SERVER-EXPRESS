@@ -13,8 +13,8 @@ class UserServices {
       )
     );
 
-  listUsers = async (amount, page) => {
-    return UserRep.findAllPagination(amount, page);
+  listUsers = async (amount, page, firstName, lastName, email) => {
+    return UserRep.findAllPagination(amount, page, firstName, lastName, email);
   };
 
   authorization = async req => {

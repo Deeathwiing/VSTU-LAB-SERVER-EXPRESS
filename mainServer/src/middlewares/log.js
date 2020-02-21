@@ -1,4 +1,4 @@
-const rabbitLogger = require("../helpers/rabbitMQ/rabbitLogger");
+const rabbitMQ = require("../helpers/rabbitMQ/rabbitMQ");
 
 const log = async (req, res, next) => {
   const date = new Date().toString();
@@ -16,14 +16,7 @@ const log = async (req, res, next) => {
     startTime: req._startTime
   };
 
-  await rabbitLogger.send(data);
-  // axios
-  //   .post(
-  //     "http://loggingserver:3010/main/log",
-  //     { date, data },
-  //     { withCredentials: true }
-  //   )
-  //   .catch(e => console.log(e));
+  rabbitMQ.log(data);
 
   next();
 };

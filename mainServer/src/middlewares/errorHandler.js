@@ -1,22 +1,15 @@
-const rabbitLogger = require("../helpers/rabbitMQ/rabbitLogger");
+const rabbitMQ = require("../helpers/rabbitMQ/rabbitMQ");
 
 const errorHandler = (err, req, res, next) => {
   const date = new Date().toString();
 
-  const data = JSON.stringify(err);
+  let data = JSON.parse(JSON.stringify(err));
+
+  data.message = err.message;
 
   const message = { error: true, date, data };
 
-  rabbitLogger.send(message);
-
-  // axios
-  //   .post(
-  //     "http://loggingserver:3010/error/logError",
-  //     { date, data },
-
-  //     { withCredentials: true }
-  //   )
-  //   .catch(e => console.log(e));
+  rabbitMQ.log(message);
 
   res.status(err.statusCode || 400).send({ message: err.message });
 };

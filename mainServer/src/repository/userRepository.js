@@ -3,16 +3,30 @@ const cryptoJs = require("crypto-js"),
   sequelize = require("../init/sequelize"),
   CustomError = require("../helpers/customError"),
   nodemailer = require("../helpers/nodemailer/nodemailer"),
-  config = require("../../config");
+  config = require("../../config"),
+  { Op } = require("sequelize");
 
 class UserRepository {
-  findAllPagination = async (amount, page) => {
+  findAllPagination = async (amount, page, firstName, lastName, email) => {
     try {
       let offset = Number(amount * (Math.floor(page) - 1));
 
       if (offset < 0) offset = 0;
 
+      function WhereOptionsFunc(firstName, lastName, email) {
+        if (email !== "none") this.email = email;
+
+        if (firstName !== "none") this.firstName = firstName;
+
+        if (lastName !== "none") this.lastName = lastName;
+      }
+
+      let whereOptions = new WhereOptionsFunc(firstName, lastName, email);
+
+      whereOptions = JSON.parse(JSON.stringify(whereOptions));
+
       const users = await models.User.findAll({
+        where: whereOptions,
         offset,
         limit: Number(amount),
         include: [{ model: models.Role }]
@@ -23,7 +37,6 @@ class UserRepository {
 
       return users;
     } catch (e) {
-      console.log(e);
       if (e instanceof CustomError) throw e;
 
       throw new CustomError("undefined error", 400, "Something wrong");
@@ -266,13 +279,12 @@ class UserRepository {
   };
 
   changePassword = async (prevPassword, newPassword, email) => {
-    console.log(prevPassword + newPassword);
     try {
       const user = await models.User.findOne({ where: { email } });
-      console.log(user);
+
       if (!user)
         throw new CustomError("change password error", 404, "User not found");
-      console.log(user.password);
+
       if (this.verifyPassword(user.password) == prevPassword) {
         let encryptedPass = cryptoJs.AES.encrypt(
           JSON.stringify(data.password),
@@ -298,8 +310,6 @@ class UserRepository {
         "Wrong previous password"
       );
     } catch (e) {
-      console.log(e);
-
       if (e instanceof CustomError) throw e;
 
       throw new CustomError("undefined error", 400, "Something wrong");

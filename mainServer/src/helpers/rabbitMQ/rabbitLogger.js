@@ -5,7 +5,7 @@ const amqp = require("amqplib/callback_api"),
 class RabbitLogger {
   async send(message) {
     try {
-      await amqp.connect("amqp://rabbitmq", function(error0, connection) {
+      amqp.connect("amqp://rabbitmq", function(error0, connection) {
         if (error0) {
           throw new customError(
             "error in connect to amqp",

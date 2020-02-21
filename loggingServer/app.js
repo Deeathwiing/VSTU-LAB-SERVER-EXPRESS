@@ -4,7 +4,7 @@ const rabbitMQ = require("./src/middlewares/rabbitMQ"),
 const connect = async () => {
   try {
     await connections.setUpConnection();
-    await rabbitMQ.consume();
+    setTimeout(rabbitMQ.consume, 1000 * 10);
   } catch (e) {
     console.log(e);
   }

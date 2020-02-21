@@ -6,7 +6,13 @@ const passport = require("passport");
 class UsersController {
   getUsers = async (req, res, next) => {
     try {
-      const users = await Users.listUsers(req.query.amount, req.query.page);
+      const users = await Users.listUsers(
+        req.query.amount,
+        req.query.page,
+        req.query.firstName,
+        req.query.lastName,
+        req.query.email
+      );
       res.status(201).send(users);
     } catch (e) {
       next(e);
