@@ -40,5 +40,12 @@ module.exports = Joi.object({
       "boolean.base": `Invalid type. SortByDate must be a boolean`,
       "boolean.empty": `Please enter SortByDate`,
       "any.required": `SortByDate is a required field`
+    }),
+  title: Joi.string()
+    .required()
+    .messages({
+      "string.base": `Invalid type. Title must be a string`,
+      "string.empty": `Please enter product title`,
+      "any.required": `Title is a required field`
     })
 });

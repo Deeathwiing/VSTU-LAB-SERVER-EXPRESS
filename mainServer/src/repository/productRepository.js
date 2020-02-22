@@ -4,25 +4,46 @@ const { Op } = require("sequelize"),
   CustomError = require("../helpers/customError");
 
 class ProductRepository {
-  async findAllPagination(amount, withImg, sortByName, sortByDate, page) {
+  async findAllPagination(
+    amount,
+    withImg,
+    sortByName,
+    sortByDate,
+    page,
+    title
+  ) {
     try {
       let offset = Number(amount * (Math.floor(page) - 1));
 
       if (offset < 0) offset = 0;
 
+      if (withImg === "true") {
+        withImg = true;
+      } else withImg = false;
+
+      console.log("withimg" + withImg);
+
+      console.log("title" + title);
+
       const whereOptionsFunc = () => {
-        if (withImg == true) {
-          return {
-            picture: {
-              [Op.not]: [{}, []]
-            }
+        let options = {};
+
+        if (withImg === true) {
+          options.picture = {
+            [Op.not]: ""
           };
         }
 
-        return null;
+        if (title !== "none") {
+          options.title = { [Op.regexp]: title };
+        }
+
+        return options;
       };
 
-      const whereOptions = whereOptionsFunc();
+      let whereOptions = whereOptionsFunc();
+
+      console.log(whereOptions);
 
       const orderOptionsFunc = () => {
         if (sortByName == true) {
@@ -158,6 +179,7 @@ class ProductRepository {
 
       return products;
     } catch (e) {
+      console.log(e);
       if (e instanceof CustomError) throw e;
 
       throw new CustomError("undefined error", 400, "Something wrong");

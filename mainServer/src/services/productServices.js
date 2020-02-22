@@ -10,13 +10,21 @@ class ProductServices {
     return ProductRep.deleteProduct(id);
   };
 
-  listProducts = async (amount, withImg, sortByName, sortByDate, page) => {
+  listProducts = async (
+    amount,
+    withImg,
+    sortByName,
+    sortByDate,
+    page,
+    title
+  ) => {
     return ProductRep.findAllPagination(
       amount,
       withImg,
       sortByName,
       sortByDate,
-      page
+      page,
+      title
     );
   };
 

@@ -3,7 +3,7 @@ const CustomError = require("../helpers/customError");
 const validate = async (schema, validateData) => {
   if (schema) {
     const { error } = await schema.validate(validateData);
-
+    console.log(error);
     if (error) {
       throw new CustomError("validateError", 404, `Error with Validation!`);
     }

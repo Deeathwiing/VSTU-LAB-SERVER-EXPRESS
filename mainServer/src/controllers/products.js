@@ -8,7 +8,8 @@ class ProductsController {
         req.query.withImg,
         req.query.sortByName,
         req.query.sortByDate,
-        req.query.page
+        req.query.page,
+        req.query.title
       );
 
       res.status(201).send(products);
