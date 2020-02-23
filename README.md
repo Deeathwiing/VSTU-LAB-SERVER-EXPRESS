@@ -16,7 +16,7 @@ git clone https://github.com/Deeathwiing/VSTU-LAB-SERVER-EXPRESS.git
 ```sh
 npm start
 ```
-##### After create a roles in sql table
+##### After create roles in sql table and 
 
 # Stop:
 ```sh
