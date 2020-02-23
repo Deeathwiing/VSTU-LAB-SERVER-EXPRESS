@@ -65,7 +65,7 @@ class ProductRepository {
 
       const orderOptions = orderOptionsFunc();
 
-      const productsWithRating = await models.Product.findAll({
+      const products = await models.Product.findAll({
         subQuery: false,
 
         offset,
@@ -100,30 +100,19 @@ class ProductRepository {
         include: [
           {
             model: models.Rating,
+            required: false,
             attributes: []
+          },
+          {
+            model: models.Tag,
+            attributes: ["text", "id"],
+            through: {
+              attributes: []
+            }
           }
         ],
 
-        group: ["product.id"]
-      });
-
-      if (!productsWithRating)
-        throw new CustomError(
-          "findAllPaginationError",
-          404,
-          "Products with Rating not found"
-        );
-
-      const productsWithTags = await models.Product.findAll({
-        offset,
-
-        limit: Number(amount),
-
-        where: whereOptions,
-
-        order: orderOptions,
-
-        attributes: [
+        group: [
           "id",
           "price",
           "title",
@@ -131,51 +120,19 @@ class ProductRepository {
           "description",
           "picture",
           "createdAt",
-          "updatedAt"
-        ],
-
-        include: [
-          {
-            model: models.Tag,
-            attributes: ["text"]
-          }
-        ],
-
-        group: ["product.id"]
+          "updatedAt",
+          "text",
+          "product.id",
+          "tags.id"
+        ]
       });
 
-      if (!productsWithTags)
+      if (!products)
         throw new CustomError(
           "findAllPaginationError",
           404,
-          "Products with Tags not found"
+          "Products with Rating not found"
         );
-
-      let products = productsWithTags.map(function(item, i, arr) {
-        try {
-          let items = item.dataValues;
-
-          let foundedProduct = productsWithRating.find(
-            product => product.dataValues.id == items.id
-          );
-
-          let averageRating = foundedProduct.dataValues.averageRating;
-
-          let amountOfRatings = foundedProduct.dataValues.amountOfRatings;
-
-          items.averageRating = averageRating;
-
-          items.amountOfRatings = amountOfRatings;
-
-          return items;
-        } catch (e) {
-          throw new CustomError(
-            "mergedArrError",
-            404,
-            "Problem with merged array"
-          );
-        }
-      });
 
       return products;
     } catch (e) {
