@@ -131,7 +131,7 @@ class ProductRepository {
         throw new CustomError(
           "findAllPaginationError",
           404,
-          "Products with Rating not found"
+          "Error with request from products"
         );
 
       return products;
