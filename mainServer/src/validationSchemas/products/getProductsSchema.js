@@ -47,5 +47,12 @@ module.exports = Joi.object({
       "string.base": `Invalid type. Title must be a string`,
       "string.empty": `Please enter product title`,
       "any.required": `Title is a required field`
+    }),
+  tagId: Joi.string()
+    .required()
+    .messages({
+      "string.base": `Invalid type. Tag must be a string`,
+      "string.empty": `Please enter product tag`,
+      "any.required": `Tag is a required field`
     })
 });

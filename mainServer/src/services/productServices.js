@@ -16,7 +16,8 @@ class ProductServices {
     sortByName,
     sortByDate,
     page,
-    title
+    title,
+    tagId
   ) => {
     return ProductRep.findAllPagination(
       amount,
@@ -24,7 +25,8 @@ class ProductServices {
       sortByName,
       sortByDate,
       page,
-      title
+      title,
+      tagId
     );
   };
 

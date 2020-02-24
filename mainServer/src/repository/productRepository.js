@@ -10,9 +10,11 @@ class ProductRepository {
     sortByName,
     sortByDate,
     page,
-    title
+    title,
+    tagId
   ) {
     try {
+      console.log("tagId: " + tagId);
       let offset = Number(amount * (Math.floor(page) - 1));
 
       if (offset < 0) offset = 0;
@@ -21,6 +23,7 @@ class ProductRepository {
         withImg = true;
       } else withImg = false;
 
+      console.log(tagId);
       console.log("withimg" + withImg);
 
       console.log("title" + title);
@@ -43,7 +46,19 @@ class ProductRepository {
 
       let whereOptions = whereOptionsFunc();
 
-      console.log(whereOptions);
+      const whereOptionsTagsFunc = () => {
+        let options = {};
+
+        if (tagId !== "none") {
+          options.id = Number(tagId);
+        }
+
+        return options;
+      };
+
+      let whereOptionsTags = whereOptionsTagsFunc();
+
+      console.log(whereOptionsTags);
 
       const orderOptionsFunc = () => {
         if (sortByName == true) {
@@ -108,7 +123,8 @@ class ProductRepository {
             attributes: ["text", "id"],
             through: {
               attributes: []
-            }
+            },
+            where: whereOptionsTags
           }
         ],
 
@@ -173,12 +189,28 @@ class ProductRepository {
       const arrayOfTags = data.tags.split(",");
 
       arrayOfTags.forEach(async element => {
+        let result;
+        const findedTag = await models.Tag.findAll({
+          where: { text: element }
+        });
+
+        if (findedTag) {
+          result = await newProduct.addTag(findedTag);
+          if (!result)
+            throw new CustomError(
+              "createProductError",
+              404,
+              "Tag not added to product"
+            );
+          return;
+        }
+
         const tag = await models.Tag.create({ text: element });
 
         if (!tag)
           throw new CustomError("createProductError", 404, "Tag not created");
 
-        const result = await newProduct.addTag(tag);
+        result = await newProduct.addTag(tag);
 
         if (!result)
           throw new CustomError(
