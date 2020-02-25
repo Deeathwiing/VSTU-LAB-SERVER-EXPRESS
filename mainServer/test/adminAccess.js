@@ -11,7 +11,7 @@ describe("Admin access", () => {
   });
 
   describe("/GET users", () => {
-    it("it should GET all the users", done => {
+    it("it should GET status 401 (we are not admin)", done => {
       chai
         .request(server)
         .get(
