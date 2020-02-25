@@ -17,4 +17,4 @@ const connect = async () => {
 
 connect();
 
-exports.app = app;
+module.exports = app;

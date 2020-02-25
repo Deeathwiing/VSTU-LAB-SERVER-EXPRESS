@@ -3,8 +3,7 @@ const cryptoJs = require("crypto-js"),
   sequelize = require("../init/sequelize"),
   CustomError = require("../helpers/customError"),
   nodemailer = require("../helpers/nodemailer/nodemailer"),
-  config = require("../../config"),
-  { Op } = require("sequelize");
+  config = require("../../config");
 
 class UserRepository {
   findAllPagination = async (amount, page, firstName, lastName, email) => {
