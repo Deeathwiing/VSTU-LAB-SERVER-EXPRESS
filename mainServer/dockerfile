@@ -2,4 +2,4 @@ FROM node
 WORKDIR /app/mainserver
 COPY . /app/mainserver
 RUN npm i
-CMD npm run r
+CMD npm test

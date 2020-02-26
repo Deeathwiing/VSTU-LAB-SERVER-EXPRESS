@@ -5,7 +5,7 @@ const validate = async (schema, validateData) => {
     const { error } = await schema.validate(validateData);
     console.log(error);
     if (error) {
-      throw new CustomError("validateError", 404, `Error with Validation!`);
+      throw new CustomError("validateError", 400, `Error with Validation!`);
     }
   }
 };
