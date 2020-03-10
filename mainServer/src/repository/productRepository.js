@@ -14,7 +14,6 @@ class ProductRepository {
     tagId
   ) {
     try {
-      console.log("tagId: " + tagId);
       let offset = Number(amount * (Math.floor(page) - 1));
 
       if (offset < 0) offset = 0;
@@ -22,11 +21,6 @@ class ProductRepository {
       if (withImg === "true") {
         withImg = true;
       } else withImg = false;
-
-      console.log(tagId);
-      console.log("withimg" + withImg);
-
-      console.log("title" + title);
 
       const whereOptionsFunc = () => {
         let options = {};
