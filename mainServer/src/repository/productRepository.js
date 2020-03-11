@@ -52,8 +52,6 @@ class ProductRepository {
 
       let whereOptionsTags = whereOptionsTagsFunc();
 
-      console.log(whereOptionsTags);
-
       const orderOptionsFunc = () => {
         if (sortByName == true) {
           return [
@@ -146,7 +144,6 @@ class ProductRepository {
 
       return products;
     } catch (e) {
-      console.log(e);
       if (e instanceof CustomError) throw e;
 
       throw new CustomError("undefined error", 400, "Something wrong");
