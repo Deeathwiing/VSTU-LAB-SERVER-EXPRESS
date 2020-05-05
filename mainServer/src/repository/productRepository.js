@@ -18,16 +18,12 @@ class ProductRepository {
 
       if (offset < 0) offset = 0;
 
-      if (withImg === "true") {
-        withImg = true;
-      } else withImg = false;
-
       const whereOptionsFunc = () => {
         let options = {};
 
-        if (withImg === true) {
+        if (withImg === "1") {
           options.picture = {
-            [Op.not]: ""
+            [Op.not]: "",
           };
         }
 
@@ -53,17 +49,17 @@ class ProductRepository {
       let whereOptionsTags = whereOptionsTagsFunc();
 
       const orderOptionsFunc = () => {
-        if (sortByName == true) {
+        if (sortByName == "1") {
           return [
             ["title", "desc"],
-            ["amount", "desc"]
+            ["amount", "desc"],
           ];
         }
 
-        if (sortByDate == true) {
+        if (sortByDate == "1") {
           return [
             ["updatedAt", "desc"],
-            ["amount", "desc"]
+            ["amount", "desc"],
           ];
         }
 
@@ -95,29 +91,29 @@ class ProductRepository {
 
           [
             sequelize.fn("avg", sequelize.col("ratings.ratingValue")),
-            "averageRating"
+            "averageRating",
           ],
 
           [
             sequelize.fn("count", sequelize.col("ratings.ratingValue")),
-            "amountOfRatings"
-          ]
+            "amountOfRatings",
+          ],
         ],
 
         include: [
           {
             model: models.Rating,
             required: false,
-            attributes: []
+            attributes: [],
           },
           {
             model: models.Tag,
             attributes: ["text", "id"],
             through: {
-              attributes: []
+              attributes: [],
             },
-            where: whereOptionsTags
-          }
+            where: whereOptionsTags,
+          },
         ],
 
         group: [
@@ -131,8 +127,8 @@ class ProductRepository {
           "updatedAt",
           "text",
           "product.id",
-          "tags.id"
-        ]
+          "tags.id",
+        ],
       });
 
       if (!products)
@@ -162,7 +158,7 @@ class ProductRepository {
           title: data.title,
           description: data.description,
           price: data.price,
-          amount: data.amount
+          amount: data.amount,
         });
       } else {
         newProduct = await models.Product.create({
@@ -170,7 +166,7 @@ class ProductRepository {
           title: data.title,
           description: data.description,
           price: data.price,
-          amount: data.amount
+          amount: data.amount,
         });
       }
 
@@ -179,10 +175,10 @@ class ProductRepository {
 
       const arrayOfTags = data.tags.split(",");
 
-      arrayOfTags.forEach(async element => {
+      arrayOfTags.forEach(async (element) => {
         let result;
         const findedTag = await models.Tag.findAll({
-          where: { text: element }
+          where: { text: element },
         });
 
         if (findedTag) {
@@ -229,7 +225,7 @@ class ProductRepository {
             title: data.title,
             description: data.description,
             price: data.price,
-            amount: data.amount
+            amount: data.amount,
           },
 
           { where: { id: data.id } }
@@ -241,7 +237,7 @@ class ProductRepository {
             title: data.title,
             description: data.description,
             price: data.price,
-            amount: data.amount
+            amount: data.amount,
           },
 
           { where: { id: data.id } }
@@ -254,7 +250,7 @@ class ProductRepository {
 
       const arrayOfTags = data.tags.split(",");
 
-      arrayOfTags.forEach(async element => {
+      arrayOfTags.forEach(async (element) => {
         const tag = await models.Tag.create({ text: element });
 
         if (!tag)

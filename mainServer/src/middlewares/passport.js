@@ -9,10 +9,10 @@ class PassportMid {
       new Strategy(
         {
           usernameField: "email",
-          passwordField: "password"
+          passwordField: "password",
         },
 
-        function(username, password, done) {
+        function (username, password, done) {
           models.User.findOne({ where: { email: username } }).then(
             (user, err) => {
               user = user.dataValues;
@@ -36,12 +36,12 @@ class PassportMid {
       )
     );
 
-    passport.serializeUser(function(user, done) {
+    passport.serializeUser(function (user, done) {
       done(null, user.id);
     });
 
-    passport.deserializeUser(function(id, done) {
-      models.User.findOne({ where: { id: id } }).then(function(user, err) {
+    passport.deserializeUser(function (id, done) {
+      models.User.findOne({ where: { id: id } }).then(function (user, err) {
         done(err, user);
       });
     });

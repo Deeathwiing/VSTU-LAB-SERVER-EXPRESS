@@ -80,4 +80,4 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./mysql_dataTest:/var/lib/mysql
+      - ./mysql_data:/var/lib/mysql
