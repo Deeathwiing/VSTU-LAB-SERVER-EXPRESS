@@ -19,7 +19,7 @@ class AppLoader {
 
     this.app.use(
       bodyParser.urlencoded({
-        extended: false
+        extended: false,
       })
     );
 
@@ -31,10 +31,11 @@ class AppLoader {
 
     this.app.use(
       session({
+        key: "express.sid",
         secret: config.secret,
         cookie: { maxAge: 24 * 60 * 60 * 1000, secure: false },
         resave: false,
-        saveUninitialized: false
+        saveUninitialized: false,
       })
     );
 
