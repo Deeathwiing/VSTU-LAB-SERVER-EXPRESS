@@ -7,7 +7,8 @@ const cookieParser = require("cookie-parser"),
   express = require("express"),
   cronJob = require("../helpers/cron/cron"),
   { log } = require("../middlewares/log"),
-  config = require("../../config");
+  config = require("../../config"),
+  sessionStore = require("./redisStore");
 
 class AppLoader {
   constructor(app) {
@@ -32,6 +33,7 @@ class AppLoader {
     this.app.use(
       session({
         key: "express.sid",
+        store: sessionStore,
         secret: config.secret,
         cookie: { maxAge: 24 * 60 * 60 * 1000, secure: false },
         resave: false,

@@ -67,6 +67,11 @@ services:
       - 27017:27017
     # volumes:
     #   - ./mongo_data:/data/db
+  redis:
+    container_name: redis
+    image: redis:alpine
+    ports:
+      - 6379:6379
   mysql:
     container_name: mysql
     image: mysql

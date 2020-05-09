@@ -2,12 +2,12 @@ const express = require("express"),
   db = require("./src/init/dataBaseUtils"),
   InitLoaders = require("./src/loaders/"),
   config = require("./config"),
-  http = require("http");
+  http = require("http"),
+  Chat = require("./src/chat/chat");
 
 var app = express();
 
 const server = http.createServer(app);
-const io = require("socket.io")(server);
 
 new InitLoaders(app).init();
 
@@ -17,16 +17,10 @@ const connect = async () => {
   await server.listen(config.serverPort, () => {
     console.log(`Server run on port ${config.serverPort}`);
   });
-};
 
-io.on("connection", function (client) {
-  console.log(result);
-  client.on("new message", (data) => {
-    console.log("MSG: ", data);
-    io.emit("new message", { author: "Operkit", message: data });
-  });
-});
+  await new Chat(server).init();
+};
 
 connect();
 
-module.exports = app;
+module.exports = server;
